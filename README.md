@@ -2,6 +2,8 @@
 
 A CSS/JS theme library that applies iOS26 design system to Ionic applications.
 
+**Documentation:** [Read the full documentation](https://docs.rdlabo.dev/projects/ionic-theme-ios26)
+
 ![](screenshots/ios26.png)
 
 DEMO is here: https://ionic-theme-ios26.netlify.app/
@@ -13,13 +15,6 @@ This library provides CSS/JS files that bring the iOS26 design system to Ionic a
 I'm also working on the Android Design (Material Design 3) theme. Be sure to catch up!
 
 👉️[rdlabo-dev/ionic-theme-md3](https://github.com/rdlabo-dev/ionic-theme-md3)
-
-## 💖 Support This Project
-
-Enjoying this library? Your support helps keep it alive and growing!  
-Sponsoring means you directly contribute to new features, improvements, and maintenance.
-
-[Become a Sponsor →](https://github.com/sponsors/rdlabo)
 
 ## Setup
 
