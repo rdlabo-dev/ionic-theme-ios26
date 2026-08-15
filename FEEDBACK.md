@@ -52,7 +52,7 @@ Resolved: https://github.com/ionic-team/ionic-framework/pull/30992#event-2330677
 Resolved.
 
 ### should disable ion-back-button Animation
-Resolved: by created https://github.com/rdlabo-team/ionic-theme-ios26/tree/main/src/transition
+Resolved: by created https://github.com/rdlabo-dev/ionic-theme-ios26/tree/main/src/transition
 
 ## feat(): ion-content[fullscreen=true] will have .content-fullscreen class
 Resolved: https://github.com/ionic-team/ionic-framework/pull/30926

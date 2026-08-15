@@ -82,7 +82,7 @@ struct IndexView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 12) {
                         Button {
-                            openURL(URL(string: "https://github.com/rdlabo-team/ionic-theme-ios26")!)
+                            openURL(URL(string: "https://github.com/rdlabo-dev/ionic-theme-ios26")!)
                         } label: {
                             Image(systemName: "chevron.left.forwardslash.chevron.right")
                         }

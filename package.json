@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/rdlabo-team/ionic-theme-ios26.git"
+    "url": "git+ssh://git@github.com/rdlabo-dev/ionic-theme-ios26.git"
   },
   "keywords": [
     "ionic",
@@ -43,9 +43,9 @@
   "author": "Masahiko Sakakibara <sakakibara@rdlabo.jp>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rdlabo-team/ionic-theme-ios26/issues"
+    "url": "https://github.com/rdlabo-dev/ionic-theme-ios26/issues"
   },
-  "homepage": "https://github.com/rdlabo-team/ionic-theme-ios26#readme",
+  "homepage": "https://github.com/rdlabo-dev/ionic-theme-ios26#readme",
   "devDependencies": {
     "@ionic/angular": "^8.8.1",
     "husky": "^9.1.7",
