@@ -69,7 +69,7 @@ jobs:
           path: demo/test-results/
           retention-days: 3
 
-      - name: Upload JSON report artifact
+      - name: Upload Ionic 9 JSON report artifact
         uses: actions/upload-artifact@v5
         if: always() && matrix.ionic-major == 9
         with:
@@ -77,7 +77,7 @@ jobs:
           path: demo/e2e/screenshot.spec.ts-ionic9.json
           retention-days: 3
 
-      - name: Upload HTML report artifact
+      - name: Upload Ionic 9 HTML report artifact
         uses: actions/upload-artifact@v5
         if: always() && matrix.ionic-major == 9
         with:
@@ -101,12 +101,12 @@ jobs:
           name: json-report-${{ github.event.pull_request.number }}
           path: report
 
-      - name: Comment PR with test results
+      - name: Comment PR with Ionic 9 test results
         uses: daun/playwright-report-comment@v3
         with:
           report-file: report/screenshot.spec.ts-ionic9.json
           job-summary: true
-          custom-info: 'Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details. And if you want to update the screenshots, please comment with `/update-screenshots`.'
+          custom-info: 'This detailed result covers Ionic 9 only. Ionic 8 runs against the same screenshots in a separate matrix job; check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for both results. To update the screenshots, comment with `/update-screenshots`.'
 
   deploy-report:
     needs: test
@@ -166,7 +166,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
-              body: `📊 **Playwright Test Report**\n\nView the detailed test report: ${reportUrl}`
+              body: `📊 **Ionic 9 Playwright Test Report**\n\nView the detailed Ionic 9 report: ${reportUrl}\n\nIonic 8 runs against the same screenshots in a separate matrix job. View both results in the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
             });
 
   cleanup-report:
