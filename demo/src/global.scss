@@ -46,12 +46,32 @@
   --ios26-menu-width: 300px;
 }
 
-html.ionic-v8 ion-textarea {
-  --padding-bottom: 8px;
-}
+/**
+ * Align Ionic 8 input and textarea layout with the Ionic 9 demo baseline.
+ * Ionic 9 introduced new internal control wrappers and spacing, so v8 needs
+ * equivalent flex sizing, native input spacing, and textarea row heights.
+ */
+html.ionic-v8 {
+  ion-input:is(.input-label-placement-start, .input-label-placement-end, .input-label-placement-fixed),
+  ion-textarea:is(.textarea-label-placement-start, .textarea-label-placement-end, .textarea-label-placement-fixed) {
+    .native-wrapper {
+      flex: 1 1 0;
+    }
+  }
 
-html.ionic-v8 ion-textarea:is([label-placement='stacked'], [label-placement='floating']) {
-  margin-block-end: -6px;
+  ion-input:is(.input-label-placement-stacked, .input-label-placement-floating) {
+    .native-input {
+      margin-block-start: 0;
+    }
+  }
+
+  ion-textarea {
+    --padding-bottom: 8px;
+
+    &:is(.textarea-label-placement-stacked, .textarea-label-placement-floating) {
+      block-size: 68px;
+    }
+  }
 }
 
 code {
