@@ -1,4 +1,8 @@
-# Using `ion-item-group` with iOS26 Theme
+---
+title: Using ion-item-group
+---
+
+# Using `ion-item-group` with the iOS26 theme
 
 This theme aims to bring Ionic Framework applications as close as possible to iOS 26 design. In most cases, you can use your existing Ionic code as-is, but **only under specific conditions**, you need to add `ion-item-group`.
 

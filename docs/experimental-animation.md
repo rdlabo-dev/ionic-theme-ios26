@@ -1,3 +1,9 @@
+---
+title: Experimental animation
+---
+
+# Experimental animation
+
 Optional gesture and animation helpers. The theme works without this feature.
 
 **This feature is experimental. The library can be used without this feature.**

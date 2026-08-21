@@ -14,7 +14,6 @@ I'm also working on the Android Design (Material Design 3) theme. Be sure to cat
 
 👉️[rdlabo-dev/ionic-theme-md3](https://github.com/rdlabo-dev/ionic-theme-md3)
 
-
 ## Quick start
 
 After [Installation](#installation), import the theme CSS. Details are in Installation below.
@@ -91,18 +90,25 @@ createApp(App)
 })
 ```
 
-
 ## Documentation
 
 Start with [Installation](#installation), then [Using ion-item-group](./docs/using-ion-item-group.md) when you use inset lists.
 
 - [Using ion-item-group](./docs/using-ion-item-group.md) — required markup for inset lists.
+- [Special markup and classes](./docs/special-markup.md) — opt-in markup, CSS variables, and utility classes used by the demo.
 - [Features](./docs/features.md) — CSS variables, `.ios26-disabled`, liquid glass.
 - [Experimental Animation](./docs/experimental-animation.md) — tab bar and searchable effects.
 - [iOS 18](./docs/ios-18.md) — load the theme only on iOS 26.
 - [Migration](./docs/migration.md) — selective component imports and dark mode.
 
 <!-- rdlabo-docs-omit -->
+
+- [Breaking changes](./docs/breaking.md) — changes required when upgrading major versions.
+
+<!-- /rdlabo-docs-omit -->
+
+<!-- rdlabo-docs-omit -->
+
 **Full documentation:** [https://docs.rdlabo.dev/projects/ionic-theme-ios26](https://docs.rdlabo.dev/projects/ionic-theme-ios26)
 
 ## Development & Testing
@@ -143,4 +149,5 @@ npm run test:e2e:debug
 # Update baseline screenshots (when intentionally changing UI)
 npm run test:e2e:update
 ```
+
 <!-- /rdlabo-docs-omit -->
