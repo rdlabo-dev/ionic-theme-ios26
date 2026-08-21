@@ -7,15 +7,32 @@ ion-list.list-inset {
 }
 
 ion-item > ion-icon[slot='start'] {
-  border-radius: 8px;
-  padding: 4px;
-  margin-right: 14px;
   color: var(--ion-background-color, #fff);
-  font-size: 1.3rem;
+}
+
+.support-ios-structured {
+  ion-item > ion-icon[slot='start'] {
+    padding: 4px;
+    font-size: 1.3rem;
+    margin-right: 14px;
+    border-radius: 8px;
+  }
+}
+
+.support-md-structured {
+  ion-item > ion-icon[slot='start'] {
+    padding: 8px;
+    width: calc(40px - 16px);
+    height: calc(40px - 16px);
+    margin-right: 16px;
+    border-radius: 50%;
+    background: var(--ion-color-light-shade);
+  }
 }
 
 ion-list.user-info {
   margin-top: 0;
+  margin-bottom: 0;
   ion-avatar {
     width: 64px;
     height: 64px;

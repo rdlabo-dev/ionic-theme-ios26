@@ -10,7 +10,6 @@ import {
   IonFooter,
   IonHeader,
   IonIcon,
-  IonImg,
   IonItem,
   IonItemGroup,
   IonLabel,
@@ -22,6 +21,7 @@ import {
   IonToolbar,
   Platform,
 } from '@demo/ionic';
+import { IonListHeader } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings-page',
@@ -43,10 +43,10 @@ import {
     IonSearchbar,
     IonBackButton,
     IonAvatar,
-    IonImg,
     IonNote,
     IonItemGroup,
     IonToggle,
+    IonListHeader,
   ],
 })
 export class SettingsPage {

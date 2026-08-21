@@ -8,7 +8,7 @@ ion-list.ios:not(.ios26-disabled) {
 }
 
 ion-list.list-inset.ios:not(.ios26-disabled) {
-  @include theme-list-inset.ion-list-inset();
+  @include theme-list-inset.ion-list-inset(20px);
 
   ion-radio-group,
   ion-reorder-group {
