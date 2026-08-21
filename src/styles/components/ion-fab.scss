@@ -5,6 +5,11 @@ $scaleup-default-icon-only: 1.2;
 $scaleup-large-icon-only: 1.12;
 
 ion-fab.ios:not(.ios26-disabled) {
+  --transform-value: 2.5px;
+  &:has(> ion-fab-button.fab-button-small) {
+    --transform-value: 4px;
+  }
+
   ion-fab-button {
     --transition:
       var(--ios26-activated-transition-duration) transform cubic-bezier(0.25, 1.11, 0.78, 1.59),
@@ -52,6 +57,17 @@ ion-fab.ios:not(.ios26-disabled) {
 
     &::part(native) {
       @include api.glass-background;
+    }
+  }
+
+  ion-fab-list {
+    &.fab-list-side-top,
+    &.fab-list-side-bottom {
+      transform: translateX(var(--transform-value));
+    }
+    &.fab-list-side-start,
+    &.fab-list-side-end {
+      transform: translateY(var(--transform-value));
     }
   }
 
