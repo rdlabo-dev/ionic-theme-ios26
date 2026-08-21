@@ -64,7 +64,7 @@ ion-fab.ios:not(.ios26-disabled) {
   }
 
   &.fab-horizontal-start {
-    left: calc(16px + var(--ion-safe-area-left, 0px));
+    left: calc(16px + var(--ios26-menu-width, var(--ion-safe-area-left), 0px));
   }
 
   &.fab-horizontal-end {
@@ -73,7 +73,7 @@ ion-fab.ios:not(.ios26-disabled) {
 
   &:has(.fab-button-small) {
     &.fab-horizontal-start {
-      left: calc(10px + var(--ion-safe-area-left, 0px));
+      left: calc(10px + var(--ios26-menu-width, var(--ion-safe-area-left), 0px));
     }
 
     &.fab-horizontal-end {
