@@ -54,7 +54,8 @@
     "np": "^10.2.0",
     "prettier": "^3.6.2",
     "sass": "^1.93.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "wrangler": "^4.125.0"
   },
   "peerDependencies": {
     "@ionic/core": ">=8.8.1 <10"
