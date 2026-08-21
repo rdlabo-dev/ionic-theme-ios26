@@ -10,7 +10,6 @@ import {
   IonFooter,
   IonHeader,
   IonIcon,
-  IonImg,
   IonItem,
   IonItemGroup,
   IonLabel,
@@ -21,6 +20,7 @@ import {
   IonToggle,
   IonToolbar,
   Platform,
+  IonListHeader,
 } from '@demo/ionic';
 
 @Component({
@@ -43,10 +43,10 @@ import {
     IonSearchbar,
     IonBackButton,
     IonAvatar,
-    IonImg,
     IonNote,
     IonItemGroup,
     IonToggle,
+    IonListHeader,
   ],
 })
 export class SettingsPage {

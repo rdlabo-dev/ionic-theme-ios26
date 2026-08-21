@@ -38,6 +38,32 @@
     <ion-item-group>
       <ion-item>
         <div class="ion-padding-bottom">
+          <h3><code>ion-list[inset] ion-label + ion-note</code></h3>
+          <p>
+            When an inset list item contains an <code>ion-label</code> and an <code>ion-note</code> without slots, they are displayed
+            vertically as a two-line item.
+          </p>
+          <code class="code-block">
+            &lt;ion-list [inset]="true"&gt;<br />
+            &nbsp;&nbsp;&lt;ion-item&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;ion-label&gt;Network &amp; internet&lt;/ion-label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;ion-note&gt;Mobile, Wi-Fi, hotspot&lt;/ion-note&gt;<br />
+            &nbsp;&nbsp;&lt;/ion-item&gt;<br />
+            &lt;/ion-list&gt;
+          </code>
+          <ion-list [inset]="true">
+            <ion-item color="light">
+              <ion-label>Network & internet</ion-label>
+              <ion-note>Mobile, Wi-Fi, hotspot</ion-note>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item-group>
+      <ion-item>
+        <div class="ion-padding-bottom">
           <h3><code>ion-segment.segment-expand</code></h3>
           <p>To make segments span the full width, you need to apply a special class.</p>
           <code class="code-block ion-margin-bottom">&lt;ion-segment class="segment-expand"&gt;&lt;/ion-segment&gt;</code>

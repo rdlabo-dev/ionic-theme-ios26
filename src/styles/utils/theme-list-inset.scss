@@ -1,4 +1,4 @@
-@mixin ion-list-inset() {
+@mixin ion-list-inset($note-inset) {
   background: transparent;
 
   ion-list-header {
@@ -64,6 +64,30 @@
     }
 
     ion-item {
+      &:has(> ion-label:not([slot])):has(> ion-note:not([slot])) {
+        &::part(container) {
+          flex-direction: column;
+          justify-content: center;
+          padding-top: 14px;
+          padding-bottom: 14px;
+          min-height: 64px;
+        }
+        & > ion-label,
+        & > ion-note {
+          width: auto;
+          align-self: flex-start;
+        }
+        & > ion-label {
+          margin: 0;
+          font-weight: 500;
+          font-size: 1.15rem;
+          line-height: 0.9rem;
+        }
+        & > ion-note {
+          font-size: 0.85rem;
+        }
+      }
+
       ion-text[slot='end'] {
         padding-left: 8px;
       }
@@ -96,6 +120,6 @@
     color: var(--ion-color-medium-tint);
     font-size: 0.9rem;
     display: block;
-    margin: 8px calc(20px + var(--ion-safe-area-right)) 8px calc(20px + var(--ion-safe-area-left));
+    margin: 8px calc(var(--ion-safe-area-right, 0) + $note-inset) 8px calc(var(--ion-safe-area-left, 0) + $note-inset);
   }
 }
