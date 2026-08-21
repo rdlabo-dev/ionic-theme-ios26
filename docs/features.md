@@ -33,4 +33,4 @@ ion-textarea label.textarea-wrapper {
 
 To achieve higher fidelity to iOS26 design, you can implement additional design provided by this library. For more details, please visit:
 
-https://ionic-theme-ios26.netlify.app/main/docs
+https://ionic-theme-ios26.rdlabo.dev/main/docs
