@@ -60,6 +60,7 @@ export class IndexPageComponent {
     { name: 'chip', enable: true },
     { name: 'date-and-time-pickers', enable: true },
     { name: 'floating-action-button', enable: true },
+    { name: 'floating-action-button-fixed', enable: true },
     { name: 'inputs', enable: true },
     { name: 'item-list', enable: true },
     { name: 'modal', enable: true },

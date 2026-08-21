@@ -71,6 +71,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/floating-action-button/floating-action-button.page').then((m) => m.FloatingActionButtonPage),
   },
   {
+    path: 'floating-action-button-fixed',
+    loadComponent: () =>
+      import('./pages/floating-action-button-fixed/floating-action-button-fixed.page').then((m) => m.FloatingActionButtonFixedPage),
+  },
+  {
     path: 'select',
     loadComponent: () => import('./pages/select/select.page').then((m) => m.SelectPage),
   },

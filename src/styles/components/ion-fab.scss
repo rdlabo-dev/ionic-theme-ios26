@@ -5,6 +5,11 @@ $scaleup-default-icon-only: 1.2;
 $scaleup-large-icon-only: 1.12;
 
 ion-fab.ios:not(.ios26-disabled) {
+  --transform-value: 2.5px;
+  &:has(> ion-fab-button.fab-button-small) {
+    --transform-value: 4px;
+  }
+
   ion-fab-button {
     --transition:
       var(--ios26-activated-transition-duration) transform cubic-bezier(0.25, 1.11, 0.78, 1.59),
@@ -55,6 +60,17 @@ ion-fab.ios:not(.ios26-disabled) {
     }
   }
 
+  ion-fab-list {
+    &.fab-list-side-top,
+    &.fab-list-side-bottom {
+      transform: translateX(var(--transform-value));
+    }
+    &.fab-list-side-start,
+    &.fab-list-side-end {
+      transform: translateY(var(--transform-value));
+    }
+  }
+
   &.fab-vertical-top {
     top: var(--ios26-floating-safe-area-top);
   }
@@ -64,7 +80,7 @@ ion-fab.ios:not(.ios26-disabled) {
   }
 
   &.fab-horizontal-start {
-    left: calc(16px + var(--ion-safe-area-left, 0px));
+    left: calc(16px + var(--ios26-menu-width, var(--ion-safe-area-left), 0px));
   }
 
   &.fab-horizontal-end {
@@ -73,7 +89,7 @@ ion-fab.ios:not(.ios26-disabled) {
 
   &:has(.fab-button-small) {
     &.fab-horizontal-start {
-      left: calc(10px + var(--ion-safe-area-left, 0px));
+      left: calc(10px + var(--ios26-menu-width, var(--ion-safe-area-left), 0px));
     }
 
     &.fab-horizontal-end {
