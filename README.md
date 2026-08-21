@@ -109,7 +109,12 @@ Start with [Installation](#installation), then [Using ion-item-group](./docs/usi
 
 ### Demo Application
 
-The `demo/` directory contains an Angular application for testing and demonstrating the theme. To run the demo:
+The same demo is deployed against both supported Ionic versions:
+
+- [Ionic 9 demo](https://ionic-theme-ios26.rdlabo.dev) — canonical
+- [Ionic 8 demo](https://ionic8-theme-ios26.rdlabo.dev) — compatibility
+
+The `demo/` directory contains the Angular application used by both deployments. To run it locally:
 
 ```bash
 cd demo

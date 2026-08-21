@@ -1,0 +1,57 @@
+name: Deploy Demo
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-demo-ionic${{ matrix.ionic-major }}
+      cancel-in-progress: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ionic-major: 9
+            ionic-version: 9.0.0
+            configuration: production
+            wrangler-args: '--env=""'
+          - ionic-major: 8
+            ionic-version: 8.8.19
+            configuration: production,ionic8
+            wrangler-args: '--env ionic8'
+    name: Deploy Ionic ${{ matrix.ionic-major }} demo
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            demo/package-lock.json
+
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }}
+      - run: npm run build
+
+      - run: npm ci
+        working-directory: ./demo
+      - run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }}
+        working-directory: ./demo
+      - run: npm run build -- --configuration=${{ matrix.configuration }}
+        working-directory: ./demo
+
+      - name: Deploy to Cloudflare Workers
+        run: npx wrangler deploy ${{ matrix.wrangler-args }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -19,7 +19,7 @@ import {
   IonTitle,
   IonToolbar,
   Platform,
-} from '@ionic/angular/standalone';
+} from '@demo/ionic';
 
 @Component({
   selector: 'app-docs-page',

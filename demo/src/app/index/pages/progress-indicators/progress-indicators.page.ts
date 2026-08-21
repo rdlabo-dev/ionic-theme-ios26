@@ -16,7 +16,7 @@ import {
   IonTitle,
   IonToolbar,
   LoadingController,
-} from '@ionic/angular/standalone';
+} from '@demo/ionic';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { loadingTypes } from '../../../overlay-types';

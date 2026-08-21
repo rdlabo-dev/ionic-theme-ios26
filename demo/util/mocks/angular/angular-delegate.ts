@@ -1,5 +1,7 @@
 import { ApplicationRef, NgZone, Injector, EnvironmentInjector, ComponentRef } from '@angular/core';
-import { FrameworkDelegate } from '@ionic/core/components';
+import type { AngularDelegate } from '@ionic/angular/common';
+
+type AngularFrameworkDelegate = ReturnType<AngularDelegate['create']>;
 
 export class MockAngularDelegate {
   create(environmentInjector: EnvironmentInjector, injector: Injector, elementReferenceKey?: string): MockAngularFrameworkDelegate {
@@ -7,7 +9,7 @@ export class MockAngularDelegate {
   }
 }
 
-export class MockAngularFrameworkDelegate implements FrameworkDelegate {
+export class MockAngularFrameworkDelegate implements Pick<AngularFrameworkDelegate, 'attachViewToDom' | 'removeViewFromDom'> {
   async attachViewToDom(container: any, component: any, params?: any, cssClasses?: string[]): Promise<any> {
     // no-op
   }

@@ -38,8 +38,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-angular-${{ hashFiles('demo/package-lock.json') }}-
             ${{ runner.os }}-angular-
-      # The demo depends on this package via `file:..`, so the root package
-      # must be installed and built (dist/) before the demo can compile.
+      # The demo compiles the theme source directly, so install the root
+      # dependencies and verify the package build before checking the demo.
       - run: npm ci
       - run: npm run build
       - run: npm ci

@@ -13,7 +13,7 @@ import {
   IonTabs,
   ViewDidEnter,
   ViewDidLeave,
-} from '@ionic/angular/standalone';
+} from '@demo/ionic';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 

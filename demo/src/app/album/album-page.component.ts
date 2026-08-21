@@ -14,7 +14,7 @@ import {
   IonTitle,
   IonToolbar,
   ViewDidEnter,
-} from '@ionic/angular/standalone';
+} from '@demo/ionic';
 import { attachTabBarSearchable, TabBarSearchableFunction, TabBarSearchableType } from '../../../../src';
 
 @Component({

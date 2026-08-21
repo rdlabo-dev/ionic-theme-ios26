@@ -1,4 +1,4 @@
-import { Animation, AnimationKeyFrames } from '@ionic/core/dist/types/utils/animation/animation-interface';
+import type { Animation, AnimationKeyFrames } from '@ionic/core';
 import { AnimationPosition, EffectScales } from './interfaces';
 import { createAnimation, GestureDetail } from '@ionic/core';
 import { getStep } from '../utils';
