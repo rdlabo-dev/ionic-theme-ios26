@@ -46,6 +46,10 @@
   --ios26-menu-width: 300px;
 }
 
+html.ionic-v8 ion-textarea {
+  --padding-bottom: 5px;
+}
+
 code {
   font-family: Menlo, Consolas, monospace;
 }
