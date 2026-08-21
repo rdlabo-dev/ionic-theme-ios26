@@ -19,34 +19,47 @@ jobs:
       head-ref: ${{ fromJson(steps.get-pr.outputs.result).ref }}
       head-repo: ${{ fromJson(steps.get-pr.outputs.result).repo }}
       head-sha: ${{ fromJson(steps.get-pr.outputs.result).sha }}
+      authorized: ${{ fromJson(steps.get-pr.outputs.result).authorized }}
       same-repository: ${{ fromJson(steps.get-pr.outputs.result).sameRepository }}
     steps:
-      - name: Add reaction to comment
+      - name: Get PR metadata and verify permission
+        uses: actions/github-script@v7
+        id: get-pr
+        with:
+          script: |
+            const [pr, permission] = await Promise.all([
+              github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number
+              }),
+              github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: context.payload.comment.user.login
+              })
+            ]);
+            const authorized = ['admin', 'maintain', 'write'].includes(permission.data.permission);
+            return {
+              ref: pr.data.head.ref,
+              sha: pr.data.head.sha,
+              repo: pr.data.head.repo.full_name,
+              authorized,
+              sameRepository: pr.data.head.repo.full_name === `${context.repo.owner}/${context.repo.repo}`
+            };
+
+      - name: Add reaction to authorized comment
+        if: fromJson(steps.get-pr.outputs.result).authorized
         uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: eyes
 
-      - name: Get PR metadata
-        uses: actions/github-script@v7
-        id: get-pr
-        with:
-          script: |
-            const pr = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
-            return {
-              ref: pr.data.head.ref,
-              sha: pr.data.head.sha,
-              repo: pr.data.head.repo.full_name,
-              sameRepository: pr.data.head.repo.full_name === `${context.repo.owner}/${context.repo.repo}`
-            };
-
   update-screenshots:
     needs: pr-metadata
-    if: needs.pr-metadata.outputs.same-repository == 'true'
+    if: >-
+      needs.pr-metadata.outputs.authorized == 'true' &&
+      needs.pr-metadata.outputs.same-repository == 'true'
     timeout-minutes: 10
     runs-on: ubuntu-latest
     container:
@@ -242,6 +255,24 @@ jobs:
             ℹ️ No screenshot changes detected.
 
             The current screenshots are already up to date.
+
+  comment-fork:
+    needs: pr-metadata
+    if: >-
+      needs.pr-metadata.outputs.authorized == 'true' &&
+      needs.pr-metadata.outputs.same-repository != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Explain unsupported fork update
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ⚠️ Screenshots cannot be updated automatically on a fork PR.
+
+            Push the branch to this repository or update the screenshots locally.
 
   comment-failure:
     needs: [pr-metadata, update-screenshots, commit-screenshots]
