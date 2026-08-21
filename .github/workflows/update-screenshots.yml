@@ -13,8 +13,7 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/update-screenshots')
     runs-on: ubuntu-latest
     permissions:
-      issues: write
-      pull-requests: read
+      pull-requests: write
     outputs:
       head-ref: ${{ fromJson(steps.get-pr.outputs.result).ref }}
       head-repo: ${{ fromJson(steps.get-pr.outputs.result).repo }}
@@ -128,8 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      issues: write
-      pull-requests: read
+      pull-requests: write
     steps:
       - name: Download updated screenshots
         uses: actions/download-artifact@v5
@@ -269,7 +267,7 @@ jobs:
       needs.pr-metadata.outputs.same-repository != 'true'
     runs-on: ubuntu-latest
     permissions:
-      issues: write
+      pull-requests: write
     steps:
       - name: Explain unsupported fork update
         uses: peter-evans/create-or-update-comment@v5
@@ -288,7 +286,7 @@ jobs:
       (needs.update-screenshots.result == 'failure' || needs.commit-screenshots.result == 'failure')
     runs-on: ubuntu-latest
     permissions:
-      issues: write
+      pull-requests: write
     steps:
       - name: Comment failure
         uses: peter-evans/create-or-update-comment@v5
