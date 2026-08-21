@@ -36,6 +36,7 @@ const routes = [
   { path: '/main/index/popover', name: 'popover' },
   ...typesPath({ path: '/main/index/progress-indicators', name: 'progress-indicators' }, loadingTypes),
   { path: '/main/index/floating-action-button', name: 'floating-action-button' },
+  { path: '/main/index/floating-action-button-fixed', name: 'floating-action-button-fixed' },
   ...typesPath({ path: '/main/index/select', name: 'select' }, selectTypes),
   { path: '/main/index/radio', name: 'radio' },
   { path: '/main/index/date-and-time-pickers', name: 'date-and-time-pickers' },
