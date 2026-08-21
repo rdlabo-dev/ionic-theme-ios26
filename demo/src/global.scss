@@ -47,7 +47,11 @@
 }
 
 html.ionic-v8 ion-textarea {
-  --padding-bottom: 5px;
+  --padding-bottom: 8px;
+}
+
+html.ionic-v8 ion-textarea:is([label-placement='stacked'], [label-placement='floating']) {
+  min-height: 50px;
 }
 
 code {
