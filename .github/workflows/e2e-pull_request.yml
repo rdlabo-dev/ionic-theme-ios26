@@ -5,16 +5,15 @@ on:
     types: [opened, synchronize, closed]
 
 permissions:
-  contents: write
-  pull-requests: write
-  pages: write
-  id-token: write
+  contents: read
 
 jobs:
   test:
     if: github.event.action != 'closed'
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -68,13 +67,13 @@ jobs:
           path: demo/test-results/
           retention-days: 3
 
-      - name: Comment PR with test results
-        uses: daun/playwright-report-comment@v3
+      - name: Upload JSON report artifact
+        uses: actions/upload-artifact@v5
         if: always() && matrix.ionic-major == 9
         with:
-          report-file: demo/e2e/screenshot.spec.ts-ionic9.json
-          job-summary: true
-          custom-info: 'Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details. And if you want to update the screenshots, please comment with `/update-screenshots`.'
+          name: json-report-${{ github.event.pull_request.number }}
+          path: demo/e2e/screenshot.spec.ts-ionic9.json
+          retention-days: 3
 
       - name: Upload HTML report artifact
         uses: actions/upload-artifact@v5
@@ -84,10 +83,39 @@ jobs:
           path: demo/playwright-report/
           retention-days: 30
 
+  comment-results:
+    needs: test
+    if: >-
+      always() &&
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Download JSON report
+        uses: actions/download-artifact@v5
+        with:
+          name: json-report-${{ github.event.pull_request.number }}
+          path: report
+
+      - name: Comment PR with test results
+        uses: daun/playwright-report-comment@v3
+        with:
+          report-file: report/screenshot.spec.ts-ionic9.json
+          job-summary: true
+          custom-info: 'Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details. And if you want to update the screenshots, please comment with `/update-screenshots`.'
+
   deploy-report:
     needs: test
-    if: always() && github.event.action != 'closed'
+    if: >-
+      always() &&
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Download HTML report
         uses: actions/download-artifact@v5
@@ -140,8 +168,12 @@ jobs:
             });
 
   cleanup-report:
-    if: github.event.action == 'closed'
+    if: >-
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout gh-pages
         uses: actions/checkout@v5

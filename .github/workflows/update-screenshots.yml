@@ -100,7 +100,13 @@ jobs:
         env:
           IONIC_MAJOR: 9
 
-      - name: Install Ionic 8
+      - name: Install Ionic 8 in theme
+        run: npm install --no-save --package-lock=false @ionic/angular@8.8.19 @ionic/core@8.8.19
+
+      - name: Rebuild theme with Ionic 8
+        run: npm run build
+
+      - name: Install Ionic 8 in demo
         run: npm install --no-save --package-lock=false @ionic/angular@8.8.19 @ionic/core@8.8.19
         working-directory: './demo'
 

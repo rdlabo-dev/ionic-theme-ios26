@@ -12,6 +12,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-demo-ionic${{ matrix.ionic-major }}
+      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
