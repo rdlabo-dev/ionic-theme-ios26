@@ -1,5 +1,6 @@
-# Breaking Changes
-This is a comprehensive list of the breaking changes introduced in the major version releases of `@rdlabo/ionic-theme-ios26`
+# Breaking changes
+
+This document lists the breaking changes introduced in major releases of `@rdlabo/ionic-theme-ios26` and the steps required to migrate.
 
 ## Version 2.0.0
 
@@ -16,25 +17,24 @@ import { iosTransitionAnimation } from '@rdlabo/ionic-theme-ios26';
 
 // Angular
 provideIonicAngular({
-    ...
-    navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
+  // ...
+  navAnimation: isPlatform('ios') ? iosTransitionAnimation : undefined,
 });
 
 // React
 setupIonicReact({
-    ...
-    navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
+  // ...
+  navAnimation: isPlatform('ios') ? iosTransitionAnimation : undefined,
 });
 
 // Vue
-createApp(App)
-    .use(IonicVue, {
-        ...
-        navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
-})
+createApp(App).use(IonicVue, {
+  // ...
+  navAnimation: isPlatform('ios') ? iosTransitionAnimation : undefined,
+});
 ```
 
-With this update, the previously discouraged pattern `<ion-buttons><ion-back-button></ion-back-button></ion-buttons>`can now be used again without causing transition issues.
+With this update, the previously discouraged pattern `<ion-buttons><ion-back-button></ion-back-button></ion-buttons>` can be used again without causing transition issues.
 
 ### Why does `iosTransitionAnimation` need to be replaced?
 
@@ -47,10 +47,9 @@ Because the behavior no longer exists on modern iOS, Ionic’s built-in transiti
 To align with the new iOS 26 design, our `iosTransitionAnimation` removes the now-obsolete `animateBackButton()` step.  
 As a result, transitions are smoother and header structures such as custom `<ion-buttons>` with `<ion-back-button>` work reliably again.
 
-
 ## Version 1.0.0
 
-### change the import path of the SCSS files
+### Change the SCSS import path
 
 Reorganized the folder structure after adding JavaScript files.
 
@@ -61,7 +60,8 @@ Reorganized the folder structure after adding JavaScript files.
 
 Note: The output path for the generated dist files remains unchanged.
 
-### `--ios26-color-background-rgb` is renamed.
+### Rename `--ios26-color-background-rgb`
+
 Changed the variable names for clarity.
 
 ```diff
@@ -71,8 +71,10 @@ Changed the variable names for clarity.
   }
 ```
 
-### `--ion-color-**-brightness-rgb` is changed to `--ion-color-**-brightness`
+### Rename `--ion-color-**-brightness-rgb` to `--ion-color-**-brightness`
+
 Refactoring the styling removed the need to manipulate transparency.
+
 ```diff
   :root {
 -   --ion-color-**-brightness-rgb: 130, 255, 255;

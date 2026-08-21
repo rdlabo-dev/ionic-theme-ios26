@@ -1,4 +1,10 @@
-CSS variables, opt-out class, and the liquid glass mixin. See [Using ion-item-group](./using-ion-item-group.md) for list markup.
+---
+title: Features
+---
+
+# Features
+
+CSS variables, opt-out class, and the Liquid Glass mixin. See [Using ion-item-group](./using-ion-item-group.md) for list markup.
 
 ### CSS Variables
 

@@ -1,3 +1,9 @@
+---
+title: Migration
+---
+
+# Migration
+
 For gradual migration, you can selectively apply the iOS26 theme by importing individual components instead of the full theme file.
 
 ```css
