@@ -68,8 +68,9 @@
         &::part(container) {
           flex-direction: column;
           justify-content: center;
-          padding-top: 8px;
-          padding-bottom: 8px;
+          padding-top: 14px;
+          padding-bottom: 14px;
+          min-height: 64px;
         }
         & > ion-label,
         & > ion-note {
@@ -78,12 +79,12 @@
         }
         & > ion-label {
           margin: 0;
-          font-size: 1.2rem;
-          transform: translateY(2px);
+          font-weight: 500;
+          font-size: 1.15rem;
+          line-height: 0.9rem;
         }
         & > ion-note {
-          font-size: 0.9rem;
-          transform: translateY(-2px);
+          font-size: 0.85rem;
         }
       }
 
