@@ -1,7 +1,6 @@
 import { AnimationPosition, EffectScales, registeredEffect } from './interfaces';
-import { createAnimation, createGesture, GestureDetail } from '@ionic/core';
-import type { Animation } from '@ionic/core/dist/types/utils/animation/animation-interface';
-import { Gesture } from '@ionic/core/dist/types/utils/gesture';
+import { createAnimation, createGesture } from '@ionic/core';
+import type { Animation, Gesture, GestureDetail } from '@ionic/core';
 import { changeSelectedElement, cloneElement, getStep } from '../utils';
 import { createMoveAnimation, createPreMoveAnimation, getMoveAnimationKeyframe, getScaleAnimation } from './animations';
 
@@ -94,7 +93,7 @@ export const registerEffect = (
     targetElement.classList.add(ANIMATED_NAME);
     changeSelectedElement(targetElement, currentTouchedElement, effectTagName, selectedClassName);
 
-    startAnimationPromise = (() => {
+    const startAnimation = (() => {
       if (tabSelectedElement === currentTouchedElement) {
         return new Promise<void>((resolve) => resolve());
       } else {
@@ -102,7 +101,8 @@ export const registerEffect = (
         return preMoveAnimation.play().finally(() => preMoveAnimation.destroy());
       }
     })();
-    startAnimationPromise.then(() => {
+    startAnimationPromise = startAnimation;
+    startAnimation.then(() => {
       if (!currentTouchedElement) {
         return;
       }

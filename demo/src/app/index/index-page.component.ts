@@ -17,7 +17,7 @@ import {
   IonToggle,
   IonToolbar,
   ToggleCustomEvent,
-} from '@ionic/angular/standalone';
+} from '@demo/ionic';
 import { ActivatedRoute, Router } from '@angular/router';
 
 interface IComponent {

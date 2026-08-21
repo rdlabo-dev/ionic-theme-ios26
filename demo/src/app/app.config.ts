@@ -3,7 +3,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import * as allIcons from 'ionicons/icons';
 
 import { routes } from './app.routes';
-import { provideIonicAngular } from '@ionic/angular/standalone';
+import { provideIonicAngular } from '@demo/ionic';
 import { addIcons } from 'ionicons';
 import { popoverEnterAnimation, popoverLeaveAnimation, iosTransitionAnimation } from '../../../src';
 

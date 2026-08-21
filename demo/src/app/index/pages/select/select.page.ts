@@ -18,7 +18,7 @@ import {
   IonTitle,
   IonToolbar,
   ViewDidEnter,
-} from '@ionic/angular/standalone';
+} from '@demo/ionic';
 import { selectTypes } from '../../../overlay-types';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet } from '@demo/ionic';
 import { addIcons } from 'ionicons';
 import * as allIcons from 'ionicons/icons';
 

@@ -15,6 +15,9 @@
     "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
+    "paths": {
+      "@demo/ionic": ["./src/ionic/ionic.ts"]
+    },
     "importHelpers": true,
     "target": "es2022",
     "module": "es2020",

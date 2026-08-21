@@ -1,7 +1,7 @@
 import { createAnimation } from '@ionic/core';
 import { getElementRoot } from '../../utils';
 
-import type { Animation } from '@ionic/core/dist/types/utils/animation/animation-interface';
+import type { Animation } from '@ionic/core';
 
 /**
  * iOS Popover Leave Animation

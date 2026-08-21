@@ -18,7 +18,7 @@ import {
   IonToolbar,
   ViewDidEnter,
   ViewDidLeave,
-} from '@ionic/angular/standalone';
+} from '@demo/ionic';
 import { registeredEffect, registerSegmentEffect } from '../../../../../../src';
 
 @Component({

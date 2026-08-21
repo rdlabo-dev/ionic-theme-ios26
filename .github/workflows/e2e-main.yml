@@ -8,6 +8,14 @@ jobs:
   test:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ionic-major: 8
+            ionic-version: 8.8.19
+          - ionic-major: 9
+            ionic-version: 9.0.0
     container:
       image: mcr.microsoft.com/playwright:v1.58.2-noble
     steps:
@@ -23,20 +31,25 @@ jobs:
             ${{ runner.os }}-node-
 
       - run: npm ci
+      - run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }}
       - run: npm run build
 
       - run: npm ci
+        working-directory: './demo'
+      - run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }}
         working-directory: './demo'
 
       - name: Run Playwright tests
         run: npm run test:e2e
         working-directory: ./demo
+        env:
+          IONIC_MAJOR: ${{ matrix.ionic-major }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v5
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-ionic${{ matrix.ionic-major }}
           path: demo/playwright-report/
           retention-days: 3
 
@@ -44,6 +57,6 @@ jobs:
         uses: actions/upload-artifact@v5
         if: failure()
         with:
-          name: test-results
+          name: test-results-ionic${{ matrix.ionic-major }}
           path: demo/test-results/
           retention-days: 3

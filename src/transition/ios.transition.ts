@@ -1,4 +1,4 @@
-import type { Animation } from '@ionic/core/dist/types/utils/animation/animation-interface';
+import type { Animation } from '@ionic/core';
 import { createAnimation } from '@ionic/core';
 import type { TransitionOptions } from './index';
 import { getIonPageElement } from './index';

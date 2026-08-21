@@ -60,6 +60,14 @@
             },
             "ci": {
               "progress": false
+            },
+            "ionic8": {
+              "fileReplacements": [
+                {
+                  "replace": "src/ionic/ionic.ts",
+                  "with": "src/ionic/ionic.v8.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -75,6 +83,9 @@
             },
             "ci": {
               "progress": false
+            },
+            "ionic8": {
+              "buildTarget": "app:build:ionic8"
             }
           },
           "defaultConfiguration": "development"
@@ -107,9 +118,7 @@
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@ionic/angular-toolkit"
-    ],
+    "schematicCollections": ["@ionic/angular-toolkit"],
     "analytics": "cbe1df8d-204f-4a38-b88d-9f3a65fd6af4"
   },
   "schematics": {

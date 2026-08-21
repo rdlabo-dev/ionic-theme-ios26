@@ -64,9 +64,21 @@ jobs:
         run: npm ci
         working-directory: './demo'
 
-      - name: Update screenshots
+      - name: Update screenshots with Ionic 9
         run: npm run test:e2e:update
         working-directory: ./demo
+        env:
+          IONIC_MAJOR: 9
+
+      - name: Install Ionic 8
+        run: npm install --no-save --package-lock=false @ionic/angular@8.8.19 @ionic/core@8.8.19
+        working-directory: './demo'
+
+      - name: Verify Ionic 8 against the same screenshots
+        run: npm run test:e2e
+        working-directory: ./demo
+        env:
+          IONIC_MAJOR: 8
 
       - name: Commit and push changes
         run: |
@@ -89,7 +101,7 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
             ✅ Screenshots have been updated successfully!
-            
+
             The new screenshots have been committed to this PR.
 
       - name: Comment no changes
@@ -99,7 +111,7 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
             ℹ️ No screenshot changes detected.
-            
+
             The current screenshots are already up to date.
 
       - name: Comment failure
@@ -109,6 +121,5 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
             ❌ Failed to update screenshots.
-            
-            Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
 
+            Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.

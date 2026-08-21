@@ -15,6 +15,14 @@ jobs:
     if: github.event.action != 'closed'
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ionic-major: 8
+            ionic-version: 8.8.19
+          - ionic-major: 9
+            ionic-version: 9.0.0
     container:
       image: mcr.microsoft.com/playwright:v1.58.2-noble
     steps:
@@ -30,20 +38,25 @@ jobs:
             ${{ runner.os }}-node-
 
       - run: npm ci
+      - run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }}
       - run: npm run build
 
       - run: npm ci
         working-directory: './demo'
+      - run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }}
+        working-directory: './demo'
 
       - name: Run Playwright tests
-        run: PLAYWRIGHT_JSON_OUTPUT_NAME=e2e/screenshot.spec.ts.json npm run test:e2e -- --reporter=json,html
+        run: PLAYWRIGHT_JSON_OUTPUT_NAME=e2e/screenshot.spec.ts-ionic${{ matrix.ionic-major }}.json npm run test:e2e -- --reporter=json,html
         working-directory: ./demo
+        env:
+          IONIC_MAJOR: ${{ matrix.ionic-major }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v5
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-ionic${{ matrix.ionic-major }}
           path: demo/playwright-report/
           retention-days: 3
 
@@ -51,21 +64,21 @@ jobs:
         uses: actions/upload-artifact@v5
         if: failure()
         with:
-          name: test-results
+          name: test-results-ionic${{ matrix.ionic-major }}
           path: demo/test-results/
           retention-days: 3
 
       - name: Comment PR with test results
         uses: daun/playwright-report-comment@v3
-        if: always()
+        if: always() && matrix.ionic-major == 9
         with:
-          report-file: demo/e2e/screenshot.spec.ts.json
+          report-file: demo/e2e/screenshot.spec.ts-ionic9.json
           job-summary: true
           custom-info: 'Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details. And if you want to update the screenshots, please comment with `/update-screenshots`.'
 
       - name: Upload HTML report artifact
         uses: actions/upload-artifact@v5
-        if: always()
+        if: always() && matrix.ionic-major == 9
         with:
           name: html-report-${{ github.event.pull_request.number }}
           path: demo/playwright-report/
@@ -95,7 +108,7 @@ jobs:
           if [ ! -d "gh-pages" ]; then
             mkdir -p gh-pages
           fi
-          
+
           # PR用のディレクトリを作成（既存の場合は削除して再作成）
           rm -rf gh-pages/pr-${{ github.event.pull_request.number }}
           mkdir -p gh-pages/pr-${{ github.event.pull_request.number }}
@@ -118,7 +131,7 @@ jobs:
           script: |
             const prNumber = context.payload.pull_request.number;
             const reportUrl = `https://${context.repo.owner}.github.io/${context.repo.repo}/pr-${prNumber}/`;
-            
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
