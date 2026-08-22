@@ -2,59 +2,44 @@
 title: Using ion-item-group
 ---
 
-# Using `ion-item-group` with the iOS26 theme
+# Using `ion-item-group` in inset lists
 
-This theme aims to bring Ionic Framework applications as close as possible to iOS 26 design. In most cases, you can use your existing Ionic code as-is, but **only under specific conditions**, you need to add `ion-item-group`.
+Most Ionic markup works without changes. When an `ion-list` uses `inset="true"`, wrap its items in `ion-item-group` and keep `ion-list-header` outside the group.
 
-## When is `ion-item-group` required?
+The examples use framework-neutral Web Component markup. In React or Vue, use the equivalent component and property syntax.
 
-It is only required when the following condition is met:
-
-- You have enabled the `inset` property on `ion-list`
-
-Only when this condition applies, you need to wrap your list items with `ion-item-group`.
-
-## Implementation Example
-
-```diff
-  <ion-list inset=true>
-    <ion-list-header><ion-label>Label</ion-label></ion-list-header>
-+   <ion-item-group>
-      <ion-item>...</ion-item>
-      <ion-item>...</ion-item>
-+   </ion-item-group>
-  </ion-list>
+```html
+<ion-list inset="true">
+  <ion-list-header><ion-label>Connections</ion-label></ion-list-header>
+  <ion-item-group>
+    <ion-item>...</ion-item>
+    <ion-item>...</ion-item>
+  </ion-item-group>
+</ion-list>
 ```
 
-## Why is this change necessary?
+No wrapper is required for lists that do not use `inset="true"`.
 
-### Background: Challenges in iOS Design Reproduction
+## Why the wrapper is required
 
-By default in Ionic Framework, `ion-list` has a background color, and `ion-list-header` is treated as part of the list. However, with this structure, it's impossible to accurately reproduce **iOS's native design patterns**.
+Ionic normally gives `ion-list` its background, which makes `ion-list-header` appear inside the same surface as the items. The iOS 26 layout treats the header and item surface separately.
 
-![ion-list inset background comparison showing why ion-item-group is required](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v2.3.2/screenshots/why-ion-list-inset.png)
+![Inset list background comparison showing why ion-item-group is required](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v3.0.0-1/screenshots/why-ion-list-inset.png)
 
-### Solution: Background Color Separation
+The theme therefore:
 
-To faithfully reproduce iOS design, this theme makes the following changes:
+- makes the inset `ion-list` background transparent;
+- applies the item surface to `ion-item-group`; and
+- leaves `ion-list-header` outside that surface.
 
-- Set `ion-list` background color to transparent
-- Delegate background color to `ion-item-group`
+## Sharing the markup with Material Design
 
-This change allows `ion-list-header` to be treated as an independent element, achieving the native iOS appearance.
+`@rdlabo/ionic-theme-md3` supports the same grouped markup, so one template can be used for both Ionic modes.
 
-## Using the Same Design with Material Design
-
-If you want to use the same design pattern with Material Design theme, import the following CSS:
+When an application uses this package without `@rdlabo/ionic-theme-md3`, import the optional stylesheet to apply the same grouped layout in Material mode:
 
 ```css
 @import '@rdlabo/ionic-theme-ios26/dist/css/md-ion-list-inset.css';
 ```
 
-This will apply the same `ion-item-group` pattern to the Material Design theme as well.
-
-## Summary
-
-- **Most cases**: You can use your existing Ionic code as-is
-- **Specific conditions only**: `ion-item-group` is only required when setting using `inset` on `ion-list`
-- **Purpose**: To accurately reproduce iOS 26's native design patterns
+For two-line items and section-header groups, see [Special markup and classes](./special-markup.md).

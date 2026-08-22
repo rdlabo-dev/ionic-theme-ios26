@@ -4,13 +4,11 @@ title: Experimental animation
 
 # Experimental animation
 
-Optional gesture and animation helpers. The theme works without this feature.
+These gesture and animation helpers are experimental and optional. The theme works without them.
 
-**This feature is experimental. The library can be used without this feature.**
+## Sheet of Glass with `ion-tab-button` / `ion-segment-button`
 
-### Sheet of Glass with `ion-tab-button` / `ion-segment-button`
-
-By registering `ion-tab-bar` / `ion-segment`, you can display animation effects on `ion-tab-button` / `ion-segment-button`
+Register an `ion-tab-bar` or `ion-segment` element to add a moving selection effect to its buttons.
 
 [![Sheet of Glass animation on ion-tab-button and ion-segment-button](https://i.gyazo.com/fafd726b520827f042c76b6c73abd81c.gif)](https://gyazo.com/fafd726b520827f042c76b6c73abd81c)
 
@@ -36,9 +34,9 @@ const destroy = () => {
 };
 ```
 
-### TabBarSearchable: Searchable with `ion-tab-bar` and `ion-fab-button`
+## TabBarSearchable: Searchable with `ion-tab-bar` and `ion-fab-button`
 
-Enable Searchable for the DOM structure with the specified markup inner `ion-tabs`.
+Use the following structure inside `ion-tabs` to animate a search button into a search toolbar.
 
 [![TabBarSearchable animation expanding search from ion-fab-button into the tab bar](https://i.gyazo.com/06bc63f4a474f9f19f5b1d865f5c2a85.gif)](https://gyazo.com/06bc63f4a474f9f19f5b1d865f5c2a85)
 

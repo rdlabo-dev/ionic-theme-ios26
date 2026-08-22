@@ -4,26 +4,14 @@ title: Features
 
 # Features
 
-CSS variables, opt-out class, and the Liquid Glass mixin. See [Using ion-item-group](./using-ion-item-group.md) for list markup.
+Customize the theme with CSS variables and Sass mixins, or adopt it one component at a time. Markup-specific opt-ins are documented in [Special markup and classes](./special-markup.md).
 
-### CSS Variables
+## CSS variables
 
 To customize the library's default styles to match your design, several CSS variables are provided. See this file for details:
-https://github.com/rdlabo-dev/ionic-theme-ios26/blob/v3.0.0/src/styles/default-variables.scss
+https://github.com/rdlabo-dev/ionic-theme-ios26/blob/v3.0.0-1/src/styles/default-variables.scss
 
-### `.ios26-disabled` Class
-
-Add the `.ios26-disabled` class to disable the iOS26 theme on specific components.
-
-```html
-<!-- iOS26 theme applied -->
-<ion-button>iOS26 Design</ion-button>
-
-<!-- Standard Ionic iOS styling -->
-<ion-button class="ios26-disabled">Standard Ionic Design</ion-button>
-```
-
-### Liquid Glass Mixin
+## Liquid Glass mixin
 
 Import the SCSS files from the main package to use the liquid glass mixin.
 
@@ -34,12 +22,6 @@ ion-textarea label.textarea-wrapper {
   @include api.glass-background;
 }
 ```
-
-### Additional Design
-
-To achieve higher fidelity to iOS26 design, you can implement additional design provided by this library. For more details, please visit:
-
-https://ionic-theme-ios26.rdlabo.dev/main/docs
 
 ## Selective component imports
 
@@ -100,3 +82,7 @@ Class:
   @include theme-dark.ion-segment;
 }
 ```
+
+## Interactive examples
+
+[Browse rendered examples in the demo](https://ionic-theme-ios26.rdlabo.dev/main/docs).
