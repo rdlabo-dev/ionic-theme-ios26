@@ -4,7 +4,11 @@ title: Migration
 
 # Migration
 
-## Rename `.header-item-group` to `.item-group-header`
+Use the section for the version you are upgrading to. Each section lists only the changes that require application code or configuration updates.
+
+## Migrating to 3.0.0
+
+### Rename `.header-item-group` to `.item-group-header`
 
 The class for an `ion-item-group` used as a section header has been renamed for consistency with the element it modifies. Replace every occurrence of `.header-item-group` in application templates and styles.
 
@@ -17,64 +21,66 @@ The class for an `ion-item-group` used as a section header has been renamed for 
 
 The old class is no longer styled by the theme. This rename applies to markup shared with `@rdlabo/ionic-theme-md3` as well.
 
-## Selective component imports
+## Migrating to 2.0.0
 
-For gradual migration, you can selectively apply the iOS26 theme by importing individual components instead of the full theme file.
+### Configure `iosTransitionAnimation`
 
-```css
-@import '@rdlabo/ionic-theme-ios26/dist/css/utils/translucent';
-@import '@rdlabo/ionic-theme-ios26/dist/css/components/ion-action-sheet';
-@import '@rdlabo/ionic-theme-ios26/dist/css/components/ion-alert';
-@import '@rdlabo/ionic-theme-ios26/dist/css/components/ion-button';
-...
+Version 2 requires the package navigation transition. It follows Ionic's default iOS transition without the obsolete `animateBackButton()` behavior that animated a Large Title into the back-button label.
+
+```ts
+import { isPlatform } from '@ionic/core'; // or @ionic/angular/standalone, @ionic/react, @ionic/vue
+import { iosTransitionAnimation } from '@rdlabo/ionic-theme-ios26';
+
+// Angular
+provideIonicAngular({
+  // ...
+  navAnimation: isPlatform('ios') ? iosTransitionAnimation : undefined,
+});
+
+// React
+setupIonicReact({
+  // ...
+  navAnimation: isPlatform('ios') ? iosTransitionAnimation : undefined,
+});
+
+// Vue
+createApp(App).use(IonicVue, {
+  // ...
+  navAnimation: isPlatform('ios') ? iosTransitionAnimation : undefined,
+});
 ```
 
-### Dark Mode with Individual Components
+With this transition configured, `<ion-buttons><ion-back-button></ion-back-button></ion-buttons>` can be used without the unwanted transition side effects caused by the old animation.
 
-When importing individual components with dark mode support, use SCSS instead of CSS. This is because the selectors differ between `Always`, `System`, and `Class` modes.
+## Migrating to 1.0.0
 
-> **Note**: Currently, only `ion-button` has separate dark mode styling applied.
+### Update SCSS import paths
 
-Always (Always Dark Mode):
+The source files moved under `src/styles` when JavaScript files were added to the package.
 
-```scss
-@use '@rdlabo/ionic-theme-ios26/src/styles/utils/theme-dark';
-
-:root {
-  @include theme-dark.default-variables;
-}
-@include theme-dark.ion-button;
-@include theme-dark.ion-fab;
-@include theme-dark.ion-tabs;
-@include theme-dark.ion-segment;
+```diff
+- @import '@rdlabo/ionic-theme-ios26/src/default-variables.scss';
++ @import '@rdlabo/ionic-theme-ios26/src/styles/default-variables.scss';
 ```
 
-System (Follow System Settings):
+Generated CSS paths under `dist` did not change.
 
-```scss
-@use '@rdlabo/ionic-theme-ios26/src/styles/utils/theme-dark';
+### Rename `--ios26-color-background-rgb`
 
-@media (prefers-color-scheme: dark) {
+```diff
   :root {
-    @include theme-dark.default-variables;
+-   --ios26-color-background-rgb: 255, 255, 255;
++   --ios26-content-box-shadow-rgb: 255, 255, 255;
   }
-  @include theme-dark.ion-button;
-  @include theme-dark.ion-fab;
-  @include theme-dark.ion-tabs;
-  @include theme-dark.ion-segment;
-}
 ```
 
-Class (Toggle with CSS Class):
+### Rename brightness variables
 
-```scss
-@use '@rdlabo/ionic-theme-ios26/src/styles/utils/theme-dark';
+Replace each `--ion-color-*-brightness-rgb` variable with `--ion-color-*-brightness` and use a color value instead of an RGB channel list.
 
-.ion-palette-dark {
-  @include theme-dark.default-variables;
-  @include theme-dark.ion-button;
-  @include theme-dark.ion-fab;
-  @include theme-dark.ion-tabs;
-  @include theme-dark.ion-segment;
-}
+```diff
+  :root {
+-   --ion-color-primary-brightness-rgb: 130, 255, 255;
++   --ion-color-primary-brightness: #96feff;
+  }
 ```

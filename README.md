@@ -96,16 +96,10 @@ Start with [Installation](#installation), then [Using ion-item-group](./docs/usi
 
 - [Using ion-item-group](./docs/using-ion-item-group.md) — required markup for inset lists.
 - [Special markup and classes](./docs/special-markup.md) — opt-in markup, CSS variables, and utility classes used by the demo.
-- [Features](./docs/features.md) — CSS variables, `.ios26-disabled`, liquid glass.
+- [Features](./docs/features.md) — CSS variables, `.ios26-disabled`, Liquid Glass, selective imports, and dark mode.
 - [Experimental Animation](./docs/experimental-animation.md) — tab bar and searchable effects.
 - [iOS 18](./docs/ios-18.md) — load the theme only on iOS 26.
-- [Migration](./docs/migration.md) — selective component imports and dark mode.
-
-<!-- rdlabo-docs-omit -->
-
-- [Breaking changes](./docs/breaking.md) — changes required when upgrading major versions.
-
-<!-- /rdlabo-docs-omit -->
+- [Migration](./docs/migration.md) — required changes when upgrading major versions.
 
 <!-- rdlabo-docs-omit -->
 
