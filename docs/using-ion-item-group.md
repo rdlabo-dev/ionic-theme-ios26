@@ -20,6 +20,10 @@ The examples use framework-neutral Web Component markup. In React or Vue, use th
 
 No wrapper is required for lists that do not use `inset="true"`.
 
+## Checking Angular templates
+
+In Ionic Angular applications, the [`@rdlabo/rules/require-ion-item-group`](https://docs.rdlabo.dev/projects/eslint-plugin-rules/docs/rules/require-ion-item-group) ESLint rule checks that each `ion-item` in an `ion-list` is wrapped by the group component that matches its behavior. The rule is included in the recommended preset and can automatically fix some violations.
+
 ## Why the wrapper is required
 
 Ionic normally gives `ion-list` its background, which makes `ion-list-header` appear inside the same surface as the items. The iOS 26 layout treats the header and item surface separately.
