@@ -9,7 +9,7 @@ Customize the theme with CSS variables and Sass mixins, or adopt it one componen
 ## CSS variables
 
 To customize the library's default styles to match your design, several CSS variables are provided. See this file for details:
-https://github.com/rdlabo-dev/ionic-theme-ios26/blob/v3.0.0-1/src/styles/default-variables.scss
+https://github.com/rdlabo-dev/ionic-theme-ios26/blob/v3.0.0/src/styles/default-variables.scss
 
 ## Liquid Glass mixin
 
