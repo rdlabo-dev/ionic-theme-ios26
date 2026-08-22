@@ -58,7 +58,63 @@ And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
  */
 ```
 
-Next, configure the animations for iOS 26. Add the following to your Ionic configuration options.
+### Optional: use the iOS 26 and MD3 themes together
+
+Install the MD3 theme to style both Ionic modes from the same application.
+
+The current releases of both themes require `@ionic/core` 8.8.1 or later.
+
+```bash
+npm install @rdlabo/ionic-theme-md3
+```
+
+When your global stylesheet uses Sass, initialize the themes in this order:
+
+```scss
+@use '@rdlabo/ionic-theme-ios26/src/styles/default-variables.scss' as ios26-vars;
+@use '@rdlabo/ionic-theme-ios26/src/styles/ionic-theme-ios26.scss';
+@use '@rdlabo/ionic-theme-ios26/src/styles/ionic-theme-ios26-dark-class.scss';
+@use '@rdlabo/ionic-theme-ios26/src/styles/md-remove-ios-class-effect.scss';
+@use '@rdlabo/ionic-theme-md3/dist/css/default-variables.css' as md3-vars;
+@use '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
+```
+
+The example uses Ionic's class-based dark mode. Your global stylesheet must also load Ionic's matching dark palette, such as `@ionic/angular/css/palettes/dark.class.css` for Angular. When using `dark-system` or `dark-always`, select the same variant for both Ionic's palette and the iOS 26 theme. See Ionic's [Dark Mode documentation](https://ionicframework.com/docs/theming/dark-mode). The explicit `ios26-vars` and `md3-vars` namespaces prevent the two variable modules from using the same default namespace.
+
+Configure both transition implementations when both themes are installed:
+
+```ts
+import { isPlatform } from '@ionic/core'; // or @ionic/angular/standalone, @ionic/react, @ionic/vue
+import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios26';
+import { mdTransitionAnimation } from '@rdlabo/ionic-theme-md3';
+
+// Angular
+provideIonicAngular({
+    ...
+    navAnimation: isPlatform('ios') ? iosTransitionAnimation : mdTransitionAnimation,
+    popoverEnter: isPlatform('ios') ? popoverEnterAnimation : undefined,
+    popoverLeave: isPlatform('ios') ? popoverLeaveAnimation : undefined,
+});
+
+// React
+setupIonicReact({
+    ...
+    navAnimation: isPlatform('ios') ? iosTransitionAnimation : mdTransitionAnimation,
+    popoverEnter: isPlatform('ios') ? popoverEnterAnimation : undefined,
+    popoverLeave: isPlatform('ios') ? popoverLeaveAnimation : undefined,
+});
+
+// Vue
+createApp(App)
+    .use(IonicVue, {
+        ...
+        navAnimation: isPlatform('ios') ? iosTransitionAnimation : mdTransitionAnimation,
+        popoverEnter: isPlatform('ios') ? popoverEnterAnimation : undefined,
+        popoverLeave: isPlatform('ios') ? popoverLeaveAnimation : undefined,
+    });
+```
+
+If you installed only the iOS 26 theme, configure its animations as follows.
 
 ```ts
 import { isPlatform } from '@ionic/core'; // or @ionic/angular/standalone, @ionic/react, @ionic/vue
