@@ -5,9 +5,13 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
+    "docs:generate": "node scripts/generate-docs.mjs",
+    "prestart": "npm run docs:generate",
     "start": "ng serve",
+    "prebuild": "npm run docs:generate",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "pretest": "npm run docs:generate",
     "test": "ng test",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
@@ -56,6 +60,8 @@
     "eslint-plugin-jsdoc": "^48.2.1",
     "eslint-plugin-prefer-arrow": "1.2.2",
     "jsdom": "^26.0.0",
+    "marked": "^16.4.2",
+    "shiki": "^3.23.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.61.1",
     "vitest": "^4.0.0"
