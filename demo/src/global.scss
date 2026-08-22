@@ -78,6 +78,110 @@ code {
   font-family: Menlo, Consolas, monospace;
 }
 
+.docs-content {
+  line-height: 1.7;
+
+  h1,
+  h2 {
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
+  }
+
+  h1 {
+    margin: 0 0 24px;
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    margin: 40px 0 16px;
+    font-size: 1.4rem;
+  }
+
+  p {
+    margin: 16px 0;
+  }
+
+  a {
+    color: var(--ion-color-primary);
+  }
+
+  :not(pre) > code {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--ion-color-step-100, #f1f3f5);
+    font-size: 0.85em;
+  }
+
+  .code-block-container {
+    margin: 16px 0;
+    overflow-x: auto;
+    border-radius: 8px;
+
+    pre.shiki {
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+
+      code {
+        display: block;
+        padding: 16px;
+        overflow-x: auto;
+        background: transparent;
+        font-size: 0.85rem;
+        white-space: pre;
+      }
+    }
+  }
+}
+
+.docs-content .docs-example {
+  margin: 16px 0 32px;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid var(--ion-color-step-150, #d7d8da);
+  border-radius: 16px;
+  background: var(--ion-background-color, #fff);
+
+  figcaption {
+    margin-bottom: 12px;
+    color: var(--ion-color-medium, #92949c);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  ion-toolbar {
+    margin: 0;
+  }
+
+  > .ion-page {
+    position: relative;
+    height: 420px;
+    overflow: hidden;
+    border-radius: 12px;
+    contain: layout paint;
+
+    > ion-content {
+      --padding-start: 0 !important;
+      --padding-end: 0 !important;
+    }
+
+    > ion-header,
+    > ion-content > ion-header {
+      ion-toolbar {
+        --padding-start: 4px !important;
+        --padding-end: 4px !important;
+
+        ion-title.title-default {
+          padding-right: 90px !important;
+          padding-left: 90px !important;
+        }
+      }
+    }
+  }
+}
+
 ion-content {
   --ios26-content-box-shadow-rgb: var(--ion-color-base-rgb, var(--ion-background-color-rgb, 255, 255, 255));
 }

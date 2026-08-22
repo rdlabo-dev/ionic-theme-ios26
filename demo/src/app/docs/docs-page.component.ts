@@ -1,51 +1,14 @@
-import { Component, inject } from '@angular/core';
-
-import { FormsModule } from '@angular/forms';
-import {
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonItemGroup,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonNote,
-  IonSearchbar,
-  IonSegment,
-  IonSegmentButton,
-  IonTitle,
-  IonToolbar,
-  Platform,
-} from '@demo/ionic';
+import { Component } from '@angular/core';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@demo/ionic';
+import { docsContentHtml } from './docs-content.generated';
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 @Component({
   selector: 'app-docs-page',
   templateUrl: './docs-page.component.html',
   styleUrls: ['./docs-page.component.scss'],
-  imports: [
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    FormsModule,
-    IonIcon,
-    IonButton,
-    IonButtons,
-    IonList,
-    IonItem,
-    IonSegment,
-    IonLabel,
-    IonSegmentButton,
-    IonListHeader,
-    IonLabel,
-    IonNote,
-    IonItemGroup,
-    IonSearchbar,
-  ],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButton, IonButtons, SafeHtmlPipe],
 })
 export class DocsPage {
-  readonly platform = inject(Platform);
+  readonly docsContentHtml = docsContentHtml;
 }

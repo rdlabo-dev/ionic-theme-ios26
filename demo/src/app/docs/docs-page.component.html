@@ -2,94 +2,12 @@
   <ion-toolbar>
     <ion-title>Docs</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="default" href="https://github.com/rdlabo-dev/ionic-theme-ios26"
-        ><ion-icon name="logo-github" slot="icon-only"></ion-icon
-      ></ion-button>
+      <ion-button fill="default" href="https://github.com/rdlabo-dev/ionic-theme-ios26">
+        <ion-icon name="logo-github" slot="icon-only"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <section class="ion-padding-start ion-padding-end ion-padding-bottom">
-    <p>This is a demo of the iOS26 theme for Ionic Framework. Just import the CSS and start using it immediately.</p>
-    <code class="code-block">% npm install &#64;rdlabo/ionic-theme-ios26 --save</code>
-    <p>For detailed usage instructions, please refer to the README in the GitHub repository.</p>
-  </section>
-
-  <ion-list [inset]="true">
-    <ion-list-header><ion-label>Special Coding</ion-label><ion-note>Mode more iOS26</ion-note></ion-list-header>
-    <ion-item-group class="ion-margin-bottom">
-      <ion-item>
-        <div>
-          <h3><code>ion-button[fill=solid][type=submit]</code></h3>
-          <p>
-            Set color-brightness as a CSS variable. If using a `primary` button, the following is required. Please set your own color code.
-          </p>
-          <code class="code-block">--ion-color-primary-brightness: #96FEFF;</code>
-          <p style="display: flex; align-items: center">
-            <ion-button type="submit" color="primary" size="default">Submit</ion-button>
-            <ion-button type="submit" color="primary" size="default"
-              ><ion-icon name="checkmark-outline" slot="icon-only"></ion-icon
-            ></ion-button>
-          </p>
-        </div>
-      </ion-item>
-    </ion-item-group>
-
-    <ion-item-group>
-      <ion-item>
-        <div class="ion-padding-bottom">
-          <h3><code>ion-list[inset] ion-label + ion-note</code></h3>
-          <p>
-            When an inset list item contains an <code>ion-label</code> and an <code>ion-note</code> without slots, they are displayed
-            vertically as a two-line item.
-          </p>
-          <code class="code-block">
-            &lt;ion-list [inset]="true"&gt;<br />
-            &nbsp;&nbsp;&lt;ion-item&gt;<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&lt;ion-label&gt;Network &amp; internet&lt;/ion-label&gt;<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&lt;ion-note&gt;Mobile, Wi-Fi, hotspot&lt;/ion-note&gt;<br />
-            &nbsp;&nbsp;&lt;/ion-item&gt;<br />
-            &lt;/ion-list&gt;
-          </code>
-          <ion-list [inset]="true">
-            <ion-item color="light">
-              <ion-label>Network & internet</ion-label>
-              <ion-note>Mobile, Wi-Fi, hotspot</ion-note>
-            </ion-item>
-          </ion-list>
-        </div>
-      </ion-item>
-    </ion-item-group>
-
-    <ion-item-group>
-      <ion-item>
-        <div class="ion-padding-bottom">
-          <h3><code>ion-segment.segment-expand</code></h3>
-          <p>To make segments span the full width, you need to apply a special class.</p>
-          <code class="code-block ion-margin-bottom">&lt;ion-segment class="segment-expand"&gt;&lt;/ion-segment&gt;</code>
-          <ion-segment value="default" class="segment-expand">
-            <ion-segment-button value="default">
-              <ion-label>New</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="segment">
-              <ion-label>Replied</ion-label>
-            </ion-segment-button>
-          </ion-segment>
-        </div>
-      </ion-item>
-    </ion-item-group>
-
-    <ion-item-group>
-      <ion-item>
-        <div class="ion-padding-bottom">
-          <h3><code>ion-searchbar.searchbar-classic</code></h3>
-          <p>iOS26's searchbar classic style.</p>
-          <code class="code-block ion-margin-bottom">&lt;ion-searchbar class="searchbar-classic"&gt;&lt;/ion-searchbar&gt;</code>
-          <ion-toolbar>
-            <ion-searchbar class="searchbar-classic"></ion-searchbar>
-          </ion-toolbar>
-        </div>
-      </ion-item>
-    </ion-item-group>
-  </ion-list>
+  <article class="docs-content" [innerHTML]="docsContentHtml | safeHtml"></article>
 </ion-content>
