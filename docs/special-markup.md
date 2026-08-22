@@ -47,6 +47,8 @@ Use `slot="end"` on `ion-note` when you want the standard trailing-note layout i
 
 Add `.item-group-header` to an `ion-item-group` to create the centered icon, title, and description used at the top of the component demo pages.
 
+This is an introductory group. Place regular list items in a separate `ion-item-group` that follows it.
+
 ```html preview
 <ion-list inset="true">
   <ion-item-group class="item-group-header">
@@ -57,6 +59,9 @@ Add `.item-group-header` to an `ion-item-group` to create the centered icon, tit
         <ion-text>Inset-list examples</ion-text>
       </ion-label>
     </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item><ion-label>First item</ion-label></ion-item>
   </ion-item-group>
 </ion-list>
 ```
@@ -134,8 +139,7 @@ Add `.toolbar-searchbar` when an `ion-toolbar` combines a search bar with start 
 Add `.ios26-disabled` to an individual Ionic component when it must retain Ionic's standard iOS styling.
 
 ```html preview
-<ion-button>iOS 26 theme</ion-button>
-<ion-button class="ios26-disabled">Standard Ionic button</ion-button>
+<ion-button>iOS 26 theme</ion-button> <ion-button class="ios26-disabled">Standard Ionic button</ion-button>
 ```
 
-For the background model behind inset lists, see [Using `ion-item-group`](https://github.com/rdlabo-dev/ionic-theme-ios26/blob/main/docs/using-ion-item-group.md).
+For the background model behind inset lists, see [Using `ion-item-group`](./using-ion-item-group.md).

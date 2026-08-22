@@ -2,7 +2,7 @@
 
 A CSS/JS theme library that applies iOS26 design system to Ionic applications.
 
-![iOS 26 themed Ionic screens with Liquid Glass tab bar, lists, and controls](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v2.3.2/screenshots/ios26.png)
+![iOS 26 themed Ionic screens with Liquid Glass tab bar, lists, and controls](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v3.0.0-1/screenshots/ios26.png)
 
 DEMO is here: https://ionic-theme-ios26.rdlabo.dev/
 
@@ -38,14 +38,14 @@ And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
  * This file is to eliminate the impact of class name changes for iOS26.
  * For example, `ion-buttons ion-button[fill=default]` is not normally implemented, but may be required for iOS26.
  * This file is to eliminate such effects.
- * Note: This is not include `@rdlabo/ionic-theme-md3`
+ * Note: This stylesheet is not included in `@rdlabo/ionic-theme-md3`.
  */
 @import '@rdlabo/ionic-theme-ios26/dist/css/md-remove-ios-class-effect.css';
 
 /**
  * If you will use the design of ion-item-group with ion-list on Android as well, import it.
  * More info: ./docs/using-ion-item-group.md
- * Note: This is include `@rdlabo/ionic-theme-md3`
+ * Note: This stylesheet is included in `@rdlabo/ionic-theme-md3`.
  * @import '@rdlabo/ionic-theme-ios26/dist/css/md-ion-list-inset.css';
  */
 
@@ -95,8 +95,8 @@ createApp(App)
 Start with [Installation](#installation), then [Using ion-item-group](./docs/using-ion-item-group.md) when you use inset lists.
 
 - [Using ion-item-group](./docs/using-ion-item-group.md) — required markup for inset lists.
-- [Special markup and classes](./docs/special-markup.md) — opt-in markup, CSS variables, and utility classes used by the demo.
-- [Features](./docs/features.md) — CSS variables, `.ios26-disabled`, Liquid Glass, selective imports, and dark mode.
+- [Special markup and classes](./docs/special-markup.md) — opt-in markup and utility classes used by the theme.
+- [Features](./docs/features.md) — CSS variables, Liquid Glass, selective imports, and dark mode.
 - [Experimental Animation](./docs/experimental-animation.md) — tab bar and searchable effects.
 - [iOS 18](./docs/ios-18.md) — load the theme only on iOS 26.
 - [Migration](./docs/migration.md) — required changes when upgrading major versions.
