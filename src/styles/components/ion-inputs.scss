@@ -1,6 +1,6 @@
 @mixin outline-field($control) {
   --placeholder-opacity: 1;
-  --padding-top: 16px;
+  --padding-top: 8px;
 
   .#{$control}-control,
   .#{$control}-wrapper {
