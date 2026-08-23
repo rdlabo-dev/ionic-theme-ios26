@@ -41,15 +41,15 @@ describe('InputsPage', () => {
     const outlinedInputs = element.querySelectorAll('ion-input[fill="outline"]');
     const outlinedTextareas = element.querySelectorAll('ion-textarea[fill="outline"]');
 
-    expect(outlinedInputs).toHaveLength(3);
-    expect(outlinedInputs[1].getAttribute('helpertext')).toBe('This is helper text');
-    expect(outlinedInputs[2].getAttribute('errortext')).toBe('This is error text');
-    expect(outlinedInputs[2].classList.contains('ion-invalid')).toBe(true);
-    expect(outlinedInputs[2].classList.contains('ion-touched')).toBe(true);
-    expect(outlinedTextareas).toHaveLength(3);
-    expect(outlinedTextareas[1].getAttribute('helpertext')).toBe('This is helper text');
-    expect(outlinedTextareas[2].getAttribute('errortext')).toBe('This is error text');
-    expect(outlinedTextareas[2].classList.contains('ion-invalid')).toBe(true);
-    expect(outlinedTextareas[2].classList.contains('ion-touched')).toBe(true);
+    expect(outlinedInputs).toHaveLength(4);
+    expect(outlinedInputs[2].getAttribute('helpertext')).toBe('This is helper text');
+    expect(outlinedInputs[3].getAttribute('errortext')).toBe('This is error text');
+    expect(outlinedInputs[3].classList.contains('ion-invalid')).toBe(true);
+    expect(outlinedInputs[3].classList.contains('ion-touched')).toBe(true);
+    expect(outlinedTextareas).toHaveLength(4);
+    expect(outlinedTextareas[2].getAttribute('helpertext')).toBe('This is helper text');
+    expect(outlinedTextareas[3].getAttribute('errortext')).toBe('This is error text');
+    expect(outlinedTextareas[3].classList.contains('ion-invalid')).toBe(true);
+    expect(outlinedTextareas[3].classList.contains('ion-touched')).toBe(true);
   });
 });
