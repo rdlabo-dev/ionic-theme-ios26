@@ -46,7 +46,7 @@
   "bugs": {
     "url": "https://github.com/rdlabo-dev/ionic-theme-ios26/issues"
   },
-  "homepage": "https://github.com/rdlabo-dev/ionic-theme-ios26#readme",
+  "homepage": "https://docs.rdlabo.dev/projects/ionic-theme-ios26",
   "devDependencies": {
     "@ionic/angular": "^9.0.0",
     "husky": "^9.1.7",
