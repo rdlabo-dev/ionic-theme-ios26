@@ -201,3 +201,9 @@ npm run test:e2e:update
 ```
 
 <!-- /rdlabo-docs-omit -->
+
+<!-- rdlabo-docs-omit -->
+## Maintainers
+
+- [rdlabo](https://rdlabo.dev/)
+<!-- /rdlabo-docs-omit -->
