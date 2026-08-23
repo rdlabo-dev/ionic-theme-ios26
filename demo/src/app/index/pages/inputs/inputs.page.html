@@ -41,6 +41,14 @@
       </ion-item>
 
       <ion-item>
+        <ion-input label="Helper text" placeholder="Enter text" helperText="This is helper text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input class="ion-invalid ion-touched" label="Error text" placeholder="Enter text" errorText="This is error text"></ion-input>
+      </ion-item>
+
+      <ion-item>
         <ion-input type="password" label="Password" value="NeverGonnaGiveYouUp">
           <ion-input-password-toggle slot="end"></ion-input-password-toggle>
         </ion-input>
@@ -61,6 +69,57 @@
       </ion-item>
       <ion-item>
         <ion-textarea label="Floating label" labelPlacement="floating" placeholder="Enter textarea"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-textarea label="Helper text" placeholder="Enter textarea" helperText="This is helper text"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-textarea
+          class="ion-invalid ion-touched"
+          label="Error text"
+          placeholder="Enter textarea"
+          errorText="This is error text"
+        ></ion-textarea>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+
+  <ion-list [inset]="true">
+    <ion-item-group>
+      <ion-item>
+        <ion-input fill="outline" label="Outline input" placeholder="Enter text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input fill="outline" label="Outline helper text" placeholder="Enter text" helperText="This is helper text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          class="ion-invalid ion-touched"
+          fill="outline"
+          label="Outline error text"
+          placeholder="Enter text"
+          errorText="This is error text"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-textarea fill="outline" label="Outline textarea" placeholder="Enter textarea"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-textarea
+          fill="outline"
+          label="Outline helper text"
+          placeholder="Enter textarea"
+          helperText="This is helper text"
+        ></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-textarea
+          class="ion-invalid ion-touched"
+          fill="outline"
+          label="Outline error text"
+          placeholder="Enter textarea"
+          errorText="This is error text"
+        ></ion-textarea>
       </ion-item>
     </ion-item-group>
   </ion-list>

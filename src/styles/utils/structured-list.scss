@@ -63,6 +63,11 @@
     }
 
     ion-item {
+      &:has(ion-input.input-fill-outline),
+      &:has(ion-textarea.textarea-fill-outline) {
+        --inner-border-width: 0;
+        --inner-padding-bottom: 4px;
+      }
       &:has(> ion-label:not([slot])):has(> ion-note:not([slot])) {
         &::part(container) {
           flex-direction: column;
