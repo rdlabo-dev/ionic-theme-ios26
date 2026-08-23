@@ -64,7 +64,9 @@
 
     ion-item {
       &:has(ion-input.input-fill-outline),
-      &:has(ion-textarea.textarea-fill-outline) {
+      &:has(ion-input .input-bottom),
+      &:has(ion-textarea.textarea-fill-outline),
+      &:has(ion-textarea .textarea-bottom) {
         --inner-border-width: 0;
         --inner-padding-bottom: 4px;
       }
