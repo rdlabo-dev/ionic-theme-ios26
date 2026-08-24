@@ -71,6 +71,12 @@ html.ionic-v8 {
     &:is(.textarea-label-placement-stacked, .textarea-label-placement-floating) {
       block-size: 68px;
     }
+
+    &.textarea-fill-outline .textarea-wrapper {
+      block-size: 124px;
+      box-sizing: border-box;
+      padding-top: 12px;
+    }
   }
 }
 
