@@ -4,7 +4,15 @@ title: Migration
 
 # Migration
 
-Use the section for the version you are upgrading to. Each section lists only the changes that require application code or configuration updates.
+Review every section newer than the version currently installed, in ascending order. For example, when upgrading from 1.x to 9.0.0, complete the 2.0.0 and 3.0.0 migration steps before reviewing 9.0.0.
+
+Each section lists only the changes that require application code or configuration updates.
+
+## Migrating to 9.0.0
+
+Version 9 aligns the theme's major version with Ionic Framework 9. It does not introduce additional breaking changes beyond those documented in the earlier migration sections.
+
+Both Ionic 8 and Ionic 9 remain supported. Version 9 requires `@ionic/core >=8.8.1 <10`.
 
 ## Migrating to 3.0.0
 
