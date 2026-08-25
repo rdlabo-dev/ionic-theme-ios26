@@ -1,4 +1,4 @@
-@mixin layout($outer-note-inset) {
+@mixin layout($outer-note-inset, $group-border-radius) {
   background: transparent;
 
   ion-list-header {
@@ -58,6 +58,32 @@
   $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group;
 
   :is(#{$groups}):not(:is(#{$groups}) :is(#{$groups})) {
+    border-radius: $group-border-radius;
+    overflow: hidden;
+
+    &:has(> .radio-group-top) {
+      display: flex;
+      flex-direction: column;
+      border-radius: 0;
+      overflow: visible;
+
+      > .radio-group-top {
+        order: 1;
+        font-size: 0.9rem;
+        padding-block-start: 8px;
+        padding-inline-start: calc(var(--ion-safe-area-left, 0) + 20px);
+        padding-inline-end: calc(var(--ion-safe-area-right, 0) + 20px);
+      }
+
+      > ion-item:first-of-type {
+        --border-radius: #{$group-border-radius} #{$group-border-radius} 0 0;
+      }
+
+      > ion-item:last-of-type {
+        --border-radius: 0 0 #{$group-border-radius} #{$group-border-radius};
+      }
+    }
+
     &:not(:first-of-type) {
       margin-top: 16px;
     }
@@ -65,11 +91,13 @@
     ion-item {
       &:has(ion-input.input-fill-outline),
       &:has(ion-textarea.textarea-fill-outline),
+      &:has(ion-select:is([helpertext]:not([helpertext='']), [errortext]:not([errortext='']))),
       &:has(ion-input .input-bottom > :is(.helper-text:not(:empty), .error-text:not(:empty))),
       &:has(ion-textarea .textarea-bottom > :is(.helper-text:not(:empty), .error-text:not(:empty))) {
         --inner-border-width: 0;
         --inner-padding-bottom: 4px;
       }
+      ion-select .select-bottom:not(:has(> :is(.helper-text:not(:empty), .error-text:not(:empty)))),
       ion-input .input-bottom:not(:has(> :is(.helper-text:not(:empty), .error-text:not(:empty)))),
       ion-textarea .textarea-bottom:not(:has(> :is(.helper-text:not(:empty), .error-text:not(:empty)))) {
         display: none;
