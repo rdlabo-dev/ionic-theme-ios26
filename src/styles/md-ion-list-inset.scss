@@ -1,7 +1,7 @@
 @use 'utils/structured-list';
 
 ion-list.list-inset.md {
-  @include structured-list.layout(8px);
+  @include structured-list.layout(8px, 16px);
 
   ion-item-group > ion-item {
     & > ion-input[labelplacement='floating'] {

@@ -8,7 +8,7 @@ ion-list.ios:not(.ios26-disabled) {
 }
 
 ion-list.list-inset.ios:not(.ios26-disabled) {
-  @include structured-list.layout(20px);
+  @include structured-list.layout(20px, 24px);
 
   ion-radio-group,
   ion-reorder-group {
@@ -18,9 +18,6 @@ ion-list.list-inset.ios:not(.ios26-disabled) {
   $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group;
 
   :is(#{$groups}):not(:is(#{$groups}) :is(#{$groups})) {
-    border-radius: 24px;
-    overflow: hidden;
-
     ion-item {
       // To draw lines inside
       --inner-padding-end: 0;

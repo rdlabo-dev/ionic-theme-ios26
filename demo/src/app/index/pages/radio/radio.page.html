@@ -38,4 +38,18 @@
       </ion-item>
     </ion-radio-group>
   </ion-list>
+
+  <ion-list [inset]="true">
+    <ion-radio-group helperText="Choose the option that suits you best">
+      <ion-item><ion-radio value="helper-a">Helper option A</ion-radio></ion-item>
+      <ion-item><ion-radio value="helper-b">Helper option B</ion-radio></ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-list [inset]="true">
+    <ion-radio-group class="ion-invalid ion-touched" errorText="Select one option">
+      <ion-item><ion-radio value="error-a">Error option A</ion-radio></ion-item>
+      <ion-item><ion-radio value="error-b">Error option B</ion-radio></ion-item>
+    </ion-radio-group>
+  </ion-list>
 </ion-content>
