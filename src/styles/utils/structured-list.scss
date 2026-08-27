@@ -4,6 +4,7 @@ $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group
   ion-item {
     &:has(ion-input.input-fill-outline),
     &:has(ion-textarea.textarea-fill-outline),
+    &:has(ion-select:is([helpertext]:not([helpertext='']), [errortext]:not([errortext='']))),
     &:has(ion-input .input-bottom > :is(.helper-text:not(:empty), .error-text:not(:empty))),
     &:has(ion-textarea .textarea-bottom > :is(.helper-text:not(:empty), .error-text:not(:empty))) {
       --inner-border-width: 0;
