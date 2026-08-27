@@ -5,7 +5,7 @@ ion-list.md {
 
   &.list-inset {
     @include structured-list.layout(8px, 16px);
-    ion-item-group > ion-item {
+    ion-item-group ion-item {
       & > ion-input[labelplacement='floating'] {
         transition: transform 200ms ease;
 
