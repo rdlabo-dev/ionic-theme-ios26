@@ -1,18 +1,21 @@
 @use 'utils/structured-list';
 
-ion-list.list-inset.md {
-  @include structured-list.layout(8px, 16px);
+ion-list.md {
+  @include structured-list.support-text;
 
-  ion-item-group > ion-item {
-    & > ion-input[labelplacement='floating'] {
-      transition: transform 200ms ease;
+  &.list-inset {
+    @include structured-list.layout(8px, 16px);
+    ion-item-group > ion-item {
+      & > ion-input[labelplacement='floating'] {
+        transition: transform 200ms ease;
 
-      &:not(.label-floating) {
-        transform: translateY(-7px);
-      }
+        &:not(.label-floating) {
+          transform: translateY(-7px);
+        }
 
-      &.label-floating {
-        transform: translateY(-4px);
+        &.label-floating {
+          transform: translateY(-4px);
+        }
       }
     }
   }
