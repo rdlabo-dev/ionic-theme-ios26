@@ -77,6 +77,7 @@ $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group
   }
 
   :is(#{$groups}):not(:is(#{$groups}) :is(#{$groups})) {
+    display: block;
     border-radius: $group-border-radius;
     overflow: hidden;
 
