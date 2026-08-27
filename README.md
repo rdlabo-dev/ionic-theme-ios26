@@ -150,14 +150,14 @@ createApp(App)
 
 ## Documentation
 
-Start with [Installation](#installation), then [Using ion-item-group](./docs/using-ion-item-group.md) when you use inset lists.
+Start with [Installation](#installation), then [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group) when you use inset lists.
 
-- [Using ion-item-group](./docs/using-ion-item-group.md) — required markup for inset lists.
-- [Special markup and classes](./docs/special-markup.md) — opt-in markup and utility classes used by the theme.
-- [Features](./docs/features.md) — CSS variables, Liquid Glass, selective imports, and dark mode.
-- [Experimental Animation](./docs/experimental-animation.md) — tab bar and searchable effects.
-- [iOS 18](./docs/ios-18.md) — load the theme only on iOS 26.
-- [Migration](./docs/migration.md) — required changes when upgrading major versions.
+- [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group) — required markup for inset lists.
+- [Special markup and classes](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/special-markup) — opt-in markup and utility classes used by the theme.
+- [Features](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/features) — CSS variables, Liquid Glass, selective imports, and dark mode.
+- [Experimental Animation](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/experimental-animation) — tab bar and searchable effects.
+- [iOS 18](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/ios-18) — load the theme only on iOS 26.
+- [Migration](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/migration) — required changes when upgrading major versions.
 
 <!-- rdlabo-docs-omit -->
 
