@@ -4,14 +4,12 @@ $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group
   ion-item {
     &:has(ion-input.input-fill-outline),
     &:has(ion-textarea.textarea-fill-outline),
-    &:has(ion-select:is([helpertext]:not([helpertext='']), [errortext]:not([errortext='']))),
     &:has(ion-input .input-bottom > :is(.helper-text:not(:empty), .error-text:not(:empty))),
     &:has(ion-textarea .textarea-bottom > :is(.helper-text:not(:empty), .error-text:not(:empty))) {
       --inner-border-width: 0;
       --inner-padding-bottom: 4px;
     }
 
-    ion-select .select-bottom:not(:has(> :is(.helper-text:not(:empty), .error-text:not(:empty)))),
     ion-input .input-bottom:not(:has(> :is(.helper-text:not(:empty), .error-text:not(:empty)))),
     ion-textarea .textarea-bottom:not(:has(> :is(.helper-text:not(:empty), .error-text:not(:empty)))) {
       display: none;
