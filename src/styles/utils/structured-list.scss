@@ -1,3 +1,5 @@
+$groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group;
+
 @mixin support-text() {
   ion-item {
     &:has(ion-input.input-fill-outline),
@@ -74,8 +76,6 @@
     }
   }
 
-  $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group;
-
   :is(#{$groups}):not(:is(#{$groups}) :is(#{$groups})) {
     border-radius: $group-border-radius;
     overflow: hidden;
@@ -90,8 +90,8 @@
         order: 1;
         font-size: 0.9rem;
         padding-block-start: 8px;
-        padding-inline-start: calc(var(--ion-safe-area-left, 0) + 20px);
-        padding-inline-end: calc(var(--ion-safe-area-right, 0) + 20px);
+        padding-inline-start: calc(var(--ion-safe-area-left, 0) + #{$outer-note-inset});
+        padding-inline-end: calc(var(--ion-safe-area-right, 0) + #{$outer-note-inset});
       }
 
       > ion-item:first-of-type {
