@@ -1,6 +1,7 @@
 @use '../utils/structured-list';
 
 ion-list.ios:not(.ios26-disabled) {
+  @include structured-list.support-text;
   ion-item {
     --background-hover-opacity: 0;
     --background-focused-opacity: 0;
