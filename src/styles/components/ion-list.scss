@@ -16,6 +16,11 @@ ion-list.list-inset.ios:not(.ios26-disabled) {
     display: block;
   }
 
+  ion-radio-group > .radio-group-top {
+    padding-inline-start: calc(var(--ion-safe-area-left, 0) + 20px);
+    padding-inline-end: calc(var(--ion-safe-area-right, 0) + 20px);
+  }
+
   :is(#{structured-list.$groups}):not(:is(#{structured-list.$groups}) :is(#{structured-list.$groups})) {
     ion-item {
       // To draw lines inside

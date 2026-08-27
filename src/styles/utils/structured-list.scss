@@ -89,8 +89,6 @@ $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group
         order: 1;
         font-size: 0.9rem;
         padding-block-start: 8px;
-        padding-inline-start: calc(var(--ion-safe-area-left, 0) + #{$outer-note-inset});
-        padding-inline-end: calc(var(--ion-safe-area-right, 0) + #{$outer-note-inset});
       }
 
       > ion-item:first-of-type {
