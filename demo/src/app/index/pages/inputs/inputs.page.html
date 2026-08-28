@@ -45,6 +45,10 @@
       </ion-item>
 
       <ion-item>
+        <ion-input label="Counter" placeholder="Enter text" [counter]="true" [maxlength]="20"></ion-input>
+      </ion-item>
+
+      <ion-item>
         <ion-input class="ion-invalid ion-touched" label="Error text" placeholder="Enter text" errorText="This is error text"></ion-input>
       </ion-item>
 
@@ -72,6 +76,15 @@
       </ion-item>
       <ion-item>
         <ion-textarea label="Helper text" placeholder="Enter textarea" helperText="This is helper text"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-textarea
+          label="Counter formatter"
+          placeholder="Enter textarea"
+          [counter]="true"
+          [counterFormatter]="counterFormatter"
+          [maxlength]="100"
+        ></ion-textarea>
       </ion-item>
       <ion-item>
         <ion-textarea
