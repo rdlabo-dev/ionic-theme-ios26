@@ -205,6 +205,8 @@ jobs:
     needs: build-pr-beta
     if: needs.build-pr-beta.outputs.allowed == 'true'
     runs-on: ubuntu-latest
+    env:
+      NPM_CONFIG_TAG: beta
     permissions:
       contents: read
       id-token: write
@@ -231,6 +233,13 @@ jobs:
         run: |
           PACKAGE_NAME="${{ needs.build-pr-beta.outputs.package }}"
           VERSION="${{ needs.build-pr-beta.outputs.version }}"
+          case "$VERSION" in
+            *-beta.pr*) ;;
+            *)
+              echo "::error::Refusing to publish non-PR-beta version: $VERSION"
+              exit 1
+              ;;
+          esac
           if npm view "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
             echo "${PACKAGE_NAME}@${VERSION} already exists; skipping publish."
           else
