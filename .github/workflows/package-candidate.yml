@@ -1,0 +1,67 @@
+name: Package Candidate
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: package-candidate-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  pack:
+    if: github.event_name == 'push' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set immutable candidate version
+        id: candidate
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            VERSION="${BASE_VERSION}-beta.pr${PR_NUMBER}.sha${HEAD_SHA:0:12}"
+          else
+            VERSION="${BASE_VERSION}-next.sha${HEAD_SHA:0:12}"
+          fi
+          npm version "$VERSION" --no-git-tag-version --ignore-scripts
+          echo "artifact=npm-candidate-${HEAD_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Build package
+        run: npm run build
+
+      - name: Pack candidate
+        run: |
+          mkdir -p "$RUNNER_TEMP/npm-candidate"
+          npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP/npm-candidate"
+
+      - name: Upload immutable package artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.candidate.outputs.artifact }}
+          path: ${{ runner.temp }}/npm-candidate/*.tgz
+          if-no-files-found: error
+          retention-days: 7
