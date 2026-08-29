@@ -36,6 +36,18 @@ describe('InputsPage', () => {
     expect(errorTextarea?.classList.contains('ion-touched')).toBe(true);
   });
 
+  it('should render counter examples', () => {
+    const element = fixture.nativeElement as HTMLElement;
+    const counterInput = element.querySelector<HTMLIonInputElement>('ion-input[label="Counter"]');
+    const formattedCounterTextarea = element.querySelector<HTMLIonTextareaElement>('ion-textarea[label="Counter formatter"]');
+
+    expect(counterInput?.counter).toBe(true);
+    expect(counterInput?.maxlength).toBe(20);
+    expect(formattedCounterTextarea?.counter).toBe(true);
+    expect(formattedCounterTextarea?.maxlength).toBe(100);
+    expect(formattedCounterTextarea?.counterFormatter?.(12, 100)).toBe('12 of 100 characters');
+  });
+
   it('should render outlined helper and error patterns', () => {
     const element = fixture.nativeElement as HTMLElement;
     const outlinedInputs = element.querySelectorAll('ion-input[fill="outline"]');
