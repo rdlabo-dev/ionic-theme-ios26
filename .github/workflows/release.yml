@@ -4,10 +4,10 @@ on:
   push:
     tags:
       - 'v*'
+  issue_comment:
+    types: [created]
   pull_request:
-    types: [synchronize]
-  pull_request_review:
-    types: [submitted]
+    types: [closed]
 
 permissions:
   id-token: write
@@ -65,88 +65,110 @@ jobs:
 
   build-pr-beta:
     if: >-
-      github.event.pull_request.draft == false &&
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      ((github.event_name == 'pull_request_review' &&
-      github.event.review.state == 'approved' &&
-      github.event.review.commit_id == github.event.pull_request.head.sha) ||
-      (github.event_name == 'pull_request' && github.event.action == 'synchronize'))
+      (github.event_name == 'issue_comment' &&
+      github.event.action == 'created' &&
+      github.event.issue.pull_request &&
+      github.event.comment.body == '/beta') ||
+      (github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
-    concurrency:
-      group: pr-beta-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
-      cancel-in-progress: false
     outputs:
-      allowed: ${{ steps.authorize.outputs.allowed }}
+      allowed: ${{ steps.gate.outputs.allowed }}
       artifact: ${{ steps.pack.outputs.artifact }}
+      head-sha: ${{ steps.gate.outputs.head-sha }}
+      mode: ${{ steps.gate.outputs.mode }}
       package: ${{ steps.pack.outputs.package }}
+      pr-number: ${{ steps.gate.outputs.pr-number }}
       version: ${{ steps.pack.outputs.version }}
     permissions:
+      actions: read
       contents: read
       issues: write
       pull-requests: read
 
     steps:
-      - name: Authorize beta publishing
-        id: authorize
+      - name: Require CI and administrator beta request
+        id: gate
         uses: actions/github-script@v8
         with:
           script: |
-            const marker = '<!-- npm-pr-beta-enabled -->';
+            const requiredWorkflows = ['Lint', 'E2E Screenshot Tests Pull Request'];
             const { owner, repo } = context.repo;
-            const issue_number = context.payload.pull_request.number;
+            const isMerge = context.eventName === 'pull_request';
+            const pull_number = isMerge
+              ? context.payload.pull_request.number
+              : context.payload.issue.number;
+            const { data: pullRequest } = await github.rest.pulls.get({ owner, repo, pull_number });
 
-            if (context.eventName === 'pull_request_review') {
-              const reviewer = context.payload.review.user.login;
-              const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+            if (!isMerge) {
+              const requester = context.payload.comment.user.login;
+              const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
                 owner,
                 repo,
-                username: reviewer,
+                username: requester,
               });
-              if (data.permission !== 'admin') {
-                core.notice(`@${reviewer} is not a repository administrator; beta publishing remains disabled.`);
+              if (permission.permission !== 'admin') {
+                core.notice(`@${requester} is not a repository administrator; /beta was ignored.`);
                 core.setOutput('allowed', 'false');
                 return;
               }
+            }
 
-              const comments = await github.paginate(github.rest.issues.listComments, {
-                owner,
-                repo,
-                issue_number,
-                per_page: 100,
-              });
-              const enabledComment = comments.find(
-                (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
-              );
-              const body = `${marker}\n🔐 npm beta auto-publishing was enabled by repository administrator @${reviewer}. Every new commit on this PR will be published until this comment is deleted.`;
-              if (enabledComment) {
-                await github.rest.issues.updateComment({ owner, repo, comment_id: enabledComment.id, body });
-              } else {
-                await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            const eligibleState = isMerge
+              ? pullRequest.merged && Boolean(pullRequest.merge_commit_sha)
+              : pullRequest.state === 'open' && !pullRequest.draft;
+            if (
+              !eligibleState ||
+              pullRequest.head.repo.full_name !== context.payload.repository.full_name
+            ) {
+              core.notice('The PR is not an eligible same-repository PR.');
+              core.setOutput('allowed', 'false');
+              return;
+            }
+            const ciSha = pullRequest.head.sha;
+            const candidateSha = isMerge ? pullRequest.merge_commit_sha : ciSha;
+
+            const runs = await github.paginate(github.rest.actions.listWorkflowRunsForRepo, {
+              owner,
+              repo,
+              head_sha: ciSha,
+              event: 'pull_request',
+              per_page: 100,
+            });
+            const incomplete = [];
+            for (const workflowName of requiredWorkflows) {
+              const latest = runs
+                .filter((run) => run.name === workflowName)
+                .sort((left, right) => right.run_number - left.run_number)[0];
+              if (!latest || latest.status !== 'completed' || latest.conclusion !== 'success') {
+                incomplete.push(workflowName);
               }
-              core.setOutput('allowed', 'true');
+            }
+            if (incomplete.length > 0) {
+              const shortSha = candidateSha.slice(0, 12);
+              const body = isMerge
+                ? `🚫 Merged commit \`${shortSha}\` was not beta-published because required CI had not passed: ${incomplete.join(', ')}.`
+                : `🚫 \`/beta\` did not publish commit \`${shortSha}\`. Required CI has not passed: ${incomplete.join(', ')}. Run \`/beta\` again after CI succeeds.`;
+              await github.rest.issues.createComment({ owner, repo, issue_number: pull_number, body });
+              core.notice(`Required CI has not passed: ${incomplete.join(', ')}`);
+              core.setOutput('allowed', 'false');
               return;
             }
 
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner,
-              repo,
-              issue_number,
-              per_page: 100,
-            });
-            const enabled = comments.some(
-              (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
-            );
-            core.setOutput('allowed', String(enabled));
-
-      - name: Checkout approved PR commit
-        if: steps.authorize.outputs.allowed == 'true'
+            core.setOutput('allowed', 'true');
+            core.setOutput('head-sha', candidateSha);
+            core.setOutput('mode', isMerge ? 'merge' : 'comment');
+            core.setOutput('pr-number', String(pull_number));
+      - name: Checkout requested PR commit
+        if: steps.gate.outputs.allowed == 'true'
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ steps.gate.outputs.head-sha }}
           persist-credentials: false
 
       - name: Setup Node.js
-        if: steps.authorize.outputs.allowed == 'true'
+        if: steps.gate.outputs.allowed == 'true'
         uses: actions/setup-node@v6
         with:
           node-version: 24
@@ -154,33 +176,33 @@ jobs:
           package-manager-cache: false
 
       - name: Update npm
-        if: steps.authorize.outputs.allowed == 'true'
+        if: steps.gate.outputs.allowed == 'true'
         run: npm install -g npm@latest
 
       - name: Install dependencies
-        if: steps.authorize.outputs.allowed == 'true'
+        if: steps.gate.outputs.allowed == 'true'
         run: npm ci
 
       - name: Set PR beta version
-        if: steps.authorize.outputs.allowed == 'true'
+        if: steps.gate.outputs.allowed == 'true'
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ steps.gate.outputs.pr-number }}
+          HEAD_SHA: ${{ steps.gate.outputs.head-sha }}
         run: |
           BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
           VERSION="${BASE_VERSION}-beta.pr${PR_NUMBER}.${HEAD_SHA:0:12}"
           npm version "$VERSION" --no-git-tag-version --ignore-scripts
 
       - name: Build package
-        if: steps.authorize.outputs.allowed == 'true'
+        if: steps.gate.outputs.allowed == 'true'
         run: npm run build
 
       - name: Pack PR beta
-        if: steps.authorize.outputs.allowed == 'true'
+        if: steps.gate.outputs.allowed == 'true'
         id: pack
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ steps.gate.outputs.pr-number }}
+          HEAD_SHA: ${{ steps.gate.outputs.head-sha }}
         run: |
           PACKAGE_NAME=$(node -p "require('./package.json').name")
           VERSION=$(node -p "require('./package.json').version")
@@ -193,7 +215,7 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Upload packed package
-        if: steps.authorize.outputs.allowed == 'true'
+        if: steps.gate.outputs.allowed == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.pack.outputs.artifact }}
@@ -211,8 +233,39 @@ jobs:
       contents: read
       id-token: write
       issues: write
+      pull-requests: read
 
     steps:
+      - name: Revalidate beta authorization and PR head
+        uses: actions/github-script@v8
+        env:
+          HEAD_SHA: ${{ needs.build-pr-beta.outputs.head-sha }}
+          MODE: ${{ needs.build-pr-beta.outputs.mode }}
+          PR_NUMBER: ${{ needs.build-pr-beta.outputs.pr-number }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pull_number = Number(process.env.PR_NUMBER);
+            const { data: pullRequest } = await github.rest.pulls.get({ owner, repo, pull_number });
+            if (process.env.MODE === 'merge') {
+              if (!pullRequest.merged || pullRequest.merge_commit_sha !== process.env.HEAD_SHA) {
+                core.setFailed('The merged commit no longer matches the package artifact.');
+              }
+              return;
+            }
+            if (pullRequest.head.sha !== process.env.HEAD_SHA) {
+              core.setFailed('The PR head changed after /beta; a fresh administrator /beta is required.');
+              return;
+            }
+            const requester = context.payload.comment.user.login;
+            const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner,
+              repo,
+              username: requester,
+            });
+            if (data.permission !== 'admin') {
+              core.setFailed(`@${requester} is no longer a repository administrator.`);
+            }
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -250,15 +303,20 @@ jobs:
         uses: actions/github-script@v8
         env:
           PACKAGE_NAME: ${{ needs.build-pr-beta.outputs.package }}
+          PR_NUMBER: ${{ needs.build-pr-beta.outputs.pr-number }}
           VERSION: ${{ needs.build-pr-beta.outputs.version }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_SHA: ${{ needs.build-pr-beta.outputs.head-sha }}
+          MODE: ${{ needs.build-pr-beta.outputs.mode }}
         with:
           script: |
             const shortSha = process.env.HEAD_SHA.slice(0, 12);
             const marker = `<!-- npm-pr-beta:${process.env.HEAD_SHA} -->`;
-            const body = `${marker}\n### npm beta published\n\nCommit \`${shortSha}\` is available as:\n\n\`\`\`sh\nnpm install ${process.env.PACKAGE_NAME}@${process.env.VERSION}\n\`\`\``;
+            const authorization = process.env.MODE === 'merge'
+              ? `The PR was merged after CI passed for commit \`${shortSha}\``
+              : `CI passed and a repository administrator requested \`/beta\` for commit \`${shortSha}\``;
+            const body = `${marker}\n### npm beta published\n\n${authorization}. Install the immutable version with:\n\n\`\`\`sh\nnpm install ${process.env.PACKAGE_NAME}@${process.env.VERSION}\n\`\`\``;
             const { owner, repo } = context.repo;
-            const issue_number = context.payload.pull_request.number;
+            const issue_number = Number(process.env.PR_NUMBER);
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner,
               repo,

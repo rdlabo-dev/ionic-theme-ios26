@@ -3,7 +3,9 @@
 A CSS/JS theme library that applies iOS26 design system to Ionic applications.
 
 <!-- rdlabo-docs-pick -->
+
 ![iOS 26 themed Ionic screens with Liquid Glass tab bar, lists, and controls](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v3.0.0/screenshots/ios26.png)
+
 <!-- /rdlabo-docs-pick -->
 
 DEMO is here: https://ionic-theme-ios26.rdlabo.dev/
@@ -202,9 +204,30 @@ npm run test:e2e:debug
 npm run test:e2e:update
 ```
 
+### PR beta releases
+
+There are two ways to publish a pull request beta after its CI passes:
+
+1. While the pull request is open, a repository administrator adds a comment whose entire body is:
+
+   ```text
+   /beta
+   ```
+
+2. The pull request is merged. The actual merge or squash commit is published automatically.
+
+Both paths require the `Lint` and `E2E Screenshot Tests Pull Request` workflows to have completed successfully for the pull request head SHA. The pull request must originate from this repository. The comment path additionally requires an open, non-draft pull request and revalidates that the `/beta` commenter still has repository administrator permission when publishing begins.
+
+If CI has not passed, nothing is published. For the comment path, the bot asks the administrator to run `/beta` again after CI succeeds. Any new commit invalidates an earlier `/beta` request, regardless of who authored it; the new head SHA must pass CI and receive a fresh administrator `/beta` comment. A merge publishes only when the PR head had already passed CI.
+
+Published versions use `<base>-beta.pr<PR number>.<12-character SHA>` and the npm `beta` dist-tag. The workflow never changes the `latest` dist-tag. After publishing, the pull request receives a comment containing the immutable version and exact `npm install` command.
+
+The PR build runs without npm publishing credentials. Only its packed artifact reaches the OIDC-enabled publish job, where package lifecycle scripts are disabled.
+
 <!-- /rdlabo-docs-omit -->
 
 <!-- rdlabo-docs-omit -->
+
 ## Maintainers
 
 - [rdlabo](https://rdlabo.dev/)
