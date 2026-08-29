@@ -52,4 +52,20 @@
       <ion-item><ion-radio value="error-b">Error option B</ion-radio></ion-item>
     </ion-radio-group>
   </ion-list>
+
+  <ion-radio-group value="voice-1">
+    <ion-list [inset]="true">
+      <ion-item-group>
+        <ion-item><ion-radio value="system-default">System default</ion-radio></ion-item>
+      </ion-item-group>
+    </ion-list>
+
+    <ion-list [inset]="true">
+      <ion-list-header><ion-label>Radio Group Across Lists</ion-label></ion-list-header>
+      <ion-item-group>
+        <ion-item><ion-radio value="voice-1">Voice 1</ion-radio></ion-item>
+        <ion-item><ion-radio value="voice-2">Voice 2</ion-radio></ion-item>
+      </ion-item-group>
+    </ion-list>
+  </ion-radio-group>
 </ion-content>

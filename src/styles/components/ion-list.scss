@@ -21,7 +21,7 @@ ion-list.list-inset.ios:not(.ios26-disabled) {
     padding-inline-end: calc(var(--ion-safe-area-right, 0) + 20px);
   }
 
-  :is(#{structured-list.$groups}):not(:is(#{structured-list.$groups}) :is(#{structured-list.$groups})) {
+  > :is(#{structured-list.$groups}) {
     ion-item {
       // To draw lines inside
       --inner-padding-end: 0;
