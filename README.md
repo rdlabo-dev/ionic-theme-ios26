@@ -216,11 +216,11 @@ The request authorizes only the pull request head SHA that existed when the comm
 
 Beta versions use `<base>-beta.pr<PR number>.sha<12-character SHA>`. The pull request receives a comment containing the immutable version and exact `npm install` command.
 
-After a commit reaches `main`, it is automatically published to the npm `next` dist-tag only when `Lint`, `E2E Screenshot Tests`, and `Package Candidate` all succeed for that exact commit and it is still the current `main` head. Main candidates use `<base>-next.sha<12-character SHA>`. When the commit is associated with a merged pull request, that pull request receives the exact install command.
+When a pull request is merged into `main`, it is automatically published to the npm `beta` dist-tag only after `Lint`, `E2E Screenshot Tests`, and `Package Candidate` all succeed for that exact merge commit. Direct pushes to `main` do not publish a candidate. Merge candidates use `<base>-beta.pr<PR number>.sha<12-character SHA>` and the merged pull request receives the exact install command.
 
 Candidate code is built in a read-only workflow without npm publishing credentials. The privileged release workflow never checks out or executes pull request code; it revalidates the source workflow and package identity, then publishes only the immutable packed artifact with lifecycle scripts disabled.
 
-Neither `beta` nor `next` publishing changes the npm `latest` dist-tag. Only an explicit stable `vX.Y.Z` release tag publishes to `latest`; prerelease version tags publish to `next`.
+Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, minor, or patch releases) publish to npm `latest`; revision/prerelease tags publish to `next`. Neither `beta` nor `next` publishing changes the npm `latest` dist-tag.
 
 <!-- /rdlabo-docs-omit -->
 

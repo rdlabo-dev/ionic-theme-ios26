@@ -87,6 +87,7 @@ jobs:
       pr-number: ${{ steps.gate.outputs.pr-number }}
       run-id: ${{ steps.gate.outputs.run-id }}
       version: ${{ steps.gate.outputs.version }}
+      source-kind: ${{ steps.gate.outputs.source-kind }}
     permissions:
       actions: read
       contents: read
@@ -101,7 +102,14 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const defaultBranch = context.payload.repository.default_branch;
-            const isBeta = context.eventName === 'issue_comment';
+            const isComment = context.eventName === 'issue_comment';
+            const protectedWorkflows = [
+              '.github/workflows/lint.yml',
+              '.github/workflows/e2e-pull_request.yml',
+              '.github/workflows/e2e-main.yml',
+              '.github/workflows/package-candidate.yml',
+              '.github/workflows/release.yml',
+            ];
 
             const getTrustedPackage = async (ref) => {
               const { data } = await github.rest.repos.getContent({
@@ -143,8 +151,9 @@ jobs:
             let distTag;
             let required;
             let event;
+            let sourceKind;
 
-            if (isBeta) {
+            if (isComment) {
               const requester = context.payload.comment.user.login;
               const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
                 owner,
@@ -172,11 +181,6 @@ jobs:
                 core.setFailed('The pull request head repository is no longer available.');
                 return;
               }
-              const protectedWorkflows = [
-                '.github/workflows/lint.yml',
-                '.github/workflows/e2e-pull_request.yml',
-                '.github/workflows/package-candidate.yml',
-              ];
               const changedWorkflows = [];
               for (const path of protectedWorkflows) {
                 const [{ data: trusted }, { data: candidate }] = await Promise.all([
@@ -206,6 +210,7 @@ jobs:
               headSha = pullRequest.head.sha;
               distTag = 'beta';
               event = 'pull_request';
+              sourceKind = 'comment';
               required = new Map([
                 ['Lint', '.github/workflows/lint.yml'],
                 ['E2E Screenshot Tests Pull Request', '.github/workflows/e2e-pull_request.yml'],
@@ -233,8 +238,37 @@ jobs:
                 core.setOutput('allowed', 'false');
                 return;
               }
-              distTag = 'next';
+              const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner,
+                repo,
+                commit_sha: headSha,
+              });
+              const mergedPullRequest = pullRequests.find(
+                (pullRequest) => pullRequest.merged_at && pullRequest.base.ref === defaultBranch,
+              );
+              if (!mergedPullRequest) {
+                core.notice('The default-branch push is not a merged pull request; no beta release was requested.');
+                core.setOutput('allowed', 'false');
+                return;
+              }
+              prNumber = String(mergedPullRequest.number);
+              const changedFiles = await github.paginate(github.rest.pulls.listFiles, {
+                owner,
+                repo,
+                pull_number: mergedPullRequest.number,
+                per_page: 100,
+              });
+              const changedWorkflows = changedFiles
+                .map((file) => file.filename)
+                .filter((filename) => protectedWorkflows.includes(filename));
+              if (changedWorkflows.length > 0) {
+                core.notice(`The merged pull request changed a release-gating workflow; beta was skipped: ${changedWorkflows.join(', ')}`);
+                core.setOutput('allowed', 'false');
+                return;
+              }
+              distTag = 'beta';
               event = 'push';
+              sourceKind = 'merge';
               required = new Map([
                 ['Lint', '.github/workflows/lint.yml'],
                 ['E2E Screenshot Tests', '.github/workflows/e2e-main.yml'],
@@ -248,7 +282,7 @@ jobs:
               return !run || run.status !== 'completed' || run.conclusion !== 'success';
             });
             if (incomplete.length > 0) {
-              if (isBeta) {
+              if (isComment) {
                 const body = `🚫 \`/beta\` did not publish commit \`${headSha.slice(0, 12)}\`. Required CI has not passed: ${incomplete.join(', ')}. Run \`/beta\` again after CI succeeds.`;
                 await github.rest.issues.createComment({
                   owner,
@@ -279,9 +313,7 @@ jobs:
             }
 
             const trustedPackage = await getTrustedPackage(defaultBranch);
-            const version = isBeta
-              ? `${trustedPackage.baseVersion}-beta.pr${prNumber}.sha${headSha.slice(0, 12)}`
-              : `${trustedPackage.baseVersion}-next.sha${headSha.slice(0, 12)}`;
+            const version = `${trustedPackage.baseVersion}-beta.pr${prNumber}.sha${headSha.slice(0, 12)}`;
 
             core.setOutput('allowed', 'true');
             core.setOutput('artifact', artifactName);
@@ -291,6 +323,7 @@ jobs:
             core.setOutput('pr-number', prNumber);
             core.setOutput('run-id', String(candidateRun.id));
             core.setOutput('version', version);
+            core.setOutput('source-kind', sourceKind);
 
   publish-candidate:
     needs: authorize-candidate
@@ -318,6 +351,7 @@ jobs:
           PACKAGE_NAME: ${{ needs.authorize-candidate.outputs.package }}
           PR_NUMBER: ${{ needs.authorize-candidate.outputs.pr-number }}
           RUN_ID: ${{ needs.authorize-candidate.outputs.run-id }}
+          SOURCE_KIND: ${{ needs.authorize-candidate.outputs.source-kind }}
           VERSION: ${{ needs.authorize-candidate.outputs.version }}
         with:
           script: |
@@ -328,7 +362,7 @@ jobs:
               repo,
               run_id: Number(process.env.RUN_ID),
             });
-            const expectedEvent = process.env.DIST_TAG === 'beta' ? 'pull_request' : 'push';
+            const expectedEvent = process.env.SOURCE_KIND === 'comment' ? 'pull_request' : 'push';
             if (
               run.name !== 'Package Candidate' ||
               run.path !== '.github/workflows/package-candidate.yml' ||
@@ -341,7 +375,7 @@ jobs:
               return;
             }
 
-            if (process.env.DIST_TAG === 'beta') {
+            if (process.env.SOURCE_KIND === 'comment') {
               const pull_number = Number(process.env.PR_NUMBER);
               const { data: pullRequest } = await github.rest.pulls.get({ owner, repo, pull_number });
               if (pullRequest.state !== 'open' || pullRequest.head.sha !== process.env.HEAD_SHA) {
@@ -358,18 +392,32 @@ jobs:
                 core.setFailed(`@${requester} is no longer a repository administrator.`);
                 return;
               }
-            } else if (process.env.DIST_TAG === 'next') {
+            } else if (process.env.SOURCE_KIND === 'merge') {
               const { data: branch } = await github.rest.repos.getBranch({
                 owner,
                 repo,
                 branch: defaultBranch,
               });
               if (branch.commit.sha !== process.env.HEAD_SHA) {
-                core.setFailed('A newer default-branch commit exists; refusing to move next backwards.');
+                core.setFailed('A newer default-branch commit exists; refusing to publish a stale merge candidate.');
+                return;
+              }
+              const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner,
+                repo,
+                commit_sha: process.env.HEAD_SHA,
+              });
+              const mergedPullRequest = pullRequests.find(
+                (pullRequest) => pullRequest.number === Number(process.env.PR_NUMBER) &&
+                  pullRequest.merged_at && pullRequest.base.ref === defaultBranch &&
+                  pullRequest.merge_commit_sha === process.env.HEAD_SHA,
+              );
+              if (!mergedPullRequest) {
+                core.setFailed('The candidate is not the merge commit of the authorized pull request.');
                 return;
               }
             } else {
-              core.setFailed(`Unsupported candidate dist-tag: ${process.env.DIST_TAG}`);
+              core.setFailed(`Unsupported candidate source: ${process.env.SOURCE_KIND}`);
               return;
             }
 
@@ -385,9 +433,7 @@ jobs:
             }
             const packageJson = JSON.parse(Buffer.from(data.content, 'base64').toString('utf8'));
             const baseVersion = packageJson.version.split('-')[0];
-            const expectedVersion = process.env.DIST_TAG === 'beta'
-              ? `${baseVersion}-beta.pr${process.env.PR_NUMBER}.sha${process.env.HEAD_SHA.slice(0, 12)}`
-              : `${baseVersion}-next.sha${process.env.HEAD_SHA.slice(0, 12)}`;
+            const expectedVersion = `${baseVersion}-beta.pr${process.env.PR_NUMBER}.sha${process.env.HEAD_SHA.slice(0, 12)}`;
             if (
               packageJson.name !== process.env.PACKAGE_NAME ||
               expectedVersion !== process.env.VERSION
@@ -438,7 +484,7 @@ jobs:
             echo "::error::Refusing package with an unexpected publish registry: $ACTUAL_REGISTRY"
             exit 1
           fi
-          if [ "$DIST_TAG" != "beta" ] && [ "$DIST_TAG" != "next" ]; then
+          if [ "$DIST_TAG" != "beta" ]; then
             echo "::error::Refusing unsupported dist-tag: $DIST_TAG"
             exit 1
           fi
@@ -455,29 +501,18 @@ jobs:
           HEAD_SHA: ${{ needs.authorize-candidate.outputs.head-sha }}
           PACKAGE_NAME: ${{ needs.authorize-candidate.outputs.package }}
           PR_NUMBER: ${{ needs.authorize-candidate.outputs.pr-number }}
+          SOURCE_KIND: ${{ needs.authorize-candidate.outputs.source-kind }}
           VERSION: ${{ needs.authorize-candidate.outputs.version }}
         with:
           script: |
             const { owner, repo } = context.repo;
             const shortSha = process.env.HEAD_SHA.slice(0, 12);
             let issueNumber = Number(process.env.PR_NUMBER);
-            if (process.env.DIST_TAG === 'next') {
-              const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                owner,
-                repo,
-                commit_sha: process.env.HEAD_SHA,
-              });
-              const merged = pullRequests.find(
-                (pullRequest) => pullRequest.merged_at && pullRequest.base.ref === context.payload.repository.default_branch,
-              );
-              issueNumber = merged?.number;
-            }
-
             const marker = `<!-- npm-${process.env.DIST_TAG}:${process.env.HEAD_SHA} -->`;
-            const title = process.env.DIST_TAG === 'beta' ? 'npm beta published' : 'npm next published';
-            const authorization = process.env.DIST_TAG === 'beta'
+            const title = 'npm beta published';
+            const authorization = process.env.SOURCE_KIND === 'comment'
               ? `CI passed and a repository administrator requested \`/beta\` for commit \`${shortSha}\``
-              : `All required CI passed for main commit \`${shortSha}\``;
+              : `CI passed for the merge commit \`${shortSha}\``;
             const body = `${marker}\n### ${title}\n\n${authorization}. Install the immutable version with:\n\n\`\`\`sh\nnpm install ${process.env.PACKAGE_NAME}@${process.env.VERSION}\n\`\`\``;
             await core.summary.addRaw(body).write();
             if (!issueNumber) {
