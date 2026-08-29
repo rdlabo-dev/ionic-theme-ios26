@@ -3,7 +3,9 @@
 A CSS/JS theme library that applies iOS26 design system to Ionic applications.
 
 <!-- rdlabo-docs-pick -->
+
 ![iOS 26 themed Ionic screens with Liquid Glass tab bar, lists, and controls](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v3.0.0/screenshots/ios26.png)
+
 <!-- /rdlabo-docs-pick -->
 
 DEMO is here: https://ionic-theme-ios26.rdlabo.dev/
@@ -202,9 +204,28 @@ npm run test:e2e:debug
 npm run test:e2e:update
 ```
 
+### Prerelease channels
+
+An open, non-draft pull request can be published to the npm `beta` dist-tag after its `Lint`, `E2E Screenshot Tests Pull Request`, and `Package Candidate` workflows pass. A repository administrator must add a comment whose entire body is:
+
+```text
+/beta
+```
+
+The request authorizes only the pull request head SHA that existed when the comment was added. The workflow revalidates the administrator permission and head SHA immediately before publishing. Any new commit invalidates the request, regardless of its author; the new SHA must pass CI and receive a fresh administrator `/beta` comment. Fork pull requests are supported. Pull requests that change a release-gating workflow cannot be beta-published until those workflow changes land on `main`.
+
+Beta versions use `<base>-beta.pr<PR number>.sha<12-character SHA>`. The pull request receives a comment containing the immutable version and exact `npm install` command.
+
+After a commit reaches `main`, it is automatically published to the npm `next` dist-tag only when `Lint`, `E2E Screenshot Tests`, and `Package Candidate` all succeed for that exact commit and it is still the current `main` head. Main candidates use `<base>-next.sha<12-character SHA>`. When the commit is associated with a merged pull request, that pull request receives the exact install command.
+
+Candidate code is built in a read-only workflow without npm publishing credentials. The privileged release workflow never checks out or executes pull request code; it revalidates the source workflow and package identity, then publishes only the immutable packed artifact with lifecycle scripts disabled.
+
+Neither `beta` nor `next` publishing changes the npm `latest` dist-tag. Only an explicit stable `vX.Y.Z` release tag publishes to `latest`; prerelease version tags publish to `next`.
+
 <!-- /rdlabo-docs-omit -->
 
 <!-- rdlabo-docs-omit -->
+
 ## Maintainers
 
 - [rdlabo](https://rdlabo.dev/)
