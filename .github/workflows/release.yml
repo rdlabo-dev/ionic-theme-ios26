@@ -32,16 +32,22 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              username: context.payload.comment.user.login,
-            });
-            return { authorized: data.permission === 'admin' };
+            try {
+              const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: context.payload.comment.user.login,
+              });
+              return { authorized: data.permission === 'admin' };
+            } catch (error) {
+              core.warning(`Could not verify beta comment permission: ${error.message}`);
+              return { authorized: false };
+            }
 
       - name: Add reaction to administrator beta comment
         if: fromJson(steps.permission.outputs.result).authorized
         uses: peter-evans/create-or-update-comment@v5
+        continue-on-error: true
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: eyes
@@ -83,6 +89,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify package version matches release tag
+        env:
+          TAG_VERSION: ${{ steps.tag_version.outputs.version }}
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::Package version $PACKAGE_VERSION does not match release tag $TAG_VERSION"
+            exit 1
+          fi
+
       - name: Build workspaces
         run: npm run build
 
@@ -93,9 +109,12 @@ jobs:
 
           echo "Publishing... $IS_STABLE"
           if [ "$IS_STABLE" = "true" ]; then
-            npm publish --provenance --access public
-          else
+            npm publish --provenance --access public --tag latest
+          elif echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$'; then
             npm publish --provenance --access public --tag next
+          else
+            echo "::error::Refusing to publish an invalid release version: $VERSION"
+            exit 1
           fi
 
   authorize-candidate:
@@ -280,7 +299,8 @@ jobs:
                 commit_sha: headSha,
               });
               const mergedPullRequest = pullRequests.find(
-                (pullRequest) => pullRequest.merged_at && pullRequest.base.ref === defaultBranch,
+                (pullRequest) => pullRequest.merged_at && pullRequest.base.ref === defaultBranch &&
+                  pullRequest.merge_commit_sha === headSha,
               );
               if (!mergedPullRequest) {
                 core.notice('The default-branch push is not a merged pull request; no beta release was requested.');
@@ -370,7 +390,6 @@ jobs:
       actions: read
       contents: read
       id-token: write
-      issues: write
       pull-requests: read
 
     steps:
@@ -525,6 +544,21 @@ jobs:
             npm publish "$PACKAGE_ARCHIVE" --ignore-scripts --provenance --access public --registry "$NPM_CONFIG_REGISTRY" --tag "$DIST_TAG"
           fi
 
+  comment-candidate:
+    needs: [authorize-candidate, publish-candidate]
+    if: >-
+      always() &&
+      needs.authorize-candidate.outputs.allowed == 'true' &&
+      needs.publish-candidate.result == 'success'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: npm-comment-${{ needs.authorize-candidate.outputs.head-sha }}
+      cancel-in-progress: false
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
       - name: Comment exact install command
         uses: actions/github-script@v8
         env:
@@ -538,7 +572,7 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const shortSha = process.env.HEAD_SHA.slice(0, 12);
-            let issueNumber = Number(process.env.PR_NUMBER);
+            const issueNumber = Number(process.env.PR_NUMBER);
             const marker = `<!-- npm-${process.env.DIST_TAG}:${process.env.HEAD_SHA} -->`;
             const title = 'npm beta published';
             const authorization = process.env.SOURCE_KIND === 'comment'
@@ -551,17 +585,21 @@ jobs:
               return;
             }
 
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner,
-              repo,
-              issue_number: issueNumber,
-              per_page: 100,
-            });
-            const existing = comments.find(
-              (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
-            );
-            if (existing) {
-              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
-            } else {
-              await github.rest.issues.createComment({ owner, repo, issue_number: issueNumber, body });
+            try {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner,
+                repo,
+                issue_number: issueNumber,
+                per_page: 100,
+              });
+              const existing = comments.find(
+                (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
+              );
+              if (existing) {
+                await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+              } else {
+                await github.rest.issues.createComment({ owner, repo, issue_number: issueNumber, body });
+              }
+            } catch (error) {
+              core.warning(`Could not post the beta install comment: ${error.message}`);
             }
