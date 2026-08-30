@@ -121,7 +121,7 @@ jobs:
       actions: read
       contents: read
       issues: write
-      pull-requests: read
+      pull-requests: write
 
     steps:
       - name: Authorize immutable candidate
@@ -139,6 +139,18 @@ jobs:
               '.github/workflows/package-candidate.yml',
               '.github/workflows/release.yml',
             ];
+            const tryCreateComment = async (body) => {
+              try {
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: Number(context.issue.number),
+                  body,
+                });
+              } catch (error) {
+                core.warning(`Could not post the beta gate comment: ${error.message}`);
+              }
+            };
 
             const getTrustedPackage = async (ref) => {
               const { data } = await github.rest.repos.getContent({
@@ -227,12 +239,7 @@ jobs:
               }
               if (changedWorkflows.length > 0) {
                 const body = `🚫 \`/beta\` cannot publish a pull request that changes a release-gating workflow: ${changedWorkflows.join(', ')}.`;
-                await github.rest.issues.createComment({
-                  owner,
-                  repo,
-                  issue_number: Number(prNumber),
-                  body,
-                });
+                await tryCreateComment(body);
                 core.setOutput('allowed', 'false');
                 return;
               }
@@ -313,12 +320,7 @@ jobs:
             if (incomplete.length > 0) {
               if (isComment) {
                 const body = `🚫 \`/beta\` did not publish commit \`${headSha.slice(0, 12)}\`. Required CI has not passed: ${incomplete.join(', ')}. Run \`/beta\` again after CI succeeds.`;
-                await github.rest.issues.createComment({
-                  owner,
-                  repo,
-                  issue_number: Number(prNumber),
-                  body,
-                });
+                await tryCreateComment(body);
               }
               core.notice(`Required CI has not passed: ${incomplete.join(', ')}`);
               core.setOutput('allowed', 'false');
