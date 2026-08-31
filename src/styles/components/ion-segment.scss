@@ -24,7 +24,7 @@ ion-segment.ios:not(.ios26-disabled) {
 
   &.in-toolbar-color:not(.in-segment-color) {
     ion-segment-button:not(.segment-button-checked)::part(native) {
-      color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 1) !important;
+      color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 1);
     }
   }
 

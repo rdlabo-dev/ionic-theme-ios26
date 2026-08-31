@@ -148,7 +148,7 @@ $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group
           transform: translateY(-7px);
         }
         ion-icon[slot='icon-only'] {
-          font-size: 1.2rem !important;
+          font-size: 1.2rem;
           transform: translateY(4px);
         }
       }
