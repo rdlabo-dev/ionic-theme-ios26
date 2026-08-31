@@ -1,17 +1,35 @@
 @use '../utils/api';
 
 ion-toast.ios:not(.ios26-disabled) {
-  --background: transparent;
+  --background: rgba(var(--ios26-glass-background-rgb), 0.72);
+  --border-radius: 24px;
+  --border-style: solid;
+  --border-width: 0.5px;
+  --box-shadow:
+    inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2), 0 0 10px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.82);
   --start: 16px;
   --end: 16px;
 
   &::part(wrapper) {
-    @include api.glass-background;
-    border-radius: 24px;
+    @include api.glass-background($include-background: false, $include-box-shadow: false, $include-border: false);
+    border-top-color: rgba(var(--ios26-glass-border-color-rgb), 1);
+    border-right-color: rgba(var(--ios26-glass-border-color-rgb), 0.8);
+    border-bottom-color: rgba(var(--ios26-glass-border-color-rgb), 1);
+    border-left-color: rgba(var(--ios26-glass-border-color-rgb), 0.6);
   }
 
-  &.ion-color::part(wrapper) {
-    @include api.glass-background($background-rgb: var(--ion-color-base-rgb), $border-color-rgb: var(--ion-color-base-rgb));
-    border-radius: 24px;
+  &.ion-color {
+    &::part(wrapper) {
+      @include api.glass-background(
+        $background-rgb: var(--ion-color-base-rgb),
+        $border-color-rgb: var(--ion-color-base-rgb),
+        $include-box-shadow: false,
+        $include-border: false
+      );
+      border-top-color: rgba(var(--ion-color-base-rgb), 1);
+      border-right-color: rgba(var(--ion-color-base-rgb), 0.8);
+      border-bottom-color: rgba(var(--ion-color-base-rgb), 1);
+      border-left-color: rgba(var(--ion-color-base-rgb), 0.6);
+    }
   }
 }

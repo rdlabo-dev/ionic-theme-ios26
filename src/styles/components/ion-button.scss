@@ -64,6 +64,10 @@ $scaleup-large-icon-only: 1.22;
   }
 
   ion-button:not(.ios26-disabled).button-clear {
+    --background: transparent;
+    --border-style: none;
+    --border-width: 0;
+    --box-shadow: none;
     transform: none;
 
     font-weight: 500;
@@ -75,13 +79,13 @@ $scaleup-large-icon-only: 1.22;
       --padding-end: 0.5em;
     }
     &.button-default {
+      --padding-bottom: 0;
+      --padding-end: 12px;
+      --padding-start: 12px;
+      --padding-top: 0;
       &::part(native) {
         min-height: calc(44px - 2px); // reduce for border 2px;
       }
-      --padding-top: 16px;
-      --padding-bottom: 16px;
-      --padding-start: 1em;
-      --padding-end: 1em;
     }
     &.button-large {
       min-height: calc(62px - 2px);
@@ -113,13 +117,6 @@ $scaleup-large-icon-only: 1.22;
     }
 
     &::part(native) {
-      /**
-       * overwrite theme-button mixin.
-       * ex) ion-button.ios:not(.ios26-disabled):not(.button-solid):not(.ios26-button-solid):not(.button-outline):not(.ios26-button-outline):not(.button-clear):not(.ios26-button-clear)::part(native)
-       */
-      box-shadow: none !important;
-      border: none !important;
-      background: transparent !important;
       backdrop-filter: none !important;
     }
   }
@@ -135,7 +132,7 @@ $scaleup-large-icon-only: 1.22;
   }
 }
 
-@mixin theme-button() {
+@mixin theme-button($is-back-button: false) {
   max-height: inherit;
   z-index: 0;
   &.ion-activated {
@@ -146,8 +143,13 @@ $scaleup-large-icon-only: 1.22;
     transform var(--ios26-activated-transition-duration) ease-out,
     color 50ms ease;
 
-  &.in-toolbar:not(.ion-color):not(.in-toolbar-color)::part(native) {
-    color: inherit;
+  &.in-toolbar:not(.ion-color):not(.in-toolbar-color) {
+    --ion-toolbar-color: currentColor;
+
+    &.button-solid {
+      --ion-toolbar-color: var(--background);
+      --ion-toolbar-background: currentColor;
+    }
   }
 
   // will-change is optimized to only apply when needed for performance
@@ -165,9 +167,16 @@ $scaleup-large-icon-only: 1.22;
   &:not(.button-small):not(.button-large) {
     font-size: 1.05rem;
     &:not(.button-has-icon-only):not(.back-button-has-icon-only) {
-      &::part(native) {
-        padding: 0 12px;
-        min-height: 44px;
+      --padding-bottom: 0;
+      --padding-end: 12px;
+      --padding-start: 12px;
+      --padding-top: 0;
+      @if $is-back-button {
+        --min-height: 44px;
+      } @else {
+        &::part(native) {
+          min-height: 44px;
+        }
       }
       ion-icon[slot='start'] {
         margin-inline-start: -0.15em;
@@ -223,26 +232,33 @@ $scaleup-large-icon-only: 1.22;
     }
     &::part(native) {
       position: relative;
-      color: var(--color);
       z-index: 0;
+    }
+    &.ion-color::part(native) {
+      color: var(--color);
     }
     &.ion-activated {
       --border-width: 0.78px;
-      &::part(native) {
-        @include api.glass-background-button-activated;
-        color: var(--color-activated);
-        &::before {
-          content: '';
-          z-index: 1;
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          border-radius: inherit;
-          pointer-events: none;
-          backdrop-filter: brightness(144%);
+      @if $is-back-button {
+        &::part(native) {
+          @include api.glass-background-button-activated;
         }
+      } @else {
+        --box-shadow:
+          inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2),
+          0 0 8px -4px rgba(var(--ios26-glass-box-shadow-color-rgb), 0.92);
+      }
+      &::part(native)::before {
+        content: '';
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        backdrop-filter: brightness(144%);
       }
       &.ion-activated.button-has-icon-only,
       &.ion-activated.back-button-has-icon-only {
@@ -266,19 +282,34 @@ $scaleup-large-icon-only: 1.22;
       }
     }
     &.button-disabled {
+      --background: var(--ion-background-color-step-200, #cccccc);
       opacity: 1;
       &::part(native) {
-        background: var(--ion-background-color-step-200, #cccccc);
         color: #fff;
-        border: none;
+      }
+      &.ion-color::part(native) {
+        background: var(--background);
+      }
+      @if $is-back-button {
+        &::part(native) {
+          border: none;
+        }
+      } @else {
+        --border-style: none;
+        --border-width: 0;
       }
     }
   }
 
   // fill:default only
   &:not(.button-solid):not(.button-outline):not(.button-clear) {
+    --background: rgba(var(--ios26-glass-background-rgb), 0.72);
     --background-hover: transparent;
     --background-activated: transparent;
+    @if not $is-back-button {
+      --box-shadow:
+        inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2), 0 0 10px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.82);
+    }
 
     &:not(.button-has-icon-only):not(.back-button-has-icon-only) {
       &:not(.button-small):not(.button-large) {
@@ -287,8 +318,7 @@ $scaleup-large-icon-only: 1.22;
     }
 
     &::part(native) {
-      @include api.glass-background;
-      color: var(--color);
+      @include api.glass-background($include-background: false, $include-box-shadow: $is-back-button);
     }
 
     &:not(.button-disabled) {
@@ -302,6 +332,7 @@ $scaleup-large-icon-only: 1.22;
       --color: rgba(var(--ion-color-base-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 1);
     }
     &.ion-activated {
+      --opacity: 1; // for ion-back-button
       --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);
       &.ion-color {
         --color: rgba(var(--ion-color-base-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.1);
@@ -326,9 +357,6 @@ $scaleup-large-icon-only: 1.22;
           transform: scale($scaleup-large);
         }
       }
-      &::part(native) {
-        opacity: 1; // for ion-back-button
-      }
     }
     &.button-disabled {
       opacity: 1;
@@ -341,10 +369,20 @@ $scaleup-large-icon-only: 1.22;
 
   &.button-has-icon-only,
   &.back-button-has-icon-only {
-    &:not(.button-small):not(.button-large)::part(native) {
-      width: 44px;
-      height: 44px;
-      padding: 2px;
+    &:not(.button-small):not(.button-large) {
+      --padding-bottom: 2px;
+      --padding-end: 2px;
+      --padding-start: 2px;
+      --padding-top: 2px;
+      @if $is-back-button {
+        --min-height: 44px;
+        --min-width: 44px;
+      } @else {
+        &::part(native) {
+          width: 44px;
+          height: 44px;
+        }
+      }
     }
 
     ion-icon {
@@ -379,5 +417,5 @@ ion-button.ios:not(.ios26-disabled) {
   @include theme-button;
 }
 ion-back-button.ios:not(.ios26-disabled) {
-  @include theme-button;
+  @include theme-button($is-back-button: true);
 }

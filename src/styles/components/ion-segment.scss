@@ -17,6 +17,11 @@ ion-segment.ios:not(.ios26-disabled) {
     will-change: auto;
   }
 
+  ion-segment-button:is(.in-toolbar-color, .in-segment-color)::part(indicator-background) {
+    // Ionic sets a direct background for color contexts, bypassing --indicator-color.
+    background: var(--indicator-color);
+  }
+
   &.in-toolbar-color:not(.in-segment-color) {
     ion-segment-button:not(.segment-button-checked)::part(native) {
       color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 1) !important;
@@ -27,6 +32,8 @@ ion-segment.ios:not(.ios26-disabled) {
     transform: scale(1.1) translateZ(0);
     -webkit-transform: scale(1.1) translateZ(0);
     ion-segment-button {
+      --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
+      --indicator-transform: scale(1.1) translateZ(0);
       transition: transform 100ms ease-out;
       &.segment-button-checked::part(native) {
         transform: scale(1.08) translateZ(0);
@@ -35,9 +42,6 @@ ion-segment.ios:not(.ios26-disabled) {
       &::part(indicator-background) {
         position: relative;
         z-index: 1;
-        background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
-        transform: scale(1.1) translateZ(0);
-        -webkit-transform: scale(1.1) translateZ(0);
         transform-origin: center center;
       }
     }
@@ -48,6 +52,7 @@ ion-segment.ios:not(.ios26-disabled) {
       transform: scale(1.1) translateZ(0);
       -webkit-transform: scale(1.1) translateZ(0);
       ion-segment-button {
+        --indicator-transform: scale(1.1) translateZ(0);
         transition: transform 100ms ease-out;
         &.segment-button-checked::part(native) {
           transform: scale(1.08) translateZ(0);
@@ -56,17 +61,13 @@ ion-segment.ios:not(.ios26-disabled) {
         &::part(indicator-background) {
           position: relative;
           z-index: 1;
-          transform: scale(1.1) translateZ(0);
-          -webkit-transform: scale(1.1) translateZ(0);
           transform-origin: center center;
         }
       }
     }
     &.ios26-animated {
       ion-segment-button {
-        &::part(indicator-background) {
-          background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
-        }
+        --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
       }
     }
   }
@@ -91,6 +92,7 @@ ion-segment.ios:not(.ios26-disabled) {
         transform: scale(1) translateZ(0);
         -webkit-transform: scale(1) translateZ(0);
         ion-segment-button {
+          --indicator-transform: scale(1) translateZ(0);
           transition: none;
           &.segment-button-checked::part(native) {
             transform: scale(1) translateZ(0);
@@ -99,17 +101,13 @@ ion-segment.ios:not(.ios26-disabled) {
           &::part(indicator-background) {
             position: relative;
             z-index: 1;
-            transform: scale(1) translateZ(0);
-            -webkit-transform: scale(1) translateZ(0);
             transform-origin: center center;
           }
         }
       }
       &.ios26-animated {
         ion-segment-button {
-          &::part(indicator-background) {
-            background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
-          }
+          --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
         }
       }
     }
@@ -118,6 +116,8 @@ ion-segment.ios:not(.ios26-disabled) {
 
 ion-segment-button.ios:not(.ios26-disabled) {
   --border-width: 0;
+  --indicator-box-shadow: none;
+  --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
   --ion-color-base: var(--ion-text-color, #000);
   --padding-start: 8px;
   --padding-end: 8px;
@@ -127,9 +127,7 @@ ion-segment-button.ios:not(.ios26-disabled) {
 
   &::part(indicator-background) {
     border-radius: 25px;
-    box-shadow: none;
     transition: background 0.2s ease;
-    background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
   }
 
   &.ion-cloned-element {
