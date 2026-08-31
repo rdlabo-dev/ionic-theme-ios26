@@ -23,7 +23,7 @@ $scaleup-large-icon-only: 1.22;
   /**
    * compare .header-collapse-main ion-toolbar.in-toolbar ion-title, .header-collapse-main ion-toolbar.in-toolbar ion-buttons
    */
-  transition: transform var(--ios26-activated-transition-duration) ease-out !important;
+  transition: transform var(--ios26-activated-transition-duration) ease-out;
 
   z-index: 0;
 
@@ -117,7 +117,7 @@ $scaleup-large-icon-only: 1.22;
     }
 
     &::part(native) {
-      backdrop-filter: none !important;
+      backdrop-filter: none;
     }
   }
 
@@ -396,6 +396,13 @@ $scaleup-large-icon-only: 1.22;
 
 ion-buttons.ios:not(.ios26-disabled):not(:has(ion-back-button, ion-button:not(.button-clear), ion-menu-button.menu-button-hidden)) {
   @include theme-buttons;
+}
+
+// Ionic's collapsing-header transition has a more specific contextual selector.
+.header-collapse-main
+  :where(ion-toolbar.in-toolbar)
+  ion-buttons.ios:not(.ios26-disabled):not(:has(ion-back-button, ion-button:not(.button-clear), ion-menu-button.menu-button-hidden)) {
+  transition: transform var(--ios26-activated-transition-duration) ease-out;
 }
 
 ion-buttons.ios:not(.ios26-disabled):not(:has(ion-back-button, ion-button.button-clear)) {
