@@ -26,17 +26,21 @@
   }
 }
 
-@mixin theme-dark-button {
+@mixin theme-dark-button($is-back-button: false) {
   &.ion-activated:not(.button-solid):not(.button-outline):not(.button-clear) {
+    --background: rgba(var(--ios26-button-color-selected-rgb), 0.56);
     --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 1);
+    @if not $is-back-button {
+      --box-shadow: inset 0 0 16px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.55);
+    }
     &.ion-color {
       --color: rgba(var(--ion-color-base-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 1);
     }
     &::part(native) {
-      @include api.glass-background-button-activated-dark;
+      @include api.glass-background-button-activated-dark($include-background: false, $include-box-shadow: $is-back-button);
     }
     ion-icon {
-      color: rgb(255, 255, 255) !important;
+      color: rgb(255, 255, 255);
     }
   }
 }
@@ -45,8 +49,10 @@
   ion-buttons.ios:not(.ios26-disabled):not(:has(ion-back-button, ion-button:not(.button-clear))) {
     @include theme-dark-buttons;
   }
-  ion-button:not(.ios26-disabled),
-  ion-back-button:not(.ios26-disabled) {
+  ion-button:not(.ios26-disabled) {
     @include theme-dark-button;
+  }
+  ion-back-button:not(.ios26-disabled) {
+    @include theme-dark-button($is-back-button: true);
   }
 }

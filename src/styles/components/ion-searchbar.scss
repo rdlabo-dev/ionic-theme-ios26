@@ -27,11 +27,17 @@ ion-searchbar.ios:not(.ios26-disabled):not(.searchbar-classic) {
       min-height: 44px;
       @include api.glass-background;
       border-radius: 20px;
-      padding-inline-start: 2.4rem !important;
+      padding-inline-start: 2.4rem;
     }
     .searchbar-clear-button {
       padding-inline-end: 2rem;
     }
+  }
+
+  // Ionic writes a physical inline padding while the placeholder is centered.
+  // Match before hydration as well, so Ionic's `transition: all` cannot animate through the inline value.
+  &:not(.searchbar-left-aligned) .searchbar-input-container input.searchbar-input {
+    padding-inline-start: 2.4rem !important;
   }
 }
 
@@ -39,16 +45,16 @@ ion-searchbar.ios:not(.ios26-disabled):not(.searchbar-classic) {
  * add searchbar-classic
  */
 ion-toolbar.ios:not(.ios26-disabled):has(ion-searchbar.searchbar-classic.ios:not(.ios26-disabled)) {
-  --min-height: auto !important;
+  --min-height: auto;
 }
 ion-searchbar.ios:not(.ios26-disabled).searchbar-classic {
   padding-bottom: 12px;
   min-height: auto;
-  input.searchbar-input {
+  .searchbar-input-container input.searchbar-input {
     border-radius: 999px;
     height: 44px;
     font-size: 0.98rem;
-    padding-inline-start: 38px !important;
+    padding-inline-start: 38px;
     background: rgba(var(--ion-color-contrast-rgb), 0.078);
   }
   ion-icon.searchbar-search-icon {

@@ -1,8 +1,8 @@
 @use '../utils/api';
 
 @mixin scaled-transform($translate-x) {
-  transform: scale(1.56, 1.47) translateX(calc(#{$translate-x} * -0.1)) translateZ(0) !important;
-  -webkit-transform: scale(1.56, 1.47) translateX(calc(#{$translate-x} * -0.1)) translateZ(0) !important;
+  transform: scale(1.56, 1.47) translateX(calc(#{$translate-x} * -0.1)) translateZ(0);
+  -webkit-transform: scale(1.56, 1.47) translateX(calc(#{$translate-x} * -0.1)) translateZ(0);
 }
 
 ion-range.ios:not(.ios26-disabled) {
@@ -36,37 +36,36 @@ ion-range.ios:not(.ios26-disabled) {
   }
 
   &:not(.range-dual-knobs).range-pressed {
+    --knob-background: rgba(var(--ios26-glass-background-rgb), 0.1);
+    --knob-box-shadow: 0 0.5px 4px rgba(0, 0, 0, 0.12), 0 6px 4px rgba(0, 0, 0, 0.05), inset 0.4px 0.4px 1px 0 var(--bar-background-active);
+
     &::part(knob) {
+      @include api.glass-background(0.1, 0, 120%, $include-background: false, $include-box-shadow: false, $include-border: false);
       @include scaled-transform(0px);
-      @include api.glass-background(0.1, 0, 120%);
-      border: none;
-      box-shadow:
-        0 0.5px 4px rgba(0, 0, 0, 0.12),
-        0 6px 4px rgba(0, 0, 0, 0.05),
-        inset 0.4px 0.4px 1px 0 var(--bar-background-active);
     }
 
-    &.range-value-min::part(knob) {
-      @include scaled-transform(calc(var(--knob-width) * -2));
-      box-shadow:
-        0 0.5px 4px rgba(0, 0, 0, 0.12),
-        0 6px 4px rgba(0, 0, 0, 0.05);
+    &.range-value-min {
+      --knob-box-shadow: 0 0.5px 4px rgba(0, 0, 0, 0.12), 0 6px 4px rgba(0, 0, 0, 0.05);
+
+      &::part(knob) {
+        @include scaled-transform(calc(var(--knob-width) * -2));
+      }
     }
-    &.range-value-max::part(knob) {
-      @include scaled-transform(calc(var(--knob-width) * 2));
-      box-shadow:
-        0 0.5px 4px rgba(0, 0, 0, 0.12),
-        0 6px 4px rgba(0, 0, 0, 0.05),
-        inset 0.4px 0.4px 1px 0.2px var(--bar-background-active);
+    &.range-value-max {
+      --knob-box-shadow:
+        0 0.5px 4px rgba(0, 0, 0, 0.12), 0 6px 4px rgba(0, 0, 0, 0.05), inset 0.4px 0.4px 1px 0.2px var(--bar-background-active);
+
+      &::part(knob) {
+        @include scaled-transform(calc(var(--knob-width) * 2));
+      }
     }
   }
 
   &.range-dual-knobs.range-pressed {
     &.range-pressed-a::part(knob-a),
     &.range-pressed-b::part(knob-b) {
+      @include api.glass-background(0.1, 0, 120%, $include-border: false);
       @include scaled-transform(0px);
-      @include api.glass-background(0.1, 0, 120%);
-      border: none;
       box-shadow:
         0 0.5px 4px rgba(0, 0, 0, 0.12),
         0 6px 4px rgba(0, 0, 0, 0.05),
