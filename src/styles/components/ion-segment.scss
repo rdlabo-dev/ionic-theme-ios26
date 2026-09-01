@@ -36,7 +36,7 @@ ion-segment.ios:not(.ios26-disabled) {
     transform: scale(1.1) translateZ(0);
     -webkit-transform: scale(1.1) translateZ(0);
     ion-segment-button {
-      --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
+      --indicator-color: transparent;
       --indicator-transform: scale(1.1) translateZ(0);
       transition: transform 100ms ease-out;
       &.segment-button-checked::part(native) {
@@ -71,7 +71,7 @@ ion-segment.ios:not(.ios26-disabled) {
     }
     &.ios26-animated {
       ion-segment-button {
-        --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
+        --indicator-color: transparent;
       }
     }
   }
@@ -111,7 +111,7 @@ ion-segment.ios:not(.ios26-disabled) {
       }
       &.ios26-animated {
         ion-segment-button {
-          --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
+          --indicator-color: transparent;
         }
       }
     }
@@ -121,7 +121,6 @@ ion-segment.ios:not(.ios26-disabled) {
 ion-segment-button.ios:not(.ios26-disabled) {
   --border-width: 0;
   --indicator-box-shadow: none;
-  --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
   --padding-start: 8px;
   --padding-end: 8px;
   min-width: 60px;
