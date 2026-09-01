@@ -69,6 +69,11 @@
           <ion-button [disabled]="true" size="default">Link</ion-button>
         </ion-buttons>
       </ion-item>
+      <ion-item>
+        <ion-label><code>button[disabled][color]</code></ion-label>
+        <ion-button slot="end" color="danger" fill="solid" type="submit" [disabled]="true">Danger</ion-button>
+        <ion-button slot="end" color="light" fill="solid" type="submit" [disabled]="true">Light</ion-button>
+      </ion-item>
     </ion-item-group>
   </ion-list>
 

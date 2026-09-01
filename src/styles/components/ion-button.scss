@@ -284,8 +284,15 @@ $scaleup-large-icon-only: 1.22;
     &.button-disabled {
       --background: var(--ion-background-color-step-200, #cccccc);
       opacity: 1;
+
+      &.ion-color {
+        --background: var(--ion-color-base);
+        --color: var(--ion-color-contrast);
+        opacity: 0.38;
+      }
+
       &::part(native) {
-        color: #fff;
+        color: var(--color);
       }
       &.ion-color::part(native) {
         background: var(--background);
