@@ -5,10 +5,6 @@ ion-segment.ios:not(.ios26-disabled) {
   min-height: 48px;
   border-radius: 25px;
 
-  &.ion-color {
-    background: rgba(var(--ion-color-base-rgb), 0.065);
-  }
-
   transition: transform var(--ios26-activated-transition-duration) ease-out;
 
   // will-change is optimized to only apply when needed for performance
@@ -36,7 +32,7 @@ ion-segment.ios:not(.ios26-disabled) {
     transform: scale(1.1) translateZ(0);
     -webkit-transform: scale(1.1) translateZ(0);
     ion-segment-button {
-      --indicator-color: transparent;
+      --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
       --indicator-transform: scale(1.1) translateZ(0);
       transition: transform 100ms ease-out;
       &.segment-button-checked::part(native) {
@@ -71,7 +67,7 @@ ion-segment.ios:not(.ios26-disabled) {
     }
     &.ios26-animated {
       ion-segment-button {
-        --indicator-color: transparent;
+        --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
       }
     }
   }
@@ -111,7 +107,7 @@ ion-segment.ios:not(.ios26-disabled) {
       }
       &.ios26-animated {
         ion-segment-button {
-          --indicator-color: transparent;
+          --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
         }
       }
     }
@@ -121,25 +117,13 @@ ion-segment.ios:not(.ios26-disabled) {
 ion-segment-button.ios:not(.ios26-disabled) {
   --border-width: 0;
   --indicator-box-shadow: none;
+  --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
+  --ion-color-base: var(--ion-text-color, #000);
   --padding-start: 8px;
   --padding-end: 8px;
   min-width: 60px;
   margin: 3px 2px;
   font-size: 14.5px;
-
-  &:not(.in-segment-color) {
-    --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
-    --ion-color-base: var(--ion-text-color, #000);
-  }
-
-  &.in-segment-color {
-    --indicator-color: rgba(var(--ion-color-base-rgb, 0, 0, 0), 0.5);
-    --color-selected: var(--ion-color-contrast);
-
-    ion-label {
-      color: var(--ion-color-contrast);
-    }
-  }
 
   &::part(indicator-background) {
     border-radius: 25px;

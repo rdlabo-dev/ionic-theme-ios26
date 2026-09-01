@@ -84,12 +84,6 @@ export const registerEffect = (
     if (currentTouchedElement === undefined || tabSelectedElement === null) {
       return false;
     }
-    const colorSelected = getComputedStyle(tabSelectedElement).getPropertyValue('--color-selected').trim();
-    if (colorSelected) {
-      effectElement.style.setProperty('--color-selected', colorSelected);
-    } else {
-      effectElement.style.removeProperty('--color-selected');
-    }
     animationPosition = {
       minPositionX: targetElement.getBoundingClientRect().left,
       maxPositionX: targetElement.getBoundingClientRect().right - tabSelectedElement.clientWidth,
