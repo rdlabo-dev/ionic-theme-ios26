@@ -133,7 +133,12 @@ ion-segment-button.ios:not(.ios26-disabled) {
   }
 
   &.in-segment-color {
-    --color-selected: var(--ion-color-base);
+    --indicator-color: rgba(var(--ion-color-base-rgb, 0, 0, 0), 0.5);
+    --color-selected: var(--ion-color-contrast);
+
+    ion-label {
+      color: var(--ion-color-contrast);
+    }
   }
 
   &::part(indicator-background) {
