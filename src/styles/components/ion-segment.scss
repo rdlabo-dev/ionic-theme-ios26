@@ -128,6 +128,7 @@ ion-segment-button.ios:not(.ios26-disabled) {
   font-size: 14.5px;
 
   &:not(.in-segment-color) {
+    --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
     --ion-color-base: var(--ion-text-color, #000);
   }
 
