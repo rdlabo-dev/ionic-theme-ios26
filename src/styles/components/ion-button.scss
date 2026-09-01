@@ -205,22 +205,25 @@ $scaleup-large-icon-only: 1.22;
      * If not set ion-color-**, button color set primary.
      * https://github.com/ionic-team/ionic-framework/blob/main/core/src/components/button/button.scss#L78-L81
      */
-    --color: var(--ion-color-primary-brightness, var(--ion-color-contrast));
-    --color-activated: var(--ion-color-primary-brightness);
-    --border-color: var(--ion-color-primary-brightness, transparent);
     --background-activated: var(--ion-color-primary-shade, #004acd);
     --background-focused: var(--ion-color-primary-shade, #004acd);
     --background-hover: var(--ion-color-primary-tint, #1a65eb);
     --border-width: 0.5px;
     --border-style: solid;
 
-    @each $item in primary, secondary, tertiary, success, warning, danger, light, medium, dark {
-      &.ion-color-#{$item} {
-        --color: var(--ion-color-#{$item}-brightness, var(--ion-color-#{$item}-contrast, var(--ion-color-contrast)));
-        --color-activated: var(--ion-color-#{$item}-brightness);
-        --border-color: var(--ion-color-#{$item}-brightness, transparent);
-        --border-width: 0.5px;
-        --border-style: solid;
+    &:not(.button-disabled):not([disabled]) {
+      --color: var(--ion-color-primary-brightness, var(--ion-color-contrast));
+      --color-activated: var(--ion-color-primary-brightness);
+      --border-color: var(--ion-color-primary-brightness, transparent);
+
+      @each $item in primary, secondary, tertiary, success, warning, danger, light, medium, dark {
+        &.ion-color-#{$item} {
+          --color: var(--ion-color-#{$item}-brightness, var(--ion-color-#{$item}-contrast, var(--ion-color-contrast)));
+          --color-activated: var(--ion-color-#{$item}-brightness);
+          --border-color: var(--ion-color-#{$item}-brightness, transparent);
+          --border-width: 0.5px;
+          --border-style: solid;
+        }
       }
     }
     --background-color: #fff;
