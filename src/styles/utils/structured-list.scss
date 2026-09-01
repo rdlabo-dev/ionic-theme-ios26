@@ -28,7 +28,10 @@ $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group
     ion-label {
       font-size: 0.9rem;
       margin: 8px 4px 4px;
-      color: var(--ion-color-medium-tint);
+
+      &:not(.ion-color) {
+        color: var(--ion-color-medium-tint);
+      }
     }
 
     ion-button {
@@ -58,9 +61,12 @@ $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group
 
       ion-icon {
         font-size: 2.8rem;
-        color: #ffffff;
         border-radius: 20%;
         padding: 6px;
+
+        &:not(.ion-color) {
+          color: #ffffff;
+        }
       }
 
       h2 {
