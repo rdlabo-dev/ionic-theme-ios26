@@ -156,7 +156,7 @@ $groups: ion-item-group, ion-reorder-group, ion-accordion-group, ion-radio-group
   }
 
   & > ion-note {
-    color: var(--ion-color-medium-tint);
+    --color: var(--ion-color-medium-tint);
     font-size: 0.9rem;
     display: block;
     margin: 8px calc(var(--ion-safe-area-right, 0) + $outer-note-inset) 8px calc(var(--ion-safe-area-left, 0) + $outer-note-inset);
