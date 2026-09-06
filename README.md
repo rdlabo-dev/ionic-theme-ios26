@@ -22,6 +22,8 @@ I'm also working on the Android Design (Material Design 3) theme. Be sure to cat
 
 After [Installation](#installation), import the theme CSS. Details are in Installation below.
 
+In Ionic Angular apps, [check list structure with ESLint](./docs/eslint.md) as you add new screens.
+
 ## Installation
 
 This is a CSS theme for extending your Ionic project. It does not work on its own, so use it together with the Ionic Framework.
