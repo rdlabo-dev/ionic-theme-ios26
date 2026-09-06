@@ -10,23 +10,9 @@ A CSS/JS theme library that applies iOS26 design system to Ionic applications.
 
 DEMO is here: https://ionic-theme-ios26.rdlabo.dev/
 
-## Overview
-
-This library provides CSS/JS files that bring the iOS26 design system to Ionic applications. It updates the look and feel of Ionic components to match the latest iOS26 design guidelines.
-
-I'm also working on the Android Design (Material Design 3) theme. Be sure to catch up!
-
-👉️[rdlabo-dev/ionic-theme-md3](https://github.com/rdlabo-dev/ionic-theme-md3)
-
-## Quick start
-
-After [Installation](#installation), import the theme CSS. Details are in Installation below.
-
-In Ionic Angular apps, [check list structure with ESLint](./docs/eslint.md) as you add new screens.
-
 ## Installation
 
-This is a CSS theme for extending your Ionic project. It does not work on its own, so use it together with the Ionic Framework.
+In an existing Ionic project:
 
 ```bash
 npm install @rdlabo/ionic-theme-ios26
@@ -62,6 +48,55 @@ And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
  * use System:    @import '@rdlabo/ionic-theme-ios26/dist/css/ionic-theme-ios26-dark-system.css'
  * use CSS Class: @import '@rdlabo/ionic-theme-ios26/dist/css/ionic-theme-ios26-dark-class.css'
  */
+```
+
+### Configure animations
+
+If you installed only the iOS 26 theme, configure its animations as follows.
+
+```ts
+import { isPlatform } from '@ionic/core'; // or @ionic/angular (Ionic 9), @ionic/angular/standalone (Ionic 8), @ionic/react, @ionic/vue
+import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios26';
+
+// Angular
+provideIonicAngular({
+    ...
+    navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
+    popoverEnter: isPlatform('ios') ? popoverEnterAnimation: undefined,
+    popoverLeave: isPlatform('ios') ? popoverLeaveAnimation: undefined,
+});
+
+// React
+setupIonicReact({
+    ...
+    navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
+    popoverEnter: isPlatform('ios') ? popoverEnterAnimation: undefined,
+    popoverLeave: isPlatform('ios') ? popoverLeaveAnimation: undefined,
+});
+
+// Vue
+createApp(App)
+    .use(IonicVue, {
+        ...
+        navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
+        popoverEnter: isPlatform('ios') ? popoverEnterAnimation: undefined,
+        popoverLeave: isPlatform('ios') ? popoverLeaveAnimation: undefined,
+})
+```
+
+### Check the theme
+
+Test on iOS. When previewing on desktop, set Ionic mode to `ios` in your existing framework initialization config (for example `mode: 'ios'`).
+
+Use this markup to preview the inset grouped list look. For the list structure the theme expects, see [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group).
+
+```html
+<ion-list mode="ios" inset="true">
+  <ion-item-group>
+    <ion-item><ion-label>Notifications</ion-label></ion-item>
+    <ion-item><ion-label>Appearance</ion-label></ion-item>
+  </ion-item-group>
+</ion-list>
 ```
 
 ### Optional: use the iOS 26 and MD3 themes together
@@ -120,44 +155,11 @@ createApp(App)
     });
 ```
 
-If you installed only the iOS 26 theme, configure its animations as follows.
-
-```ts
-import { isPlatform } from '@ionic/core'; // or @ionic/angular (Ionic 9), @ionic/angular/standalone (Ionic 8), @ionic/react, @ionic/vue
-import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios26';
-
-// Angular
-provideIonicAngular({
-    ...
-    navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
-    popoverEnter: isPlatform('ios') ? popoverEnterAnimation: undefined,
-    popoverLeave: isPlatform('ios') ? popoverLeaveAnimation: undefined,
-});
-
-// React
-setupIonicReact({
-    ...
-    navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
-    popoverEnter: isPlatform('ios') ? popoverEnterAnimation: undefined,
-    popoverLeave: isPlatform('ios') ? popoverLeaveAnimation: undefined,
-});
-
-// Vue
-createApp(App)
-    .use(IonicVue, {
-        ...
-        navAnimation: isPlatform('ios') ? iosTransitionAnimation: undefined,
-        popoverEnter: isPlatform('ios') ? popoverEnterAnimation: undefined,
-        popoverLeave: isPlatform('ios') ? popoverLeaveAnimation: undefined,
-})
-```
-
 ## Documentation
-
-Start with [Installation](#installation), then [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group) when you use inset lists.
 
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group) — required markup for inset lists.
 - [Special markup and classes](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/special-markup) — opt-in markup and utility classes used by the theme.
+- [ESLint](./docs/eslint.md) — check list structure with ESLint rules.
 - [Features](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/features) — CSS variables, Liquid Glass, selective imports, and dark mode.
 - [Experimental Animation](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/experimental-animation) — tab bar and searchable effects.
 - [iOS 18](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/ios-18) — load the theme only on iOS 26.
