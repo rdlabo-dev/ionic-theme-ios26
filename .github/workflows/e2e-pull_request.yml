@@ -20,8 +20,10 @@ jobs:
         include:
           - ionic-major: 8
             ionic-version: 8.8.19
+            eslint-plugin-version: 21.3.0
           - ionic-major: 9
             ionic-version: 9.0.0
+            eslint-plugin-version: 22.1.0
     container:
       image: mcr.microsoft.com/playwright:v1.58.2-noble
     steps:
@@ -43,8 +45,8 @@ jobs:
 
       - run: npm ci
         working-directory: './demo'
-      - if: matrix.ionic-major == 8
-        run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }}
+      - name: Install matching Ionic and ESLint plugin versions
+        run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }} @rdlabo/eslint-plugin-rules@${{ matrix.eslint-plugin-version }}
         working-directory: './demo'
 
       - name: Run Playwright tests
