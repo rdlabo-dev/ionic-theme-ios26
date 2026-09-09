@@ -32,6 +32,7 @@ ion-header.ios:not(.ios26-disabled).header-translucent:not(.header-collapse-cond
     --border-color: var(--ion-toolbar-border-color, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.08));
     &::part(background) {
       --opacity: 1;
+      background: transparent;
     }
   }
 }
