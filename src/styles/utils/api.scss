@@ -1,3 +1,19 @@
+$_glass-surface: linear-gradient(
+  180deg,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0) 4%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.01) 8%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.024) 16%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.027) 22%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.026) 28%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.018) 36%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.011) 44%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.009) 50%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.008) 58%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.008) 80%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.006) 88%,
+  rgba(var(--ion-text-color-rgb, 0, 0, 0), 0) 94%
+);
+
 @mixin glass-background(
   $opacity: 0.72,
   $blur: 2px,
@@ -6,22 +22,48 @@
   $border-color-rgb: var(--ios26-glass-border-color-rgb),
   $include-background: true,
   $include-box-shadow: true,
-  $include-border: true
+  $include-border: true,
+  $shadow-opacity: 0.18
 ) {
+  $surface: linear-gradient(transparent, transparent);
   @if $include-background {
-    background: rgba($background-rgb, $opacity);
+    $surface: $_glass-surface;
+  }
+  @if $include-background {
+    background: $_glass-surface, rgba($background-rgb, $opacity);
   }
   backdrop-filter: blur($blur) saturate($saturate);
   @if $include-box-shadow {
     box-shadow:
-      inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2),
-      0 0 10px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.82);
+      inset 0 0 0 0.5px rgba($border-color-rgb, 0.6),
+      inset 0 0 1px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.18),
+      inset 0 1px 2px 0 rgba($border-color-rgb, 0.8),
+      inset 0 -1px 2px 0 rgba($border-color-rgb, 0.5),
+      0 0.5px 1px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), $shadow-opacity);
   }
   @if $include-border {
-    border-top: 0.5px solid rgba($border-color-rgb, 1);
-    border-right: 0.5px solid rgba($border-color-rgb, 0.8);
-    border-bottom: 0.5px solid rgba($border-color-rgb, 1);
-    border-left: 0.5px solid rgba($border-color-rgb, 0.6);
+    border: 0.5px solid;
+    border-top-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 12%);
+    border-right-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 32%);
+    border-bottom-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 16%);
+    border-left-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 28%);
+    @supports (background-clip: border-area) {
+      border-color: transparent;
+      background-image:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 12%) 0%,
+          color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 18%) 7%,
+          color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 29%) 25%,
+          color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 36%) 50%,
+          color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 28%) 75%,
+          color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 18%) 93%,
+          color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 16%) 100%
+        ),
+        $surface;
+      background-origin: border-box, padding-box;
+      background-clip: border-area, padding-box;
+    }
   }
 
   // Hardware acceleration optimization for glass effects
@@ -33,8 +75,10 @@
 
 @mixin glass-background-button-activated {
   box-shadow:
-    inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2),
-    0 0 8px -4px rgba(var(--ios26-glass-box-shadow-color-rgb), 0.92);
+    inset 0 0 0 0.5px rgba(var(--ios26-glass-border-color-rgb), 0.95),
+    inset 0 1px 3px 0 rgba(var(--ios26-glass-border-color-rgb), 0.85),
+    inset 0 -1px 2px 0 rgba(var(--ios26-glass-border-color-rgb), 0.6),
+    0 0.5px 1px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.12);
 }
 
 @mixin glass-background-button-activated-dark(
@@ -55,6 +99,9 @@
   border-right: 0.8px solid rgba(var(--ios26-button-color-selected-rgb), 0.4);
   border-bottom: 0.8px solid rgba(var(--ios26-button-color-selected-rgb), 0.8);
   border-left: 0.8px solid rgba(var(--ios26-button-color-selected-rgb), 0.6);
+  background-image: none;
+  background-clip: border-box;
+  background-origin: padding-box;
 
   // Hardware acceleration optimization for glass effects
   transform: translateZ(0);
@@ -73,14 +120,14 @@
 
 @mixin glass-background-overlay-button {
   transition: background 0.2s ease;
-  background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.065);
+  background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);
   &.ion-activated {
     background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.022);
   }
 }
 
 @mixin glass-background-overlay-button-variable {
-  --button-background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.065);
+  --button-background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);
   &.ion-activated {
     --button-background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.022);
   }

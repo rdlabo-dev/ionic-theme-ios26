@@ -17,6 +17,7 @@ ion-searchbar.ios:not(.ios26-disabled):not(.searchbar-classic) {
 
   ion-icon.searchbar-search-icon {
     inset-inline-start: 12px;
+    opacity: 1;
   }
 
   .searchbar-input-container {
@@ -26,7 +27,7 @@ ion-searchbar.ios:not(.ios26-disabled):not(.searchbar-classic) {
     input.searchbar-input {
       min-height: 44px;
       @include api.glass-background;
-      border-radius: 20px;
+      border-radius: 22px;
       padding-inline-start: 2.4rem;
     }
     .searchbar-clear-button {
