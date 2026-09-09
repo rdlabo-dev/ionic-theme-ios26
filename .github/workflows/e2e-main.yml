@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ios26
 jobs:
   test:
     timeout-minutes: 10

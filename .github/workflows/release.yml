@@ -136,6 +136,7 @@ jobs:
       run-id: ${{ steps.gate.outputs.run-id }}
       version: ${{ steps.gate.outputs.version }}
       source-kind: ${{ steps.gate.outputs.source-kind }}
+      target-branch: ${{ steps.gate.outputs.target-branch }}
     permissions:
       actions: read
       contents: read
@@ -149,7 +150,7 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
-            const defaultBranch = context.payload.repository.default_branch;
+            const supportedBranches = new Set(['main', 'ios26']);
             const isComment = context.eventName === 'issue_comment';
             const protectedWorkflows = [
               '.github/workflows/lint.yml',
@@ -212,6 +213,7 @@ jobs:
             let required;
             let event;
             let sourceKind;
+            let targetBranch;
 
             if (isComment) {
               const requester = context.payload.comment.user.login;
@@ -241,10 +243,16 @@ jobs:
                 core.setFailed('The pull request head repository is no longer available.');
                 return;
               }
+              targetBranch = pullRequest.base.ref;
+              if (!supportedBranches.has(targetBranch)) {
+                core.notice(`Beta publishing is not enabled for the ${targetBranch} branch.`);
+                core.setOutput('allowed', 'false');
+                return;
+              }
               const changedWorkflows = [];
               for (const path of protectedWorkflows) {
                 const [{ data: trusted }, { data: candidate }] = await Promise.all([
-                  github.rest.repos.getContent({ owner, repo, path, ref: defaultBranch }),
+                  github.rest.repos.getContent({ owner, repo, path, ref: targetBranch }),
                   github.rest.repos.getContent({
                     owner: pullRequest.head.repo.owner.login,
                     repo: pullRequest.head.repo.name,
@@ -273,12 +281,13 @@ jobs:
               ]);
             } else {
               const source = context.payload.workflow_run;
+              targetBranch = source.head_branch;
               if (
                 source.event !== 'push' ||
-                source.head_branch !== defaultBranch ||
+                !supportedBranches.has(targetBranch) ||
                 source.conclusion !== 'success'
               ) {
-                core.notice('This workflow run is not a successful default-branch push.');
+                core.notice('This workflow run is not a successful supported-branch push.');
                 core.setOutput('allowed', 'false');
                 return;
               }
@@ -286,10 +295,10 @@ jobs:
               const { data: branch } = await github.rest.repos.getBranch({
                 owner,
                 repo,
-                branch: defaultBranch,
+                branch: targetBranch,
               });
               if (branch.commit.sha !== headSha) {
-                core.notice('A newer default-branch commit exists; the stale candidate was skipped.');
+                core.notice('A newer target-branch commit exists; the stale candidate was skipped.');
                 core.setOutput('allowed', 'false');
                 return;
               }
@@ -299,11 +308,11 @@ jobs:
                 commit_sha: headSha,
               });
               const mergedPullRequest = pullRequests.find(
-                (pullRequest) => pullRequest.merged_at && pullRequest.base.ref === defaultBranch &&
+                (pullRequest) => pullRequest.merged_at && pullRequest.base.ref === targetBranch &&
                   pullRequest.merge_commit_sha === headSha,
               );
               if (!mergedPullRequest) {
-                core.notice('The default-branch push is not a merged pull request; no beta release was requested.');
+                core.notice('The target-branch push is not a merged pull request; no beta release was requested.');
                 core.setOutput('allowed', 'false');
                 return;
               }
@@ -363,7 +372,7 @@ jobs:
               return;
             }
 
-            const trustedPackage = await getTrustedPackage(defaultBranch);
+            const trustedPackage = await getTrustedPackage(targetBranch);
             const version = `${trustedPackage.baseVersion}-beta.pr${prNumber}.sha${headSha.slice(0, 12)}`;
 
             core.setOutput('allowed', 'true');
@@ -375,6 +384,7 @@ jobs:
             core.setOutput('run-id', String(candidateRun.id));
             core.setOutput('version', version);
             core.setOutput('source-kind', sourceKind);
+            core.setOutput('target-branch', targetBranch);
 
   publish-candidate:
     needs: authorize-candidate
@@ -402,11 +412,16 @@ jobs:
           PR_NUMBER: ${{ needs.authorize-candidate.outputs.pr-number }}
           RUN_ID: ${{ needs.authorize-candidate.outputs.run-id }}
           SOURCE_KIND: ${{ needs.authorize-candidate.outputs.source-kind }}
+          TARGET_BRANCH: ${{ needs.authorize-candidate.outputs.target-branch }}
           VERSION: ${{ needs.authorize-candidate.outputs.version }}
         with:
           script: |
             const { owner, repo } = context.repo;
-            const defaultBranch = context.payload.repository.default_branch;
+            const targetBranch = process.env.TARGET_BRANCH;
+            if (!['main', 'ios26'].includes(targetBranch)) {
+              core.setFailed(`Unsupported target branch: ${targetBranch}`);
+              return;
+            }
             const { data: run } = await github.rest.actions.getWorkflowRun({
               owner,
               repo,
@@ -428,8 +443,12 @@ jobs:
             if (process.env.SOURCE_KIND === 'comment') {
               const pull_number = Number(process.env.PR_NUMBER);
               const { data: pullRequest } = await github.rest.pulls.get({ owner, repo, pull_number });
-              if (pullRequest.state !== 'open' || pullRequest.head.sha !== process.env.HEAD_SHA) {
-                core.setFailed('The PR head changed after /beta; a fresh owner or maintainer /beta is required.');
+              if (
+                pullRequest.state !== 'open' ||
+                pullRequest.head.sha !== process.env.HEAD_SHA ||
+                pullRequest.base.ref !== targetBranch
+              ) {
+                core.setFailed('The PR head or base changed after /beta; a fresh owner or maintainer /beta is required.');
                 return;
               }
               const requester = context.payload.comment.user.login;
@@ -446,10 +465,10 @@ jobs:
               const { data: branch } = await github.rest.repos.getBranch({
                 owner,
                 repo,
-                branch: defaultBranch,
+                branch: targetBranch,
               });
               if (branch.commit.sha !== process.env.HEAD_SHA) {
-                core.setFailed('A newer default-branch commit exists; refusing to publish a stale merge candidate.');
+                core.setFailed('A newer target-branch commit exists; refusing to publish a stale merge candidate.');
                 return;
               }
               const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
@@ -459,7 +478,7 @@ jobs:
               });
               const mergedPullRequest = pullRequests.find(
                 (pullRequest) => pullRequest.number === Number(process.env.PR_NUMBER) &&
-                  pullRequest.merged_at && pullRequest.base.ref === defaultBranch &&
+                  pullRequest.merged_at && pullRequest.base.ref === targetBranch &&
                   pullRequest.merge_commit_sha === process.env.HEAD_SHA,
               );
               if (!mergedPullRequest) {
@@ -475,7 +494,7 @@ jobs:
               owner,
               repo,
               path: 'package.json',
-              ref: defaultBranch,
+              ref: targetBranch,
             });
             if (Array.isArray(data) || data.type !== 'file' || !data.content) {
               core.setFailed('Trusted package.json could not be read.');

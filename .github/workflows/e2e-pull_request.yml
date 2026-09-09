@@ -2,6 +2,9 @@ name: E2E Screenshot Tests Pull Request
 
 on:
   pull_request:
+    branches:
+      - main
+      - ios26
     types: [opened, synchronize, closed]
 
 permissions:

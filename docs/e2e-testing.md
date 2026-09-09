@@ -48,4 +48,4 @@ npx playwright show-report
 
 When adding a demo route or overlay variant, update `demo/e2e/screenshot.spec.ts` and regenerate the relevant baselines. Commit baseline changes only after reviewing the visual diff.
 
-Pull requests run the E2E workflow in `.github/workflows/e2e-pull_request.yml`; pushes to `main` run `.github/workflows/e2e-main.yml`.
+Pull requests targeting `main` or `ios26` run the E2E workflow in `.github/workflows/e2e-pull_request.yml`; pushes to either branch run `.github/workflows/e2e-main.yml`. Pull-request tests use the target branch's committed screenshots. The `/update-screenshots` command also loads its update procedure from the pull request's target branch and commits the regenerated screenshots to the pull request branch.

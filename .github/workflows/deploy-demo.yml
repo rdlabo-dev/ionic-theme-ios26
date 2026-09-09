@@ -3,7 +3,7 @@ name: Deploy Demo
 on:
   push:
     branches:
-      - main
+      - ios26
   workflow_dispatch:
 
 permissions:

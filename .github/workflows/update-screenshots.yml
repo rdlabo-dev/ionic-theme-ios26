@@ -15,6 +15,8 @@ jobs:
     permissions:
       pull-requests: write
     outputs:
+      base-ref: ${{ fromJson(steps.get-pr.outputs.result).baseRef }}
+      base-sha: ${{ fromJson(steps.get-pr.outputs.result).baseSha }}
       head-ref: ${{ fromJson(steps.get-pr.outputs.result).ref }}
       head-repo: ${{ fromJson(steps.get-pr.outputs.result).repo }}
       head-sha: ${{ fromJson(steps.get-pr.outputs.result).sha }}
@@ -38,8 +40,11 @@ jobs:
                 username: context.payload.comment.user.login
               })
             ]);
-            const authorized = ['admin', 'maintain', 'write'].includes(permission.data.permission);
+            const supportedBase = ['main', 'ios26'].includes(pr.data.base.ref);
+            const authorized = supportedBase && ['admin', 'maintain', 'write'].includes(permission.data.permission);
             return {
+              baseRef: pr.data.base.ref,
+              baseSha: pr.data.base.sha,
               ref: pr.data.head.ref,
               sha: pr.data.head.sha,
               repo: pr.data.head.repo.full_name,
@@ -72,6 +77,13 @@ jobs:
           ref: ${{ needs.pr-metadata.outputs.head-sha }}
           persist-credentials: false
 
+      - name: Checkout base-branch screenshot updater
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.pr-metadata.outputs.base-sha }}
+          path: .base-branch
+          persist-credentials: false
+
       - name: Fix git safe directory
         run: git config --system --add safe.directory $GITHUB_WORKSPACE
 
@@ -86,34 +98,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - run: npm ci
-      - run: npm run build
-
-      - name: Install dependencies
-        run: npm ci
-        working-directory: './demo'
-
-      - name: Update screenshots with Ionic 9
-        run: npm run test:e2e:update
-        working-directory: ./demo
-        env:
-          IONIC_MAJOR: 9
-
-      - name: Install Ionic 8 in theme
-        run: npm install --no-save --package-lock=false @ionic/angular@8.8.19 @ionic/core@8.8.19
-
-      - name: Rebuild theme with Ionic 8
-        run: npm run build
-
-      - name: Install Ionic 8 in demo
-        run: npm install --no-save --package-lock=false @ionic/angular@8.8.19 @ionic/core@8.8.19
-        working-directory: './demo'
-
-      - name: Verify Ionic 8 against the same screenshots
-        run: npm run test:e2e
-        working-directory: ./demo
-        env:
-          IONIC_MAJOR: 8
+      - name: Update screenshots using base-branch procedure
+        run: bash .base-branch/.github/scripts/update-e2e-screenshots.sh
 
       - name: Upload updated screenshots
         uses: actions/upload-artifact@v5
@@ -139,6 +125,8 @@ jobs:
         id: commit
         uses: actions/github-script@v7
         env:
+          EXPECTED_BASE_REF: ${{ needs.pr-metadata.outputs.base-ref }}
+          EXPECTED_BASE_SHA: ${{ needs.pr-metadata.outputs.base-sha }}
           EXPECTED_HEAD_REF: ${{ needs.pr-metadata.outputs.head-ref }}
           EXPECTED_HEAD_REPO: ${{ needs.pr-metadata.outputs.head-repo }}
           EXPECTED_HEAD_SHA: ${{ needs.pr-metadata.outputs.head-sha }}
@@ -151,6 +139,8 @@ jobs:
             const expectedHeadSha = process.env.EXPECTED_HEAD_SHA;
             const expectedHeadRef = process.env.EXPECTED_HEAD_REF;
             const expectedHeadRepo = process.env.EXPECTED_HEAD_REPO;
+            const expectedBaseRef = process.env.EXPECTED_BASE_REF;
+            const expectedBaseSha = process.env.EXPECTED_BASE_SHA;
 
             const pr = await github.rest.pulls.get({
               owner: context.repo.owner,
@@ -160,9 +150,11 @@ jobs:
             if (
               pr.data.head.repo.full_name !== expectedHeadRepo ||
               pr.data.head.ref !== expectedHeadRef ||
-              pr.data.head.sha !== expectedHeadSha
+              pr.data.head.sha !== expectedHeadSha ||
+              pr.data.base.ref !== expectedBaseRef ||
+              pr.data.base.sha !== expectedBaseSha
             ) {
-              core.setFailed('The PR head changed while screenshots were being generated. Run /update-screenshots again.');
+              core.setFailed('The PR head or base changed while screenshots were being generated. Run /update-screenshots again.');
               return;
             }
 
