@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "ionic-theme-ios26-demo",
+  "name": "ionic-theme-ios27-demo",
   "compatibility_date": "2026-08-21",
   "assets": {
     "directory": "./demo/www",
@@ -8,13 +8,43 @@
   },
   "routes": [
     {
-      "pattern": "ionic-theme-ios26.rdlabo.dev",
+      "pattern": "ionic-theme-ios27.rdlabo.dev",
       "custom_domain": true,
     },
   ],
   "env": {
     "ionic8": {
+      "name": "ionic-theme-ios27-demo-v8",
+      "assets": {
+        "directory": "./demo/www",
+        "not_found_handling": "single-page-application",
+      },
+      "routes": [
+        {
+          "pattern": "ionic8-theme-ios27.rdlabo.dev",
+          "custom_domain": true,
+        },
+      ],
+    },
+    "ios26": {
+      "name": "ionic-theme-ios26-demo",
+      "assets": {
+        "directory": "./demo/www",
+        "not_found_handling": "single-page-application",
+      },
+      "routes": [
+        {
+          "pattern": "ionic-theme-ios26.rdlabo.dev",
+          "custom_domain": true,
+        },
+      ],
+    },
+    "ios26-ionic8": {
       "name": "ionic-theme-ios26-demo-v8",
+      "assets": {
+        "directory": "./demo/www",
+        "not_found_handling": "single-page-application",
+      },
       "routes": [
         {
           "pattern": "ionic8-theme-ios26.rdlabo.dev",
