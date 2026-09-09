@@ -2,7 +2,7 @@ name: Lint
 on:
   pull_request:
     branches: [main, ios26]
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, edited]
   push:
     branches: [main, ios26]
 concurrency:

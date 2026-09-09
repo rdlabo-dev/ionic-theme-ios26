@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - ios26
-    types: [opened, synchronize, closed]
+    types: [opened, synchronize, edited, closed]
 
 permissions:
   contents: read

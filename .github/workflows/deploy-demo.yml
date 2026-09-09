@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   deploy:
+    if: github.ref_name == 'main' || github.ref_name == 'ios26'
     runs-on: ubuntu-latest
     concurrency:
       group: deploy-demo-${{ github.ref_name }}-ionic${{ matrix.ionic-major }}
@@ -62,11 +63,18 @@ jobs:
           MAIN_ENVIRONMENT: ${{ matrix.main-environment }}
           IOS26_ENVIRONMENT: ${{ matrix.ios26-environment }}
         run: |
-          if [ "$BRANCH_NAME" = "ios26" ]; then
-            echo "environment=$IOS26_ENVIRONMENT" >> "$GITHUB_OUTPUT"
-          else
-            echo "environment=$MAIN_ENVIRONMENT" >> "$GITHUB_OUTPUT"
-          fi
+          case "$BRANCH_NAME" in
+            main)
+              echo "environment=$MAIN_ENVIRONMENT" >> "$GITHUB_OUTPUT"
+              ;;
+            ios26)
+              echo "environment=$IOS26_ENVIRONMENT" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported deployment branch: $BRANCH_NAME" >&2
+              exit 1
+              ;;
+          esac
 
       - name: Deploy to Cloudflare Workers
         env:
