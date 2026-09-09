@@ -13,7 +13,7 @@ $scaleup-large: 1.12;
 $scaleup-large-icon-only: 1.22;
 
 @mixin theme-buttons {
-  @include api.glass-background;
+  @include api.glass-background($shadow-opacity: 0.08);
   border-radius: 25px;
   overflow: hidden;
   &:not(:has(.ion-activated)):hover {
@@ -318,7 +318,8 @@ $scaleup-large-icon-only: 1.22;
     --background-activated: transparent;
     @if not $is-back-button {
       --box-shadow:
-        inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2), 0 0 10px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.82);
+        inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2),
+        0 0.5px 1px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.08);
     }
 
     &:not(.button-has-icon-only):not(.back-button-has-icon-only) {
@@ -328,7 +329,7 @@ $scaleup-large-icon-only: 1.22;
     }
 
     &::part(native) {
-      @include api.glass-background($include-background: false, $include-box-shadow: $is-back-button);
+      @include api.glass-background($include-background: false, $include-box-shadow: $is-back-button, $shadow-opacity: 0.08);
     }
 
     &:not(.button-disabled) {

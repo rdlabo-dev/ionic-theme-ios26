@@ -25,6 +25,14 @@ ion-toolbar.ios:not(.toolbar-title-large):not(.ios26-disabled):not(:has(ion-segm
   --min-height: 68px;
 }
 
+ion-header.ios:not(.ios26-disabled):not(.header-collapse-condense):not(:where(ion-modal *))
+  > ion-toolbar.ios:not(.ios26-disabled):not(.toolbar-title-large):not(.toolbar-searchbar):not(
+    :has(ion-segment.segment-expand)
+  ):first-of-type {
+  padding-top: max(calc(var(--ion-safe-area-top) - 10px), 6px);
+  --min-height: 64px;
+}
+
 ion-toolbar.ios:not(.ios26-disabled).toolbar-searchbar {
   *[slot='start'],
   *[slot='end'] {
