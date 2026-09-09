@@ -43,11 +43,17 @@ $_glass-surface: linear-gradient(
   }
   @if $include-border {
     border: 0.5px solid;
-    border-top-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 12%);
-    border-right-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 32%);
-    border-bottom-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 16%);
-    border-left-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 28%);
-    @supports (background-clip: border-area) {
+    border-top-color: rgba($border-color-rgb, 1);
+    border-right-color: rgba($border-color-rgb, 0.8);
+    border-bottom-color: rgba($border-color-rgb, 1);
+    border-left-color: rgba($border-color-rgb, 0.6);
+    @supports (color: color-mix(in srgb, white, black)) {
+      border-top-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 12%);
+      border-right-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 32%);
+      border-bottom-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 16%);
+      border-left-color: color-mix(in srgb, rgb($border-color-rgb), rgb(var(--ion-text-color-rgb, 0, 0, 0)) 28%);
+    }
+    @supports (background-clip: border-area) and (color: color-mix(in srgb, white, black)) {
       border-color: transparent;
       background-image:
         linear-gradient(
