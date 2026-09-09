@@ -11,7 +11,7 @@ A CSS/JS theme library that applies iOS26 design system to Ionic applications.
 
 <!-- /rdlabo-docs-pick -->
 
-DEMO is here: https://ionic-theme-ios26.rdlabo.dev/
+DEMO is here: https://ionic-theme-ios27.rdlabo.dev/
 
 ## Installation
 
@@ -178,7 +178,7 @@ createApp(App)
 
 The same demo is deployed against both supported Ionic versions:
 
-- [Ionic 9 demo](https://ionic-theme-ios26.rdlabo.dev) — canonical
+- [Ionic 9 demo](https://ionic-theme-ios27.rdlabo.dev) — canonical
 - [Ionic 8 demo](https://ionic8-theme-ios26.rdlabo.dev) — compatibility
 
 The `demo/` directory contains the Angular application used by both deployments. To run it locally:
