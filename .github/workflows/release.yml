@@ -203,11 +203,13 @@ jobs:
                   .filter((candidate) =>
                     candidate.name === name &&
                     candidate.path === path &&
-                    (event !== 'pull_request' || candidate.pull_requests?.some((pullRequest) =>
-                      String(pullRequest.number) === prNumber &&
-                      pullRequest.base?.ref === targetBranch &&
-                      pullRequest.head?.sha === headSha
-                    ))
+                    (event === 'pull_request'
+                      ? candidate.pull_requests?.some((pullRequest) =>
+                          String(pullRequest.number) === prNumber &&
+                          pullRequest.base?.ref === targetBranch &&
+                          pullRequest.head?.sha === headSha
+                        )
+                      : candidate.head_branch === targetBranch)
                   )
                   .sort((left, right) => right.run_number - left.run_number)[0];
                 latest.set(name, run);

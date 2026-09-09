@@ -12,7 +12,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: package-candidate-${{ github.event.pull_request.head.sha || github.sha }}
+  group: package-candidate-${{ github.event.pull_request.base.ref || github.ref_name }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 jobs:
