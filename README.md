@@ -2,6 +2,9 @@
 
 A CSS/JS theme library that applies iOS26 design system to Ionic applications.
 
+> [!IMPORTANT]
+> Work on iOS 27 support has started on the `main` branch. When `@rdlabo/ionic-theme-ios27` is released, this repository will be renamed to `ionic-theme-ios27`. The existing iOS 26 implementation remains available on the [`ios26`](https://github.com/rdlabo-dev/ionic-theme-ios26/tree/ios26) branch for backward compatibility and documentation reference.
+
 <!-- rdlabo-docs-pick -->
 
 ![iOS 26 themed Ionic screens with Liquid Glass tab bar, lists, and controls](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v3.0.0/screenshots/ios26.png)
