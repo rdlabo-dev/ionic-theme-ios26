@@ -22,8 +22,8 @@ $_glass-surface: linear-gradient(
   $opacity: 0.72,
   $blur: 2px,
   $saturate: 360%,
-  $background-rgb: var(--ios27-glass-background-rgb),
-  $border-color-rgb: var(--ios27-glass-border-color-rgb),
+  $background-rgb: var(--ios-theme-glass-background-rgb, var(--ios26-glass-background-rgb)),
+  $border-color-rgb: var(--ios-theme-glass-border-color-rgb, var(--ios26-glass-border-color-rgb)),
   $include-background: true,
   $include-box-shadow: true,
   $include-border: true,
@@ -40,10 +40,10 @@ $_glass-surface: linear-gradient(
   @if $include-box-shadow {
     box-shadow:
       inset 0 0 0 0.5px rgba($border-color-rgb, 0.6),
-      inset 0 0 1px 0 rgba(var(--ios27-glass-box-shadow-color-rgb), 0.18),
+      inset 0 0 1px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.18),
       inset 0 1px 2px 0 rgba($border-color-rgb, 0.8),
       inset 0 -1px 2px 0 rgba($border-color-rgb, 0.5),
-      0 0.5px 1px 0 rgba(var(--ios27-glass-box-shadow-color-rgb), $shadow-opacity);
+      0 0.5px 1px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), $shadow-opacity);
   }
   @if $include-border {
     border: 0.5px solid;
@@ -84,14 +84,14 @@ $_glass-surface: linear-gradient(
 }
 
 @mixin glass-background-button-activated {
-  background-color: rgba(var(--ios27-glass-background-rgb), 0.96);
+  background-color: rgba(var(--ios-theme-glass-background-rgb, var(--ios26-glass-background-rgb)), 0.96);
   border-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.12) rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.32)
     rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.16) rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.28);
   box-shadow:
-    inset 0 0 0 0.5px rgba(var(--ios27-glass-border-color-rgb), 0.95),
-    inset 0 1px 3px 0 rgba(var(--ios27-glass-border-color-rgb), 0.85),
-    inset 0 -1px 2px 0 rgba(var(--ios27-glass-border-color-rgb), 0.6),
-    0 0.5px 1px 0 rgba(var(--ios27-glass-box-shadow-color-rgb), 0.12);
+    inset 0 0 0 0.5px rgba(var(--ios-theme-glass-border-color-rgb, var(--ios26-glass-border-color-rgb)), 0.95),
+    inset 0 1px 3px 0 rgba(var(--ios-theme-glass-border-color-rgb, var(--ios26-glass-border-color-rgb)), 0.85),
+    inset 0 -1px 2px 0 rgba(var(--ios-theme-glass-border-color-rgb, var(--ios26-glass-border-color-rgb)), 0.6),
+    0 0.5px 1px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.12);
 }
 
 @mixin glass-background-button-activated-dark(
@@ -102,18 +102,18 @@ $_glass-surface: linear-gradient(
   $include-box-shadow: true
 ) {
   @if $include-background {
-    background: rgba(var(--ios27-button-color-selected-rgb), $opacity);
+    background: rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), $opacity);
   } @else {
-    background-color: rgba(var(--ios27-button-color-selected-rgb), $opacity);
+    background-color: rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), $opacity);
   }
   backdrop-filter: blur($blur) saturate($saturate);
   @if $include-box-shadow {
-    box-shadow: inset 0 0 16px 0 rgba(var(--ios27-glass-box-shadow-color-rgb), 0.55);
+    box-shadow: inset 0 0 16px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.55);
   }
-  border-top: 0.8px solid rgba(var(--ios27-button-color-selected-rgb), 0.8);
-  border-right: 0.8px solid rgba(var(--ios27-button-color-selected-rgb), 0.4);
-  border-bottom: 0.8px solid rgba(var(--ios27-button-color-selected-rgb), 0.8);
-  border-left: 0.8px solid rgba(var(--ios27-button-color-selected-rgb), 0.6);
+  border-top: 0.8px solid rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0.8);
+  border-right: 0.8px solid rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0.4);
+  border-bottom: 0.8px solid rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0.8);
+  border-left: 0.8px solid rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0.6);
   background-image: none;
   background-clip: border-box;
   background-origin: padding-box;

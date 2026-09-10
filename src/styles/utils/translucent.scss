@@ -23,7 +23,10 @@ ion-footer.ios:not(.ios-theme-disabled, .ios26-disabled).footer-translucent {
 ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-translucent:not(.header-collapse-condense) {
   &:has(> ion-toolbar.ios:not(.ios-theme-disabled, .ios26-disabled) > *)::before {
     height: 100%;
-    background: rgba(var(--ion-color-base-rgb, var(--ios27-content-box-shadow-rgb)), calc(0.2 * var(--opacity-scale, 1)));
+    background: rgba(
+      var(--ion-color-base-rgb, var(--ios-theme-content-box-shadow-rgb, var(--ios26-content-box-shadow-rgb))),
+      calc(0.2 * var(--opacity-scale, 1))
+    );
     backdrop-filter: blur(8px);
   }
 
@@ -90,8 +93,8 @@ ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-translucent::aft
   height: var(--offset-top, 0px);
   background: linear-gradient(
     in oklab,
-    rgba(var(--ios27-content-box-shadow-rgb), 0.5) 0%,
-    rgba(var(--ios27-content-box-shadow-rgb), 0.2) 50%,
-    rgba(var(--ios27-content-box-shadow-rgb), 0) 100%
+    rgba(var(--ios-theme-content-box-shadow-rgb, var(--ios26-content-box-shadow-rgb)), 0.5) 0%,
+    rgba(var(--ios-theme-content-box-shadow-rgb, var(--ios26-content-box-shadow-rgb)), 0.2) 50%,
+    rgba(var(--ios-theme-content-box-shadow-rgb, var(--ios26-content-box-shadow-rgb)), 0) 100%
   );
 }

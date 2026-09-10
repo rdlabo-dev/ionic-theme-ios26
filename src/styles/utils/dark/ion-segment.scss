@@ -4,7 +4,7 @@
   ion-segment-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
     &.ion-cloned-element {
       &::part(native) {
-        --ios27-glass-border-color-rgb: 120, 120, 120;
+        --ios26-glass-border-color-rgb: 120, 120, 120;
         box-shadow: inset 0 0 8px 0 rgba(255, 255, 255, 0.2);
       }
     }

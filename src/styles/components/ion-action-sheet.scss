@@ -6,7 +6,7 @@ ion-action-sheet.ios:not(.ios-theme-disabled, .ios26-disabled) {
 
   .action-sheet-wrapper {
     padding-bottom: 0;
-    bottom: var(--ios27-floating-safe-area-bottom);
+    bottom: var(--ios-theme-floating-safe-area-bottom, var(--ios26-floating-safe-area-bottom));
   }
 
   .action-sheet-container {

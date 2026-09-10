@@ -43,7 +43,7 @@
 @use '../../src/styles/md-remove-ios-class-effect';
 
 :root {
-  --ios27-menu-width: 300px;
+  --ios-theme-menu-width: 300px;
 }
 
 /**
@@ -189,7 +189,7 @@ code {
 }
 
 ion-content {
-  --ios27-content-box-shadow-rgb: var(--ion-color-base-rgb, var(--ion-background-color-rgb, 255, 255, 255));
+  --ios-theme-content-box-shadow-rgb: var(--ion-color-base-rgb, var(--ion-background-color-rgb, 255, 255, 255));
 }
 
 #main-content {

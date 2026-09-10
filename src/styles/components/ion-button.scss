@@ -23,7 +23,7 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
   /**
    * compare .header-collapse-main ion-toolbar.in-toolbar ion-title, .header-collapse-main ion-toolbar.in-toolbar ion-buttons
    */
-  transition: transform var(--ios27-activated-transition-duration) ease-out;
+  transition: transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease-out;
 
   z-index: 0;
 
@@ -140,7 +140,7 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
   }
 
   transition:
-    transform var(--ios27-activated-transition-duration) ease-out,
+    transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease-out,
     color 50ms ease;
 
   &.in-toolbar:not(.ion-color):not(.in-toolbar-color) {
@@ -248,8 +248,8 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
         }
       } @else {
         --box-shadow:
-          inset 0 0 8px 0 rgba(var(--ios27-glass-box-shadow-color-rgb), 0.2),
-          0 0 8px -4px rgba(var(--ios27-glass-box-shadow-color-rgb), 0.92);
+          inset 0 0 8px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.2),
+          0 0 8px -4px rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.92);
       }
       &::part(native)::before {
         content: '';
@@ -313,13 +313,13 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
 
   // fill:default only
   &:not(.button-solid):not(.button-outline):not(.button-clear) {
-    --background: rgba(var(--ios27-glass-background-rgb), 0.72);
+    --background: rgba(var(--ios-theme-glass-background-rgb, var(--ios26-glass-background-rgb)), 0.72);
     --background-hover: transparent;
     --background-activated: transparent;
     @if not $is-back-button {
       --box-shadow:
-        inset 0 0 8px 0 rgba(var(--ios27-glass-box-shadow-color-rgb), 0.2),
-        0 0.5px 1px 0 rgba(var(--ios27-glass-box-shadow-color-rgb), 0.08);
+        inset 0 0 8px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.2),
+        0 0.5px 1px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.08);
     }
 
     &:not(.button-has-icon-only):not(.back-button-has-icon-only) {
@@ -421,7 +421,7 @@ ion-buttons.ios:not(.ios-theme-disabled, .ios26-disabled):not(
   ion-buttons.ios:not(.ios-theme-disabled, .ios26-disabled):not(
     :has(ion-back-button, ion-button:not(.button-clear), ion-menu-button.menu-button-hidden)
   ) {
-  transition: transform var(--ios27-activated-transition-duration) ease-out;
+  transition: transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease-out;
 }
 
 ion-buttons.ios:not(.ios-theme-disabled, .ios26-disabled):not(:has(ion-back-button, ion-button.button-clear)) {

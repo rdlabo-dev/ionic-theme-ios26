@@ -5,7 +5,7 @@ ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled) {
   min-height: 48px;
   border-radius: 25px;
 
-  transition: transform var(--ios27-activated-transition-duration) ease-out;
+  transition: transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease-out;
 
   // will-change is optimized to only apply when needed for performance
   &.segment-activated,
