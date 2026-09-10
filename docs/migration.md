@@ -8,7 +8,9 @@ Review every section newer than the version currently installed, in ascending or
 
 Each section lists only the changes that require application code or configuration updates.
 
-## Upcoming release: version-independent theme names
+## Migrating to 9.2.0
+
+### Version-independent theme names
 
 The theme opt-out class and CSS variables have been renamed to remove the OS version from their public names. The old names are deprecated; use the new names in new code and migrate existing customizations when convenient.
 
