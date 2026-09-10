@@ -1,27 +1,31 @@
 # Ionic Theme iOS27
 
-A CSS/JS theme library that applies the iOS 27 design system to Ionic applications.
+A CSS/JS theme library that brings the iOS 27 Liquid Glass appearance and navigation animations to Ionic applications while preserving Ionic components and conventions.
 
 > [!IMPORTANT]
-> This repository has been renamed to `ionic-theme-ios27`, and iOS 27 development continues on `main`. The package on `main` is now named `@rdlabo/ionic-theme-ios27`; stylesheet filenames remain `ionic-theme-ios26*.css`. The existing iOS 26 implementation remains available on the [`ios26`](https://github.com/rdlabo-dev/ionic-theme-ios27/tree/ios26) branch for backward compatibility and documentation reference.
+> This `main` branch contains the iOS 27 theme under the package name `@rdlabo/ionic-theme-ios27`. Its first npm release is pending. For the iOS 26 theme (`@rdlabo/ionic-theme-ios26`), see the [`ios26` branch](https://github.com/rdlabo-dev/ionic-theme-ios27/tree/ios26).
+
+[Try the iOS 27 demo](https://ionic-theme-ios27.rdlabo.dev/).
 
 <!-- rdlabo-docs-pick -->
 
-![iOS 26 themed Ionic screens with Liquid Glass tab bar, lists, and controls](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios27/v3.0.0/screenshots/ios26.png)
+<p>
+  <img src="./screenshots/ios27-settings.png" width="32%" alt="iOS 27 theme: Settings in light mode with a Liquid Glass search bar" />
+  <img src="./screenshots/ios27-settings-dark.png" width="32%" alt="iOS 27 theme: Settings in dark mode" />
+  <img src="./screenshots/ios27-library.png" width="32%" alt="iOS 27 theme: Library with Liquid Glass buttons and tab bar" />
+</p>
 
 <!-- /rdlabo-docs-pick -->
 
-DEMO is here: https://ionic-theme-ios27.rdlabo.dev/
-
 ## Installation
 
-In an existing Ionic project:
+Requires `@ionic/core` 8.8.1 or later (Ionic 8 and 9). After the first npm release, install it in an existing Ionic project:
 
 ```bash
 npm install @rdlabo/ionic-theme-ios27
 ```
 
-Note: **If you use @ionic/core@ < 8.8.1**, use @rdlabo/ionic-theme-ios26@2.2.1.
+The stylesheet filenames still use `ionic-theme-ios26` inside the new package. Use the paths below to load the iOS 27 theme.
 
 And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
 
@@ -30,9 +34,8 @@ And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
 @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26.css';
 
 /**
- * This file is to eliminate the impact of class name changes for iOS26.
- * For example, `ion-buttons ion-button[fill=default]` is not normally implemented, but may be required for iOS26.
- * This file is to eliminate such effects.
+ * Keep Material Design mode unaffected by the iOS theme
+ * when the same markup is used in both modes.
  * Note: This stylesheet is not included in `@rdlabo/ionic-theme-md3`.
  */
 @import '@rdlabo/ionic-theme-ios27/dist/css/md-remove-ios-class-effect.css';
@@ -91,7 +94,7 @@ createApp(App)
 
 Test on iOS. When previewing on desktop, set Ionic mode to `ios` in your existing framework initialization config (for example `mode: 'ios'`).
 
-Use this markup to preview the inset grouped list look. For the list structure the theme expects, see [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group).
+Use this markup to preview the inset grouped list look. For the list structure the theme expects, see [Using ion-item-group](./docs/using-ion-item-group.md).
 
 ```html
 <ion-list mode="ios" inset="true">
@@ -115,7 +118,7 @@ npm install @rdlabo/ionic-theme-md3
 When your global stylesheet uses Sass, initialize the themes in this order:
 
 ```scss
-@use '@rdlabo/ionic-theme-ios27/src/styles/default-variables.scss' as ios26-vars;
+@use '@rdlabo/ionic-theme-ios27/src/styles/default-variables.scss' as ios27-vars;
 @use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios26.scss';
 @use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios26-dark-class.scss';
 @use '@rdlabo/ionic-theme-ios27/src/styles/md-remove-ios-class-effect.scss';
@@ -123,7 +126,7 @@ When your global stylesheet uses Sass, initialize the themes in this order:
 @use '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
 ```
 
-The example uses Ionic's class-based dark mode. Your global stylesheet must also load Ionic's matching dark palette, such as `@ionic/angular/css/palettes/dark.class.css` for Angular. When using `dark-system` or `dark-always`, select the same variant for both Ionic's palette and the iOS 27 theme. See Ionic's [Dark Mode documentation](https://ionicframework.com/docs/theming/dark-mode). The explicit `ios26-vars` and `md3-vars` namespaces prevent the two variable modules from using the same default namespace.
+The example uses Ionic's class-based dark mode. Your global stylesheet must also load Ionic's matching dark palette, such as `@ionic/angular/css/palettes/dark.class.css` for Angular. When using `dark-system` or `dark-always`, select the same variant for both Ionic's palette and the iOS 27 theme. See Ionic's [Dark Mode documentation](https://ionicframework.com/docs/theming/dark-mode). The explicit `ios27-vars` and `md3-vars` namespaces prevent the two variable modules from using the same default namespace.
 
 Configure both transition implementations when both themes are installed:
 
@@ -160,17 +163,16 @@ createApp(App)
 
 ## Documentation
 
-- [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group) — required markup for inset lists.
-- [Special markup and classes](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/special-markup) — opt-in markup and utility classes used by the theme.
+- [Using ion-item-group](./docs/using-ion-item-group.md) — required markup for inset lists.
+- [Special markup and classes](./docs/special-markup.md) — opt-in markup and utility classes used by the theme.
 - [ESLint](./docs/eslint.md) — check list structure with ESLint rules.
-- [Features](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/features) — CSS variables, Liquid Glass, selective imports, and dark mode.
-- [Experimental Animation](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/experimental-animation) — tab bar and searchable effects.
-- [iOS 18](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/ios-18) — load the theme only on iOS 26.
-- [Migration](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/migration) — required changes when upgrading major versions.
+- [Features](./docs/features.md) — CSS variables, Liquid Glass, selective imports, and dark mode.
+- [Experimental Animation](./docs/experimental-animation.md) — tab bar and searchable effects.
+- [iOS 26 migration history](https://github.com/rdlabo-dev/ionic-theme-ios27/blob/ios26/docs/migration.md) — earlier major-version changes for the previous package.
 
 <!-- rdlabo-docs-omit -->
 
-**Full documentation:** [https://docs.rdlabo.dev/projects/ionic-theme-ios26](https://docs.rdlabo.dev/projects/ionic-theme-ios26)
+**iOS 26 documentation:** See the [`ios26` branch README](https://github.com/rdlabo-dev/ionic-theme-ios27/blob/ios26/README.md) for the previous theme.
 
 ## Development & Testing
 
@@ -179,7 +181,7 @@ createApp(App)
 The same demo is deployed against both supported Ionic versions:
 
 - [Ionic 9 demo](https://ionic-theme-ios27.rdlabo.dev) — canonical
-- [Ionic 8 demo](https://ionic8-theme-ios26.rdlabo.dev) — compatibility
+- [Ionic 8 demo](https://ionic8-theme-ios27.rdlabo.dev) — compatibility
 
 The `demo/` directory contains the Angular application used by both deployments. To run it locally:
 
@@ -227,7 +229,7 @@ When a pull request is merged into `main` or `ios26`, it is automatically publis
 
 Candidate code is built in a read-only workflow without npm publishing credentials. The privileged release workflow never checks out or executes pull request code; it revalidates the source workflow and package identity, then publishes only the immutable packed artifact with lifecycle scripts disabled. The install-command comment is a separate best-effort notification and cannot invalidate a successful npm publish.
 
-Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, minor, or patch releases) publish to npm `latest`; revision/prerelease tags publish to `next`. Neither `beta` nor `next` publishing changes the npm `latest` dist-tag.
+Only `npm run release` can create a release tag. Stable `ios27-vX.Y.Z` tags (major, minor, or patch releases) publish to npm `latest`; revision/prerelease tags publish to `next`. Neither `beta` nor `next` publishing changes the npm `latest` dist-tag.
 
 <!-- /rdlabo-docs-omit -->
 
