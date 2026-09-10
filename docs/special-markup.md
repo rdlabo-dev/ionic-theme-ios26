@@ -142,6 +142,6 @@ Add `.ios-theme-disabled` to an individual Ionic component when it must retain I
 <ion-button>iOS 26 theme</ion-button> <ion-button class="ios-theme-disabled">Standard Ionic button</ion-button>
 ```
 
-For the background model behind inset lists, see [Using `ion-item-group`](./using-ion-item-group.md).
+For the background model behind inset lists, see [Using `ion-item-group`](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group).
 
 `ios26-disabled` remains supported as a deprecated alias for `ios-theme-disabled`.

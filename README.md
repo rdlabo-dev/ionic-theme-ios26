@@ -36,7 +36,7 @@ And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
 
 /**
  * If you will use the design of ion-item-group with ion-list on Android as well, import it.
- * More info: ./docs/using-ion-item-group.md
+ * More info: https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group
  * Note: This stylesheet is included in `@rdlabo/ionic-theme-md3`.
  * @import '@rdlabo/ionic-theme-ios26/dist/css/md-ion-list-inset.css';
  */
@@ -159,7 +159,7 @@ createApp(App)
 
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/using-ion-item-group) — required markup for inset lists.
 - [Special markup and classes](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/special-markup) — opt-in markup and utility classes used by the theme.
-- [ESLint](./docs/eslint.md) — check list structure with ESLint rules.
+- [ESLint](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/eslint) — check list structure with ESLint rules.
 - [Features](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/features) — CSS variables, Liquid Glass, selective imports, and dark mode.
 - [Experimental Animation](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/experimental-animation) — tab bar and searchable effects.
 - [iOS 18](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/ios-18) — load the theme only on iOS 26.
