@@ -1,13 +1,13 @@
-# Ionic Theme iOS26
+# Ionic Theme iOS27
 
-A CSS/JS theme library that applies iOS26 design system to Ionic applications.
+A CSS/JS theme library that applies the iOS 27 design system to Ionic applications.
 
 > [!IMPORTANT]
-> Work on iOS 27 support has started on the `main` branch. When `@rdlabo/ionic-theme-ios27` is released, this repository will be renamed to `ionic-theme-ios27`. The existing iOS 26 implementation remains available on the [`ios26`](https://github.com/rdlabo-dev/ionic-theme-ios26/tree/ios26) branch for backward compatibility and documentation reference.
+> This repository has been renamed to `ionic-theme-ios27`, and iOS 27 development continues on `main`. The package on `main` is now named `@rdlabo/ionic-theme-ios27`; stylesheet filenames remain `ionic-theme-ios26*.css`. The existing iOS 26 implementation remains available on the [`ios26`](https://github.com/rdlabo-dev/ionic-theme-ios27/tree/ios26) branch for backward compatibility and documentation reference.
 
 <!-- rdlabo-docs-pick -->
 
-![iOS 26 themed Ionic screens with Liquid Glass tab bar, lists, and controls](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v3.0.0/screenshots/ios26.png)
+![iOS 26 themed Ionic screens with Liquid Glass tab bar, lists, and controls](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios27/v3.0.0/screenshots/ios26.png)
 
 <!-- /rdlabo-docs-pick -->
 
@@ -18,7 +18,7 @@ DEMO is here: https://ionic-theme-ios27.rdlabo.dev/
 In an existing Ionic project:
 
 ```bash
-npm install @rdlabo/ionic-theme-ios26
+npm install @rdlabo/ionic-theme-ios27
 ```
 
 Note: **If you use @ionic/core@ < 8.8.1**, use @rdlabo/ionic-theme-ios26@2.2.1.
@@ -26,8 +26,8 @@ Note: **If you use @ionic/core@ < 8.8.1**, use @rdlabo/ionic-theme-ios26@2.2.1.
 And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
 
 ```css
-@import '@rdlabo/ionic-theme-ios26/dist/css/default-variables.css';
-@import '@rdlabo/ionic-theme-ios26/dist/css/ionic-theme-ios26.css';
+@import '@rdlabo/ionic-theme-ios27/dist/css/default-variables.css';
+@import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26.css';
 
 /**
  * This file is to eliminate the impact of class name changes for iOS26.
@@ -35,31 +35,31 @@ And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
  * This file is to eliminate such effects.
  * Note: This stylesheet is not included in `@rdlabo/ionic-theme-md3`.
  */
-@import '@rdlabo/ionic-theme-ios26/dist/css/md-remove-ios-class-effect.css';
+@import '@rdlabo/ionic-theme-ios27/dist/css/md-remove-ios-class-effect.css';
 
 /**
  * If you will use the design of ion-item-group with ion-list on Android as well, import it.
  * More info: ./docs/using-ion-item-group.md
  * Note: This stylesheet is included in `@rdlabo/ionic-theme-md3`.
- * @import '@rdlabo/ionic-theme-ios26/dist/css/md-ion-list-inset.css';
+ * @import '@rdlabo/ionic-theme-ios27/dist/css/md-ion-list-inset.css';
  */
 
 /*
  * Support Dark Mode
  * We support Ionic Dark Mode. More information is here: https://ionicframework.com/docs/theming/dark-mode
- * use Always:    @import '@rdlabo/ionic-theme-ios26/dist/css/ionic-theme-ios26-dark-always.css'
- * use System:    @import '@rdlabo/ionic-theme-ios26/dist/css/ionic-theme-ios26-dark-system.css'
- * use CSS Class: @import '@rdlabo/ionic-theme-ios26/dist/css/ionic-theme-ios26-dark-class.css'
+ * use Always:    @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26-dark-always.css'
+ * use System:    @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26-dark-system.css'
+ * use CSS Class: @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26-dark-class.css'
  */
 ```
 
 ### Configure animations
 
-If you installed only the iOS 26 theme, configure its animations as follows.
+If you installed only the iOS 27 theme, configure its animations as follows.
 
 ```ts
 import { isPlatform } from '@ionic/core'; // or @ionic/angular (Ionic 9), @ionic/angular/standalone (Ionic 8), @ionic/react, @ionic/vue
-import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios26';
+import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios27';
 
 // Angular
 provideIonicAngular({
@@ -102,7 +102,7 @@ Use this markup to preview the inset grouped list look. For the list structure t
 </ion-list>
 ```
 
-### Optional: use the iOS 26 and MD3 themes together
+### Optional: use the iOS 27 and MD3 themes together
 
 Install the MD3 theme to style both Ionic modes from the same application.
 
@@ -115,21 +115,21 @@ npm install @rdlabo/ionic-theme-md3
 When your global stylesheet uses Sass, initialize the themes in this order:
 
 ```scss
-@use '@rdlabo/ionic-theme-ios26/src/styles/default-variables.scss' as ios26-vars;
-@use '@rdlabo/ionic-theme-ios26/src/styles/ionic-theme-ios26.scss';
-@use '@rdlabo/ionic-theme-ios26/src/styles/ionic-theme-ios26-dark-class.scss';
-@use '@rdlabo/ionic-theme-ios26/src/styles/md-remove-ios-class-effect.scss';
+@use '@rdlabo/ionic-theme-ios27/src/styles/default-variables.scss' as ios26-vars;
+@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios26.scss';
+@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios26-dark-class.scss';
+@use '@rdlabo/ionic-theme-ios27/src/styles/md-remove-ios-class-effect.scss';
 @use '@rdlabo/ionic-theme-md3/dist/css/default-variables.css' as md3-vars;
 @use '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
 ```
 
-The example uses Ionic's class-based dark mode. Your global stylesheet must also load Ionic's matching dark palette, such as `@ionic/angular/css/palettes/dark.class.css` for Angular. When using `dark-system` or `dark-always`, select the same variant for both Ionic's palette and the iOS 26 theme. See Ionic's [Dark Mode documentation](https://ionicframework.com/docs/theming/dark-mode). The explicit `ios26-vars` and `md3-vars` namespaces prevent the two variable modules from using the same default namespace.
+The example uses Ionic's class-based dark mode. Your global stylesheet must also load Ionic's matching dark palette, such as `@ionic/angular/css/palettes/dark.class.css` for Angular. When using `dark-system` or `dark-always`, select the same variant for both Ionic's palette and the iOS 27 theme. See Ionic's [Dark Mode documentation](https://ionicframework.com/docs/theming/dark-mode). The explicit `ios26-vars` and `md3-vars` namespaces prevent the two variable modules from using the same default namespace.
 
 Configure both transition implementations when both themes are installed:
 
 ```ts
 import { isPlatform } from '@ionic/core'; // or @ionic/angular (Ionic 9), @ionic/angular/standalone (Ionic 8), @ionic/react, @ionic/vue
-import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios26';
+import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios27';
 import { mdTransitionAnimation } from '@rdlabo/ionic-theme-md3';
 
 // Angular

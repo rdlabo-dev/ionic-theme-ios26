@@ -17,7 +17,7 @@ import {
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 
-// import { registerTabBarEffect } from '@rdlabo/ionic-theme-ios26';
+// import { registerTabBarEffect } from '@rdlabo/ionic-theme-ios27';
 import { registeredEffect, registerTabBarEffect } from '../../../../src';
 
 @Component({

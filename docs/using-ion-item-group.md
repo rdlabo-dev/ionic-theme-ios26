@@ -41,7 +41,7 @@ The theme therefore:
 When an application uses this package without `@rdlabo/ionic-theme-md3`, import the optional stylesheet to apply the same grouped layout in Material mode:
 
 ```css
-@import '@rdlabo/ionic-theme-ios26/dist/css/md-ion-list-inset.css';
+@import '@rdlabo/ionic-theme-ios27/dist/css/md-ion-list-inset.css';
 ```
 
 For two-line items and section-header groups, see [Special markup and classes](./special-markup.md).

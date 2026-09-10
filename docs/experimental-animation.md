@@ -13,7 +13,7 @@ Register an `ion-tab-bar` or `ion-segment` element to add a moving selection eff
 [![Sheet of Glass animation on ion-tab-button and ion-segment-button](https://i.gyazo.com/fafd726b520827f042c76b6c73abd81c.gif)](https://gyazo.com/fafd726b520827f042c76b6c73abd81c)
 
 ```ts
-import { registerTabBarEffect, registerSegmentEffect } from '@rdlabo/ionic-theme-ios26';
+import { registerTabBarEffect, registerSegmentEffect } from '@rdlabo/ionic-theme-ios27';
 
 /**
  * Register DOM elements. Effects are applied using Ionic Gesture and Ionic Animation.
@@ -60,8 +60,8 @@ Use the following structure inside `ion-tabs` to animate a search button into a 
 ```
 
 ```ts
-import { attachTabBarSearchable, TabBarSearchableType } from '@rdlabo/ionic-theme-ios26';
-import type { TabBarSearchableFunction } from '@rdlabo/ionic-theme-ios26';
+import { attachTabBarSearchable, TabBarSearchableType } from '@rdlabo/ionic-theme-ios27';
+import type { TabBarSearchableFunction } from '@rdlabo/ionic-theme-ios27';
 
 let searchableFun: TabBarSearchableFunction | undefined;
 const initialize = () => {

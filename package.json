@@ -1,8 +1,8 @@
 {
-  "name": "@rdlabo/ionic-theme-ios26",
+  "name": "@rdlabo/ionic-theme-ios27",
   "private": false,
   "version": "9.1.0",
-  "description": "iOS26 Theme for Ionic Framework",
+  "description": "iOS27 Theme for Ionic Framework",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -32,19 +32,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/rdlabo-dev/ionic-theme-ios26.git"
+    "url": "git+ssh://git@github.com/rdlabo-dev/ionic-theme-ios27.git"
   },
   "keywords": [
     "ionic",
     "framework",
     "theme",
     "css",
-    "ios26"
+    "ios27"
   ],
   "author": "Masahiko Sakakibara <sakakibara@rdlabo.jp>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rdlabo-dev/ionic-theme-ios26/issues"
+    "url": "https://github.com/rdlabo-dev/ionic-theme-ios27/issues"
   },
   "homepage": "https://docs.rdlabo.dev/projects/ionic-theme-ios26",
   "devDependencies": {
