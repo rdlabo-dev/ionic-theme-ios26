@@ -1,8 +1,8 @@
 @use '../utils/api';
 
-$scaleup-small-icon-only: 1.18;
-$scaleup-default-icon-only: 1.2;
-$scaleup-large-icon-only: 1.12;
+$scaleup-small-icon-only: api.$button-scaleup-small-icon-only;
+$scaleup-default-icon-only: api.$button-scaleup-default-icon-only;
+$scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
 
 ion-fab.ios:not(.ios26-disabled) {
   --transform-value: 2.5px;
@@ -13,7 +13,7 @@ ion-fab.ios:not(.ios26-disabled) {
   ion-fab-button {
     --background: rgba(var(--ios26-glass-background-rgb), 0.72);
     --box-shadow:
-      inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2), 0 0 10px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.82);
+      inset 0 0 8px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.2), 0 0.5px 1px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.08);
     --transition:
       var(--ios26-activated-transition-duration) transform cubic-bezier(0.25, 1.11, 0.78, 1.59),
       var(--ios26-activated-transition-duration) color ease;
@@ -38,6 +38,7 @@ ion-fab.ios:not(.ios26-disabled) {
     &.ion-activated {
       --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);
       &::part(native) {
+        @include api.glass-background-button-activated;
         transform: scale($scaleup-default-icon-only) translateZ(0);
         -webkit-transform: scale($scaleup-default-icon-only) translateZ(0);
       }
@@ -59,10 +60,8 @@ ion-fab.ios:not(.ios26-disabled) {
     }
 
     &::part(native) {
-      @include api.glass-background($include-background: false, $include-box-shadow: false);
-      // The previous background shorthand reset Ionic's padding-box default.
-      // There is no CSS custom property for background-clip, so preserve it via the Part.
       background-clip: border-box;
+      @include api.glass-background($include-background: false, $include-box-shadow: false);
     }
   }
 
