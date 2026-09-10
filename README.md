@@ -161,6 +161,7 @@ createApp(App)
 
 ## Documentation
 
+- [Adaptive iOS themes](./docs/ios-adaptive.md) — conditionally load iOS 26 or iOS 27 styles.
 - [Using ion-item-group](./docs/using-ion-item-group.md) — required markup for inset lists.
 - [Special markup and classes](./docs/special-markup.md) — opt-in markup and utility classes used by the theme.
 - [ESLint](./docs/eslint.md) — check list structure with ESLint rules.

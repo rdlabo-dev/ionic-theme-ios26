@@ -84,8 +84,8 @@ demo/
 │   │       ├── pages/        # All page components
 │   │       └── index.routes.ts
 │   ├── theme/
-│   │   └── theme-ios27.scss  # iOS27 theme
-│   └── global.scss
+│   │   └── variables.scss    # Demo variables
+│   └── global.scss           # Imports the iOS 27 theme
 ├── playwright.config.ts       # Playwright configuration
 └── package.json
 ```
