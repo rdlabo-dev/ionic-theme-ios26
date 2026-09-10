@@ -224,7 +224,7 @@ When a pull request is merged into `main` or `ios26`, it is automatically publis
 
 Candidate code is built in a read-only workflow without npm publishing credentials. The privileged release workflow never checks out or executes pull request code; it revalidates the source workflow and package identity, then publishes only the immutable packed artifact with lifecycle scripts disabled. The install-command comment is a separate best-effort notification and cannot invalidate a successful npm publish.
 
-Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, minor, or patch releases) publish to npm `latest`; revision/prerelease tags publish to `next`. Neither `beta` nor `next` publishing changes the npm `latest` dist-tag.
+Only `npm run release` can create a release tag. Stable `ios26-vX.Y.Z` tags (major, minor, or patch releases) publish to npm `latest`; revision/prerelease tags publish to `next`. Neither `beta` nor `next` publishing changes the npm `latest` dist-tag.
 
 <!-- /rdlabo-docs-omit -->
 
