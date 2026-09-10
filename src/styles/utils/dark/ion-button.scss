@@ -37,7 +37,7 @@
       --color: rgba(var(--ion-color-base-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 1);
     }
     &::part(native) {
-      @include api.glass-background-button-activated-dark($include-background: false, $include-box-shadow: $is-back-button);
+      @include api.glass-background-button-activated-dark($include-background: false);
     }
     ion-icon {
       color: rgb(255, 255, 255);

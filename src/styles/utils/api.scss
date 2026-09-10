@@ -1,3 +1,7 @@
+$button-scaleup-small-icon-only: 1.18;
+$button-scaleup-default-icon-only: 1.38;
+$button-scaleup-large-icon-only: 1.22;
+
 $_glass-surface: linear-gradient(
   180deg,
   rgba(var(--ion-text-color-rgb, 0, 0, 0), 0) 4%,
@@ -80,6 +84,9 @@ $_glass-surface: linear-gradient(
 }
 
 @mixin glass-background-button-activated {
+  background-color: rgba(var(--ios26-glass-background-rgb), 0.96);
+  border-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.12) rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.32)
+    rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.16) rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.28);
   box-shadow:
     inset 0 0 0 0.5px rgba(var(--ios26-glass-border-color-rgb), 0.95),
     inset 0 1px 3px 0 rgba(var(--ios26-glass-border-color-rgb), 0.85),
@@ -96,6 +103,8 @@ $_glass-surface: linear-gradient(
 ) {
   @if $include-background {
     background: rgba(var(--ios26-button-color-selected-rgb), $opacity);
+  } @else {
+    background-color: rgba(var(--ios26-button-color-selected-rgb), $opacity);
   }
   backdrop-filter: blur($blur) saturate($saturate);
   @if $include-box-shadow {
