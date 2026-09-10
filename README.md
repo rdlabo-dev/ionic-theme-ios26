@@ -42,7 +42,7 @@ And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
 
 /**
  * If you will use the design of ion-item-group with ion-list on Android as well, import it.
- * More info: ./docs/using-ion-item-group.md
+ * More info: https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/using-ion-item-group
  * Note: This stylesheet is included in `@rdlabo/ionic-theme-md3`.
  * @import '@rdlabo/ionic-theme-ios27/dist/css/md-ion-list-inset.css';
  */
@@ -94,7 +94,7 @@ createApp(App)
 
 Test on iOS. When previewing on desktop, set Ionic mode to `ios` in your existing framework initialization config (for example `mode: 'ios'`).
 
-Use this markup to preview the inset grouped list look. For the list structure the theme expects, see [Using ion-item-group](./docs/using-ion-item-group.md).
+Use this markup to preview the inset grouped list look. For the list structure the theme expects, see [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/using-ion-item-group).
 
 ```html
 <ion-list mode="ios" inset="true">
@@ -163,18 +163,20 @@ createApp(App)
 
 ## Documentation
 
-- [Adaptive iOS themes](./docs/ios-adaptive.md) — conditionally load iOS 26 or iOS 27 styles.
-- [Using ion-item-group](./docs/using-ion-item-group.md) — required markup for inset lists.
-- [Special markup and classes](./docs/special-markup.md) — opt-in markup and utility classes used by the theme.
-- [ESLint](./docs/eslint.md) — check list structure with ESLint rules.
-- [Features](./docs/features.md) — CSS variables, Liquid Glass, selective imports, and dark mode.
-- [Experimental Animation](./docs/experimental-animation.md) — tab bar and searchable effects.
-- [Migration](./docs/migration.md) — stylesheet, class, and CSS variable naming changes.
-- [iOS 26 migration history](https://github.com/rdlabo-dev/ionic-theme-ios27/blob/ios26/docs/migration.md) — earlier major-version changes for the previous package.
+**Full documentation:** [Ionic Theme iOS27](https://docs.rdlabo.dev/projects/ionic-theme-ios27)
+
+- [Adaptive iOS themes](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/ios-adaptive) — conditionally load iOS 26 or iOS 27 styles.
+- [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/using-ion-item-group) — required markup for inset lists.
+- [Special markup and classes](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/special-markup) — opt-in markup and utility classes used by the theme.
+- [ESLint](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/eslint) — check list structure with ESLint rules.
+- [Features](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/features) — CSS variables, Liquid Glass, selective imports, and dark mode.
+- [Experimental Animation](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/experimental-animation) — tab bar and searchable effects.
+- [Migration](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/migration) — stylesheet, class, and CSS variable naming changes.
+- [iOS 26 migration history](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/migration) — earlier major-version changes for the previous package.
 
 <!-- rdlabo-docs-omit -->
 
-**iOS 26 documentation:** See the [`ios26` branch README](https://github.com/rdlabo-dev/ionic-theme-ios27/blob/ios26/README.md) for the previous theme.
+**iOS 26 documentation:** See the [iOS 26 documentation](https://docs.rdlabo.dev/projects/ionic-theme-ios26) for the previous theme.
 
 ## Development & Testing
 

@@ -12,6 +12,6 @@ Use the version-independent `--ios-theme-*` CSS variables. The corresponding `--
 
 For opting out of the theme, use the version-independent `ios-theme-disabled` class. The `ios26-disabled` class remains supported as a deprecated alias; migrate existing markup when convenient.
 
-See [Special markup and classes](./special-markup.md) and [Default variables](../src/styles/default-variables.scss) for the current names.
+See [Special markup and classes](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/special-markup) and [Default variables](../src/styles/default-variables.scss) for the current names.
 
-Earlier migration notes are preserved on the [previous theme branch](https://github.com/rdlabo-dev/ionic-theme-ios27/blob/ios26/docs/migration.md).
+Earlier migration notes are preserved in the [iOS 26 migration guide](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/migration).

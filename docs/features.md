@@ -4,7 +4,7 @@ title: Features
 
 # Features
 
-Customize the theme with CSS variables and Sass mixins, or adopt it one component at a time. Markup-specific opt-ins are documented in [Special markup and classes](./special-markup.md).
+Customize the theme with CSS variables and Sass mixins, or adopt it one component at a time. Markup-specific opt-ins are documented in [Special markup and classes](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/special-markup).
 
 ## CSS variables
 
