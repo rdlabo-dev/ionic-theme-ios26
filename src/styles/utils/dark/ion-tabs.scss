@@ -1,9 +1,9 @@
 @use '../api';
 
 @mixin ion-tabs {
-  ion-tab-bar.ios:not(.ios26-disabled) {
+  ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
   }
-  ion-tab-button.ios:not(.ios26-disabled) {
+  ion-tab-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
     &.ion-activated {
       ion-label,
       ion-icon {

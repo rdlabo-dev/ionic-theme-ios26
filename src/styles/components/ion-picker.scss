@@ -1,4 +1,4 @@
 @use '../utils/api';
 
-ion-picker.ios:not(.ios26-disabled) {
+ion-picker.ios:not(.ios-theme-disabled, .ios26-disabled) {
 }

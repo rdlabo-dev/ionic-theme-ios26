@@ -54,7 +54,7 @@
   }
 }
 
-ion-input.ios:not(.ios26-disabled) {
+ion-input.ios:not(.ios-theme-disabled, .ios26-disabled) {
   &.input-fill-outline {
     @include outline-field('input');
 
@@ -65,7 +65,7 @@ ion-input.ios:not(.ios26-disabled) {
   }
 }
 
-ion-textarea.ios:not(.ios26-disabled) {
+ion-textarea.ios:not(.ios-theme-disabled, .ios26-disabled) {
   &.textarea-fill-outline {
     @include outline-field('textarea');
 

@@ -1,7 +1,7 @@
 @mixin ion-segment {
-  ion-segment.ios:not(.ios26-disabled) {
+  ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled) {
   }
-  ion-segment-button.ios:not(.ios26-disabled) {
+  ion-segment-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
     &.ion-cloned-element {
       &::part(native) {
         --ios26-glass-border-color-rgb: 120, 120, 120;
