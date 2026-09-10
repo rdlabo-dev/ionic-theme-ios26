@@ -25,13 +25,11 @@ Requires `@ionic/core` 8.8.1 or later (Ionic 8 and 9). After the first npm relea
 npm install @rdlabo/ionic-theme-ios27
 ```
 
-The stylesheet filenames still use `ionic-theme-ios26` inside the new package. Use the paths below to load the iOS 27 theme.
-
 And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
 
 ```css
 @import '@rdlabo/ionic-theme-ios27/dist/css/default-variables.css';
-@import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26.css';
+@import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios27.css';
 
 /**
  * Keep Material Design mode unaffected by the iOS theme
@@ -50,9 +48,9 @@ And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
 /*
  * Support Dark Mode
  * We support Ionic Dark Mode. More information is here: https://ionicframework.com/docs/theming/dark-mode
- * use Always:    @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26-dark-always.css'
- * use System:    @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26-dark-system.css'
- * use CSS Class: @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios26-dark-class.css'
+ * use Always:    @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios27-dark-always.css'
+ * use System:    @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios27-dark-system.css'
+ * use CSS Class: @import '@rdlabo/ionic-theme-ios27/dist/css/ionic-theme-ios27-dark-class.css'
  */
 ```
 
@@ -119,8 +117,8 @@ When your global stylesheet uses Sass, initialize the themes in this order:
 
 ```scss
 @use '@rdlabo/ionic-theme-ios27/src/styles/default-variables.scss' as ios27-vars;
-@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios26.scss';
-@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios26-dark-class.scss';
+@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios27.scss';
+@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios27-dark-class.scss';
 @use '@rdlabo/ionic-theme-ios27/src/styles/md-remove-ios-class-effect.scss';
 @use '@rdlabo/ionic-theme-md3/dist/css/default-variables.css' as md3-vars;
 @use '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
@@ -168,6 +166,7 @@ createApp(App)
 - [ESLint](./docs/eslint.md) — check list structure with ESLint rules.
 - [Features](./docs/features.md) — CSS variables, Liquid Glass, selective imports, and dark mode.
 - [Experimental Animation](./docs/experimental-animation.md) — tab bar and searchable effects.
+- [Migration](./docs/migration.md) — stylesheet, class, and CSS variable naming changes.
 - [iOS 26 migration history](https://github.com/rdlabo-dev/ionic-theme-ios27/blob/ios26/docs/migration.md) — earlier major-version changes for the previous package.
 
 <!-- rdlabo-docs-omit -->

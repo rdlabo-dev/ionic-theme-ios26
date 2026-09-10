@@ -1,7 +1,7 @@
 @use '../utils/api';
 
 ion-modal.ios {
-  ion-searchbar:not(.ios26-disabled) {
+  ion-searchbar:not(.ios27-disabled) {
     .searchbar-input-container {
       input.searchbar-input {
         // Modal表示でのアイコン非表示の不具合の対応
@@ -11,7 +11,7 @@ ion-modal.ios {
   }
 }
 
-ion-searchbar.ios:not(.ios26-disabled):not(.searchbar-classic) {
+ion-searchbar.ios:not(.ios27-disabled):not(.searchbar-classic) {
   min-height: 60px;
   padding: 0;
 
@@ -45,10 +45,10 @@ ion-searchbar.ios:not(.ios26-disabled):not(.searchbar-classic) {
 /**
  * add searchbar-classic
  */
-ion-toolbar.ios:not(.ios26-disabled):has(ion-searchbar.searchbar-classic.ios:not(.ios26-disabled)) {
+ion-toolbar.ios:not(.ios27-disabled):has(ion-searchbar.searchbar-classic.ios:not(.ios27-disabled)) {
   --min-height: auto;
 }
-ion-searchbar.ios:not(.ios26-disabled).searchbar-classic {
+ion-searchbar.ios:not(.ios27-disabled).searchbar-classic {
   padding-bottom: 12px;
   min-height: auto;
   .searchbar-input-container input.searchbar-input {

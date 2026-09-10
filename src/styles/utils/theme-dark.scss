@@ -8,13 +8,13 @@
 @use 'dark/ion-segment' as *;
 
 @mixin default-variables {
-  //--ios26-glass-background-rgb: 35, 35, 35;
-  --ios26-glass-background-rgb: 62, 62, 62;
-  --ios26-glass-box-shadow-color-rgb: 0, 0, 0 / 0;
-  --ios26-glass-border-color-rgb: 68, 68, 68;
-  --ios26-button-color-selected-rgb: 255, 255, 255;
+  //--ios27-glass-background-rgb: 35, 35, 35;
+  --ios27-glass-background-rgb: 62, 62, 62;
+  --ios27-glass-box-shadow-color-rgb: 0, 0, 0 / 0;
+  --ios27-glass-border-color-rgb: 68, 68, 68;
+  --ios27-button-color-selected-rgb: 255, 255, 255;
 
-  --ios26-content-box-shadow-rgb: 0, 0, 0;
+  --ios27-content-box-shadow-rgb: 0, 0, 0;
 }
 
 @mixin theme-dark {

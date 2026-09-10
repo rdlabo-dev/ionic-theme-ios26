@@ -5,7 +5,7 @@
     @include api.glass-background-button-activated-dark;
   }
 
-  ion-button:not(.ios26-disabled).button-clear {
+  ion-button:not(.ios27-disabled).button-clear {
     &.ion-activated {
       color: rgb(var(--ion-text-color-rgb, 0, 0, 0));
       &.ion-color {
@@ -14,8 +14,8 @@
     }
   }
 
-  ion-button:not(.ios26-disabled),
-  ion-back-button:not(.ios26-disabled) {
+  ion-button:not(.ios27-disabled),
+  ion-back-button:not(.ios27-disabled) {
     &.ion-activated {
       --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 1);
 
@@ -28,10 +28,10 @@
 
 @mixin theme-dark-button($is-back-button: false) {
   &.ion-activated:not(.button-solid):not(.button-outline):not(.button-clear) {
-    --background: rgba(var(--ios26-button-color-selected-rgb), 0.56);
+    --background: rgba(var(--ios27-button-color-selected-rgb), 0.56);
     --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 1);
     @if not $is-back-button {
-      --box-shadow: inset 0 0 16px 0 rgba(var(--ios26-glass-box-shadow-color-rgb), 0.55);
+      --box-shadow: inset 0 0 16px 0 rgba(var(--ios27-glass-box-shadow-color-rgb), 0.55);
     }
     &.ion-color {
       --color: rgba(var(--ion-color-base-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 1);
@@ -46,13 +46,13 @@
 }
 
 @mixin ion-button {
-  ion-buttons.ios:not(.ios26-disabled):not(:has(ion-back-button, ion-button:not(.button-clear))) {
+  ion-buttons.ios:not(.ios27-disabled):not(:has(ion-back-button, ion-button:not(.button-clear))) {
     @include theme-dark-buttons;
   }
-  ion-button.ios:not(.ios26-disabled) {
+  ion-button.ios:not(.ios27-disabled) {
     @include theme-dark-button;
   }
-  ion-back-button.ios:not(.ios26-disabled) {
+  ion-back-button.ios:not(.ios27-disabled) {
     @include theme-dark-button($is-back-button: true);
   }
 }

@@ -5,7 +5,7 @@
   -webkit-transform: scale(1.56, 1.47) translateX(calc(#{$translate-x} * -0.1)) translateZ(0);
 }
 
-ion-range.ios:not(.ios26-disabled) {
+ion-range.ios:not(.ios27-disabled) {
   --knob-size: 20px;
   --knob-width: 38px;
   --knob-border-radius: 24px;
@@ -36,7 +36,7 @@ ion-range.ios:not(.ios26-disabled) {
   }
 
   &:not(.range-dual-knobs).range-pressed {
-    --knob-background: rgba(var(--ios26-glass-background-rgb), 0.1);
+    --knob-background: rgba(var(--ios27-glass-background-rgb), 0.1);
     --knob-box-shadow: 0 0.5px 4px rgba(0, 0, 0, 0.12), 0 6px 4px rgba(0, 0, 0, 0.05), inset 0.4px 0.4px 1px 0 var(--bar-background-active);
 
     &::part(knob) {

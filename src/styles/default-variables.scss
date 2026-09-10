@@ -1,6 +1,6 @@
 /**
  * @naming
- * prefix:                 ios26
+ * prefix:                 ios27
  * target-element:         tab-button
  * target css property:    color
  * status:                 selected
@@ -8,25 +8,25 @@
  */
 
 :root {
-  --ios26-floating-safe-area-top: max(10px, var(--ion-safe-area-top, 0px));
-  --ios26-floating-safe-area-bottom: max(10px, calc(var(--ion-safe-area-bottom, 0px) - 12px));
+  --ios27-floating-safe-area-top: max(10px, var(--ion-safe-area-top, 0px));
+  --ios27-floating-safe-area-bottom: max(10px, calc(var(--ion-safe-area-bottom, 0px) - 12px));
 
-  --ios26-activated-transition-duration: 140ms;
+  --ios27-activated-transition-duration: 140ms;
 
-  --ios26-glass-background-rgb: 255, 255, 255;
-  --ios26-glass-box-shadow-color-rgb: 220, 220, 220;
-  --ios26-glass-border-color-rgb: 255, 255, 255;
-  --ios26-button-color-selected-rgb: 16, 16, 16;
+  --ios27-glass-background-rgb: 255, 255, 255;
+  --ios27-glass-box-shadow-color-rgb: 220, 220, 220;
+  --ios27-glass-border-color-rgb: 255, 255, 255;
+  --ios27-button-color-selected-rgb: 16, 16, 16;
 
-  --ios26-menu-width: 360px;
+  --ios27-menu-width: 360px;
 
   /**
-   * `--ios26-color-background-rgb` is deprecated.
-   * You should replace to '--ios26-content-box-shadow-rgb'.
+   * `--ios27-color-background-rgb` is deprecated.
+   * You should replace to '--ios27-content-box-shadow-rgb'.
    * This variable can also be defined in root, but if you want to set multiple background colors individually, it is easier to set them as follows.
-   * ion-content { --ios26-content-box-shadow-rgb: var(--ion-color-base-rgb); }
+   * ion-content { --ios27-content-box-shadow-rgb: var(--ion-color-base-rgb); }
    */
-  --ios26-content-box-shadow-rgb: var(--ion-color-base-rgb, var(--ion-background-color-rgb, 255, 255, 255));
+  --ios27-content-box-shadow-rgb: var(--ion-color-base-rgb, var(--ion-background-color-rgb, 255, 255, 255));
 
   /**
    * `--ion-color-**-brightness-rgb` is deprecated.

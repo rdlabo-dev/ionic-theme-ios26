@@ -2,7 +2,7 @@
 title: Keep lists consistent with ESLint
 ---
 
-Catch missing list groups before they reach the screen. In Ionic Angular apps, `@rdlabo/eslint-plugin-rules` checks the markup used by iOS 26.
+Catch missing list groups before they reach the screen. In Ionic Angular apps, `@rdlabo/eslint-plugin-rules` checks the markup used by iOS 27.
 
 ## Enable the list check
 

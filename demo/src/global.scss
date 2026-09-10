@@ -37,13 +37,13 @@
 @use '@ionic/angular/css/palettes/dark.class.css';
 
 @use '../../src/styles/default-variables';
-@use '../../src/styles/ionic-theme-ios26';
-@use '../../src/styles/ionic-theme-ios26-dark-class';
+@use '../../src/styles/ionic-theme-ios27';
+@use '../../src/styles/ionic-theme-ios27-dark-class';
 @use '../../src/styles/md-ion-list-inset';
 @use '../../src/styles/md-remove-ios-class-effect';
 
 :root {
-  --ios26-menu-width: 300px;
+  --ios27-menu-width: 300px;
 }
 
 /**
@@ -189,7 +189,7 @@ code {
 }
 
 ion-content {
-  --ios26-content-box-shadow-rgb: var(--ion-color-base-rgb, var(--ion-background-color-rgb, 255, 255, 255));
+  --ios27-content-box-shadow-rgb: var(--ion-color-base-rgb, var(--ion-background-color-rgb, 255, 255, 255));
 }
 
 #main-content {

@@ -31,7 +31,7 @@ export interface IonicConfig {
 
 ### native-inner(or item-inner) part to ion-item
 
-The styling for `ion-item[lines=inset]` is applied to `.item-inner`, which cannot be styled directly. This limitation means that for iOS 26 styling, I can only modify the border-bottom style through `::part(native)` with padding-right, preventing me from utilizing the full right side of `ion-item`. Adding `::part(native-inner)` would increase styling flexibility.
+The styling for `ion-item[lines=inset]` is applied to `.item-inner`, which cannot be styled directly. This limitation means that for iOS 27 styling, I can only modify the border-bottom style through `::part(native)` with padding-right, preventing me from utilizing the full right side of `ion-item`. Adding `::part(native-inner)` would increase styling flexibility.
 
 ```diff
   <ion-item>
@@ -54,7 +54,7 @@ Resolved.
 
 ### should disable ion-back-button Animation
 
-Resolved: by created https://github.com/rdlabo-dev/ionic-theme-ios26/tree/main/src/transition
+Resolved: by created https://github.com/rdlabo-dev/ionic-theme-ios27/tree/main/src/transition
 
 ## feat(): ion-content[fullscreen=true] will have .content-fullscreen class
 

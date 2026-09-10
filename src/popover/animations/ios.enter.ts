@@ -27,7 +27,7 @@ export const iosEnterAnimation = (baseEl: HTMLElement, opts?: any): Animation =>
     if (!['ion-button', 'ion-buttons'].includes(referenceSizeEl.localName)) {
       return false;
     }
-    if (referenceSizeEl.classList.contains('ios26-disabled')) {
+    if (referenceSizeEl.classList.contains('ios27-disabled')) {
       return false;
     }
     return true;
@@ -102,7 +102,7 @@ export const iosEnterAnimation = (baseEl: HTMLElement, opts?: any): Animation =>
       .duration(200)
       .addElement(referenceSizeEl)
       .beforeStyles({ 'transform-origin': `${originY} ${originX}` })
-      .beforeAddClass('ios26-replace-element')
+      .beforeAddClass('ios27-replace-element')
       .fromTo('transform', 'scale(1)', 'scale(1.05)')
       .fromTo('opacity', 1, 0);
   }
