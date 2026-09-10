@@ -118,9 +118,6 @@ $_glass-surface: linear-gradient(
   background-clip: border-box;
   background-origin: padding-box;
 
-  // Hardware acceleration optimization for glass effects
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
