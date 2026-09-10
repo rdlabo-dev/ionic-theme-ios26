@@ -102,6 +102,7 @@ ion-menu.ios:not(.ios-theme-disabled, .ios26-disabled) {
   ion-content {
     --background: transparent;
     --ios26-content-box-shadow-rgb: transparent;
+    --ios-theme-content-box-shadow-rgb: var(--ios26-content-box-shadow-rgb);
 
     &::part(scroll) {
       @include api.glass-background;
