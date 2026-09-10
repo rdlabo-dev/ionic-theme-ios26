@@ -8,6 +8,32 @@ Review every section newer than the version currently installed, in ascending or
 
 Each section lists only the changes that require application code or configuration updates.
 
+## Migrating to 9.2.0
+
+### Version-independent theme names
+
+The theme opt-out class and CSS variables have been renamed to remove the OS version from their public names. The old names are deprecated; use the new names in new code and migrate existing customizations when convenient.
+
+| Deprecated name | New name |
+| --- | --- |
+| `ios26-disabled` | `ios-theme-disabled` |
+| `--ios26-content-box-shadow-rgb` | `--ios-theme-content-box-shadow-rgb` |
+| `--ios26-*` (other theme variables) | `--ios-theme-*` (same suffix) |
+
+```diff
+- <ion-button class="ios26-disabled">Standard Ionic button</ion-button>
++ <ion-button class="ios-theme-disabled">Standard Ionic button</ion-button>
+```
+
+```diff
+ion-content {
+-  --ios26-content-box-shadow-rgb: 255, 255, 255;
++  --ios-theme-content-box-shadow-rgb: 255, 255, 255;
+}
+```
+
+`ios26-disabled` remains supported as an alias. Old CSS variables remain supported as fallbacks, and the new variable takes precedence when both are set. Existing applications can therefore keep using the deprecated names during migration. Package names and stylesheet paths are unchanged.
+
 ## Migrating to 9.0.0
 
 Version 9 aligns the theme's major version with Ionic Framework 9. It does not introduce additional breaking changes beyond those documented in the earlier migration sections.

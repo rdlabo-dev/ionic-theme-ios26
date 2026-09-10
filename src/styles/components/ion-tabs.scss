@@ -1,6 +1,6 @@
 @use '../utils/api';
 
-ion-tab-bar.ios:not(.ios26-disabled) {
+ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
   @include api.glass-background;
   z-index: 2;
 
@@ -9,13 +9,13 @@ ion-tab-bar.ios:not(.ios26-disabled) {
 
   &[slot='top'] {
     position: absolute;
-    top: var(--ios26-floating-safe-area-top);
+    top: var(--ios-theme-floating-safe-area-top, var(--ios26-floating-safe-area-top));
     right: calc(16px + var(--ion-safe-area-right, 0px));
   }
 
   &[slot='bottom'] {
     position: absolute;
-    bottom: var(--ios26-floating-safe-area-bottom);
+    bottom: var(--ios-theme-floating-safe-area-bottom, var(--ios26-floating-safe-area-bottom));
     left: calc(16px + var(--ion-safe-area-left, 0px));
   }
 
@@ -31,7 +31,7 @@ ion-tab-bar.ios:not(.ios26-disabled) {
   }
   padding: 2px 2px;
 
-  transition: transform var(--ios26-activated-transition-duration) ease-out;
+  transition: transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease-out;
 
   // will-change is optimized to only apply when needed for performance
   &:has(ion-tab-button.ion-activated) {
@@ -55,7 +55,7 @@ ion-tab-bar.ios:not(.ios26-disabled) {
    */
   &.ios26-enable-gesture.ios26-animated {
     ion-tab-button.tab-selected::part(native) {
-      background: rgba(var(--ios26-button-color-selected-rgb), 0);
+      background: rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0);
     }
     ion-tab-button.ion-activated {
       ion-label,
@@ -66,19 +66,19 @@ ion-tab-bar.ios:not(.ios26-disabled) {
   }
 }
 
-ion-tab-button.ios:not(.ios26-disabled) {
+ion-tab-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
   ion-icon {
     font-size: 26px;
   }
   ion-label,
   ion-icon {
     transition:
-      filter var(--ios26-activated-transition-duration) ease,
-      color var(--ios26-activated-transition-duration) ease;
+      filter var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease,
+      color var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease;
   }
-  background: rgba(var(--ios26-glass-background-rgb), 0);
+  background: rgba(var(--ios-theme-glass-background-rgb, var(--ios26-glass-background-rgb)), 0);
   height: auto;
-  transition: transform var(--ios26-activated-transition-duration) ease;
+  transition: transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease;
   &::part(native) {
     overflow: visible;
     min-height: 56px;
@@ -97,8 +97,8 @@ ion-tab-button.ios:not(.ios26-disabled) {
 
   &.tab-selected {
     &::part(native) {
-      background: rgba(var(--ios26-button-color-selected-rgb), 0.095);
-      transition: background var(--ios26-activated-transition-duration) ease;
+      background: rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0.095);
+      transition: background var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease;
     }
   }
 
