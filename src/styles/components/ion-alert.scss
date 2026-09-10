@@ -1,6 +1,6 @@
 @use '../utils/api';
 
-ion-alert.ios:not(.ios26-disabled) {
+ion-alert.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --min-width: 280px;
   --backdrop-opacity: 0.2;
 

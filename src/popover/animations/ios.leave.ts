@@ -17,7 +17,7 @@ export const iosLeaveAnimation = (baseEl: HTMLElement): Animation => {
   const targetAnimation = createAnimation();
 
   const doc = baseEl.ownerDocument as any;
-  const replaceElement = doc.querySelector('.ios26-replace-element') as HTMLElement | null;
+  const replaceElement = doc.querySelector('.ios27-replace-element') as HTMLElement | null;
 
   if (replaceElement) {
     const ratio = contentEl.getBoundingClientRect().width / contentEl.getBoundingClientRect().height;
@@ -27,7 +27,7 @@ export const iosLeaveAnimation = (baseEl: HTMLElement): Animation => {
       .addElement(replaceElement)
       .delay(100)
       .duration(300)
-      .afterRemoveClass('ios26-replace-element')
+      .afterRemoveClass('ios27-replace-element')
       .fromTo('transform', `scale(${scale})`, 'scale(1)')
       .fromTo('opacity', 0, 0.9);
   }

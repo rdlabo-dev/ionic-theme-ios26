@@ -4,8 +4,8 @@ import type { Animation, Gesture, GestureDetail } from '@ionic/core';
 import { changeSelectedElement, cloneElement, getStep } from '../utils';
 import { createMoveAnimation, createPreMoveAnimation, getMoveAnimationKeyframe, getScaleAnimation } from './animations';
 
-const GESTURE_NAME = 'ios26-enable-gesture';
-const ANIMATED_NAME = 'ios26-animated';
+const GESTURE_NAME = 'ios27-enable-gesture';
+const ANIMATED_NAME = 'ios27-animated';
 
 export const registerEffect = (
   targetElement: HTMLElement,

@@ -6,34 +6,35 @@
  *  padding-top: var(--ion-safe-area-top, 0);
  * }
  */
-ion-header.ios:not(.ios26-disabled) ion-toolbar:not(.ios26-disabled):first-of-type {
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled) ion-toolbar:not(.ios-theme-disabled, .ios26-disabled):first-of-type {
   padding-top: max(calc(var(--ion-safe-area-top) - 12px), 4px);
 }
 
-ion-modal.ios:not(.ios26-disabled).modal-card,
-ion-modal.ios:not(.ios26-disabled).modal-sheet {
-  ion-header.ios:not(.ios26-disabled) ion-toolbar.ios:not(.ios26-disabled):first-of-type {
+ion-modal.ios:not(.ios-theme-disabled, .ios26-disabled).modal-card,
+ion-modal.ios:not(.ios-theme-disabled, .ios26-disabled).modal-sheet {
+  ion-header.ios:not(.ios-theme-disabled, .ios26-disabled) ion-toolbar.ios:not(.ios-theme-disabled, .ios26-disabled):first-of-type {
     padding-top: 6px;
   }
 }
 
-ion-header.ios.header-collapse-condense:not(.ios26-disabled) ion-toolbar:not(.ios26-disabled):first-of-type {
+ion-header.ios.header-collapse-condense:not(.ios-theme-disabled, .ios26-disabled)
+  ion-toolbar:not(.ios-theme-disabled, .ios26-disabled):first-of-type {
   padding-top: 0;
 }
 
-ion-toolbar.ios:not(.toolbar-title-large):not(.ios26-disabled):not(:has(ion-segment.segment-expand)) {
+ion-toolbar.ios:not(.toolbar-title-large):not(.ios-theme-disabled, .ios26-disabled):not(:has(ion-segment.segment-expand)) {
   --min-height: 68px;
 }
 
-ion-header.ios:not(.ios26-disabled):not(.header-collapse-condense):not(:where(ion-modal *))
-  > ion-toolbar.ios:not(.ios26-disabled):not(.toolbar-title-large):not(.toolbar-searchbar):not(
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled):not(.header-collapse-condense):not(:where(ion-modal *))
+  > ion-toolbar.ios:not(.ios-theme-disabled, .ios26-disabled):not(.toolbar-title-large):not(.toolbar-searchbar):not(
     :has(ion-segment.segment-expand)
   ):first-of-type {
   padding-top: max(calc(var(--ion-safe-area-top) - 10px), 6px);
   --min-height: 64px;
 }
 
-ion-toolbar.ios:not(.ios26-disabled).toolbar-searchbar {
+ion-toolbar.ios:not(.ios-theme-disabled, .ios26-disabled).toolbar-searchbar {
   *[slot='start'],
   *[slot='end'] {
     align-self: center;
@@ -42,7 +43,7 @@ ion-toolbar.ios:not(.ios26-disabled).toolbar-searchbar {
     ion-buttons[slot='start'] {
       margin-right: 6px;
     }
-    ion-searchbar.ios:not(.ios26-disabled) {
+    ion-searchbar.ios:not(.ios-theme-disabled, .ios26-disabled) {
       .searchbar-input-container {
         margin: 0 12px 0 6px;
       }
@@ -52,7 +53,7 @@ ion-toolbar.ios:not(.ios26-disabled).toolbar-searchbar {
     ion-buttons[slot='end'] {
       margin-left: 6px;
     }
-    ion-searchbar.ios:not(.ios26-disabled) {
+    ion-searchbar.ios:not(.ios-theme-disabled, .ios26-disabled) {
       .searchbar-input-container {
         margin: 0 6px 0 12px;
       }
@@ -60,7 +61,7 @@ ion-toolbar.ios:not(.ios26-disabled).toolbar-searchbar {
   }
 }
 
-ion-toolbar.ios:not(.ios26-disabled) {
+ion-toolbar.ios:not(.ios-theme-disabled, .ios26-disabled) {
   ion-buttons {
     margin-left: 12px;
     margin-right: 12px;

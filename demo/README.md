@@ -1,6 +1,6 @@
 # Demo Application
 
-This is an Angular-based demo application for the Ionic iOS26 Theme Library.
+This is an Angular-based demo application for the Ionic iOS27 Theme Library.
 
 ## Getting Started
 
@@ -84,8 +84,8 @@ demo/
 │   │       ├── pages/        # All page components
 │   │       └── index.routes.ts
 │   ├── theme/
-│   │   └── theme-ios26.scss  # iOS26 theme
-│   └── global.scss
+│   │   └── variables.scss    # Demo variables
+│   └── global.scss           # Imports the iOS 27 theme
 ├── playwright.config.ts       # Playwright configuration
 └── package.json
 ```

@@ -1,11 +1,11 @@
 @use '../utils/api';
 
-ion-segment.ios:not(.ios26-disabled) {
+ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled) {
   @include api.glass-background;
   min-height: 48px;
   border-radius: 25px;
 
-  transition: transform var(--ios26-activated-transition-duration) ease-out;
+  transition: transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease-out;
 
   // will-change is optimized to only apply when needed for performance
   &.segment-activated,
@@ -28,7 +28,7 @@ ion-segment.ios:not(.ios26-disabled) {
     }
   }
 
-  &:not(.ios26-enable-gesture).segment-activated {
+  &:not(.ios27-enable-gesture).segment-activated {
     transform: scale(1.1) translateZ(0);
     -webkit-transform: scale(1.1) translateZ(0);
     ion-segment-button {
@@ -47,7 +47,7 @@ ion-segment.ios:not(.ios26-disabled) {
     }
   }
 
-  &.ios26-enable-gesture {
+  &.ios27-enable-gesture {
     &:has(ion-segment-button.ion-activated) {
       transform: scale(1.1) translateZ(0);
       -webkit-transform: scale(1.1) translateZ(0);
@@ -65,7 +65,7 @@ ion-segment.ios:not(.ios26-disabled) {
         }
       }
     }
-    &.ios26-animated {
+    &.ios27-animated {
       ion-segment-button {
         --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
       }
@@ -87,7 +87,7 @@ ion-segment.ios:not(.ios26-disabled) {
       min-height: 24px;
     }
 
-    &.ios26-enable-gesture {
+    &.ios27-enable-gesture {
       &:has(ion-segment-button.ion-activated) {
         transform: scale(1) translateZ(0);
         -webkit-transform: scale(1) translateZ(0);
@@ -105,7 +105,7 @@ ion-segment.ios:not(.ios26-disabled) {
           }
         }
       }
-      &.ios26-animated {
+      &.ios27-animated {
         ion-segment-button {
           --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
         }
@@ -114,7 +114,7 @@ ion-segment.ios:not(.ios26-disabled) {
   }
 }
 
-ion-segment-button.ios:not(.ios26-disabled) {
+ion-segment-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --border-width: 0;
   --indicator-box-shadow: none;
   --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);

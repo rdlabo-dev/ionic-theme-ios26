@@ -24,9 +24,9 @@ No wrapper is required for lists that do not use `inset="true"`.
 
 ## Why the wrapper is required
 
-Ionic normally gives `ion-list` its background, which makes `ion-list-header` appear inside the same surface as the items. The iOS 26 layout treats the header and item surface separately.
+Ionic normally gives `ion-list` its background, which makes `ion-list-header` appear inside the same surface as the items. The iOS 27 layout treats the header and item surface separately.
 
-![Inset list background comparison showing why ion-item-group is required](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios26/v3.0.0/screenshots/why-ion-list-inset.png)
+![Inset list background comparison showing why ion-item-group is required](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-ios27/v3.0.0/screenshots/why-ion-list-inset.png)
 
 The theme therefore:
 
