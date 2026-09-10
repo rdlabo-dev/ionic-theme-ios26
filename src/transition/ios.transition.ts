@@ -48,17 +48,17 @@ const animateFixedBackButton = (
   clone.text = button.text;
   const icon = shadow(clone).querySelector('ion-icon');
   const animation = createAnimation().addElement(clone);
-  const fadeStart = interactive ? 0.8 : 0.4;
-  const fadeEnd = interactive ? 1 : 0.95;
+  const fadeStart = !entering && interactive ? 0.8 : 0.4;
+  const fadeEnd = entering ? 0.96 : interactive ? 1 : 0.95;
   if (persistent) {
     animation.fromTo('transform', 'scale(1)', 'scale(1)').fromTo('opacity', 1, 1);
   } else if (entering) {
     animation.keyframes([
       { offset: 0, transform: 'scale(1.2)', opacity: 0 },
-      { offset: 0.4, transform: 'scale(1.2)', opacity: 0 },
+      { offset: fadeStart, transform: 'scale(1.2)', opacity: 0 },
       { offset: 0.65, transform: 'scale(1.12)', opacity: 0.15 },
       { offset: 0.9, transform: 'scale(1.02)', opacity: 0.75 },
-      { offset: 0.96, transform: 'scale(1)', opacity: 1 },
+      { offset: fadeEnd, transform: 'scale(1)', opacity: 1 },
       { offset: 1, transform: 'scale(1)', opacity: 1 },
     ]);
   } else {
@@ -70,8 +70,6 @@ const animateFixedBackButton = (
     ]);
   }
   if (icon && !persistent) {
-    const start = entering ? 0.4 : fadeStart;
-    const end = entering ? 0.96 : fadeEnd;
     const from = entering ? 'blur(4px)' : 'blur(0px)';
     const to = entering ? 'blur(0px)' : 'blur(4px)';
     animation.addAnimation(
@@ -79,8 +77,8 @@ const animateFixedBackButton = (
         .addElement(icon)
         .keyframes([
           { offset: 0, filter: from },
-          { offset: start, filter: from },
-          { offset: end, filter: to },
+          { offset: fadeStart, filter: from },
+          { offset: fadeEnd, filter: to },
           { offset: 1, filter: to },
         ]),
     );
