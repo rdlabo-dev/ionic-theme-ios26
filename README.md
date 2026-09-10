@@ -3,7 +3,9 @@
 A CSS/JS theme library that brings the iOS 27 Liquid Glass appearance and navigation animations to Ionic applications while preserving Ionic components and conventions.
 
 > [!IMPORTANT]
-> This `main` branch contains the iOS 27 theme under the package name `@rdlabo/ionic-theme-ios27`. Its first npm release is pending. For the iOS 26 theme (`@rdlabo/ionic-theme-ios26`), see the [`ios26` branch](https://github.com/rdlabo-dev/ionic-theme-ios27/tree/ios26).
+> This `main` branch contains the iOS 27 theme under the package name `@rdlabo/ionic-theme-ios27`. For the iOS 26 theme (`@rdlabo/ionic-theme-ios26`), see the [`ios26` branch](https://github.com/rdlabo-dev/ionic-theme-ios27/tree/ios26).
+
+> All versions before 1.0.0 are release candidates (RC). APIs, CSS variables, classes, styling, and behavior may change without backward compatibility, including in minor and patch releases. A stable compatibility commitment starts with 1.0.0.
 
 [Try the iOS 27 demo](https://ionic-theme-ios27.rdlabo.dev/).
 
@@ -19,7 +21,7 @@ A CSS/JS theme library that brings the iOS 27 Liquid Glass appearance and naviga
 
 ## Installation
 
-Requires `@ionic/core` 8.8.1 or later (Ionic 8 and 9). After the first npm release, install it in an existing Ionic project:
+Requires `@ionic/core` 8.8.1 or later (Ionic 8 and 9). Install it in an existing Ionic project:
 
 ```bash
 npm install @rdlabo/ionic-theme-ios27
