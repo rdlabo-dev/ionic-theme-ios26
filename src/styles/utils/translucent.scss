@@ -51,8 +51,8 @@ ion-header.ios:not(.ios26-disabled).header-collapse-condense-inactive:not(.heade
   transform: translateY(8px);
 }
 
-ion-header.ios:not(.ios26-disabled):not(.header-transitioning).header-translucent::before,
-ion-header.ios:not(.ios26-disabled):not(.header-transitioning).header-translucent::after,
+ion-header.ios:not(.ios26-disabled).header-translucent::before,
+ion-header.ios:not(.ios26-disabled).header-translucent::after,
 ion-content.ios:not(.ios26-disabled).content-fullscreen::part(background)::before {
   content: '';
   position: absolute;

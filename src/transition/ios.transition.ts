@@ -15,6 +15,109 @@ export const shadow = <T extends Element>(el: T): ShadowRoot | T => {
   return el.shadowRoot || el;
 };
 
+const animateFixedBackButton = (
+  root: Animation,
+  navEl: HTMLElement,
+  page: HTMLElement,
+  entering: boolean,
+  interactive: boolean,
+  otherPage?: HTMLElement,
+) => {
+  const button = page.querySelector<HTMLIonBackButtonElement>(
+    ':scope > ion-header.header-translucent:not(.ios26-disabled) ion-back-button:not(.ios26-disabled)',
+  );
+  if (!button || button.offsetWidth === 0) {
+    return;
+  }
+
+  const otherButton = otherPage?.querySelector<HTMLIonBackButtonElement>(
+    ':scope > ion-header.header-translucent:not(.ios26-disabled) ion-back-button:not(.ios26-disabled)',
+  );
+  const persistent = !!otherButton && otherButton.offsetWidth > 0;
+  const buttons = [button, ...(persistent ? [otherButton!] : [])].map((element) => ({
+    element,
+    visibility: element.style.visibility,
+  }));
+  const rect = button.getBoundingClientRect();
+  const width = button.offsetWidth;
+  const height = button.offsetHeight;
+  const clone = getClonedElement<HTMLIonBackButtonElement>('ion-back-button');
+  if (!clone) {
+    return;
+  }
+  const cloneParent = clone.parentNode!;
+  const cloneNextSibling = clone.nextSibling;
+  const cloneStyle = clone.getAttribute('style');
+  clone.icon = button.icon;
+  clone.text = button.text;
+  clone.mode = button.mode;
+  clone.color = button.color;
+  clone.disabled = button.disabled;
+  const icon = shadow(clone).querySelector('ion-icon');
+  const animation = createAnimation().addElement(clone);
+  const fadeStart = !entering && interactive ? 0.8 : 0.4;
+  const fadeEnd = entering ? 0.96 : interactive ? 1 : 0.95;
+  if (persistent) {
+    animation.fromTo('transform', 'scale(1)', 'scale(1)').fromTo('opacity', 1, 1);
+  } else if (entering) {
+    animation.keyframes([
+      { offset: 0, transform: 'scale(1.2)', opacity: 0 },
+      { offset: fadeStart, transform: 'scale(1.2)', opacity: 0 },
+      { offset: 0.65, transform: 'scale(1.12)', opacity: 0.15 },
+      { offset: 0.9, transform: 'scale(1.02)', opacity: 0.75 },
+      { offset: fadeEnd, transform: 'scale(1)', opacity: 1 },
+      { offset: 1, transform: 'scale(1)', opacity: 1 },
+    ]);
+  } else {
+    animation.keyframes([
+      { offset: 0, transform: 'scale(1)', opacity: 1 },
+      { offset: fadeStart, transform: 'scale(1)', opacity: 1 },
+      { offset: fadeEnd, transform: 'scale(1.2)', opacity: 0 },
+      { offset: 1, transform: 'scale(1.2)', opacity: 0 },
+    ]);
+  }
+  if (icon && !persistent) {
+    const from = entering ? 'blur(4px)' : 'blur(0px)';
+    const to = entering ? 'blur(0px)' : 'blur(4px)';
+    animation.addAnimation(
+      createAnimation()
+        .addElement(icon)
+        .keyframes([
+          { offset: 0, filter: from },
+          { offset: fadeStart, filter: from },
+          { offset: fadeEnd, filter: to },
+          { offset: 1, filter: to },
+        ]),
+    );
+  }
+  root.beforeAddWrite(() => {
+    Object.assign(clone.style, {
+      position: 'fixed',
+      left: `${rect.left + (rect.width - width) / 2}px`,
+      top: `${rect.top + (rect.height - height) / 2}px`,
+      width: `${width}px`,
+      height: `${height}px`,
+      margin: '0',
+      pointerEvents: 'none',
+      visibility: 'visible',
+      display: getComputedStyle(button).display,
+      zIndex: '1000',
+    });
+    navEl.appendChild(clone);
+    buttons.forEach(({ element }) => (element.style.visibility = 'hidden'));
+  });
+  root.afterAddWrite(() => {
+    buttons.forEach(({ element, visibility }) => (element.style.visibility = visibility));
+    cloneParent.insertBefore(clone, cloneNextSibling);
+    if (cloneStyle === null) {
+      clone.removeAttribute('style');
+    } else {
+      clone.setAttribute('style', cloneStyle);
+    }
+  });
+  root.addAnimation(animation);
+};
+
 const getLargeTitle = (refEl: any) => {
   const tabs = refEl.tagName === 'ION-TABS' ? refEl : refEl.querySelector('ion-tabs');
   const query = 'ion-content ion-header:not(.header-collapse-condense-inactive) ion-title.title-large';
@@ -519,6 +622,17 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       .fill('both')
       .beforeRemoveClass('ion-page-invisible');
 
+    const topPage = backDirection ? leavingEl : enteringEl;
+    if (topPage?.querySelector(':scope > ion-header.header-translucent:not(.ios26-disabled)')) {
+      const shadow = topPage.style.boxShadow;
+      rootAnimation.beforeAddWrite(() => {
+        topPage.style.boxShadow = `${isRTL ? 4 : -4}px 0 24px rgba(0, 0, 0, 0.04)`;
+      });
+      rootAnimation.afterAddWrite(() => {
+        topPage.style.boxShadow = shadow;
+      });
+    }
+
     // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     if (leavingEl && navEl !== null && navEl !== undefined) {
       const navDecorAnimation = createAnimation();
@@ -526,7 +640,9 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       rootAnimation.addAnimation(navDecorAnimation);
     }
 
-    if (!contentEl && enteringToolBarEls.length === 0 && headerEls.length === 0) {
+    if (enteringEl.querySelector(':scope > ion-header.header-translucent:not(.ios26-disabled)')) {
+      enteringContentAnimation.addElement(enteringEl);
+    } else if (!contentEl && enteringToolBarEls.length === 0 && headerEls.length === 0) {
       enteringContentAnimation.addElement(enteringEl.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs')!); // REVIEW
     } else {
       enteringContentAnimation.addElement(contentEl!); // REVIEW
@@ -545,7 +661,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       enteringContentAnimation.beforeClearStyles([OPACITY]).fromTo('transform', `translateX(${OFF_RIGHT})`, `translateX(${CENTER})`);
     }
 
-    if (contentEl) {
+    if (contentEl && !enteringEl.querySelector(':scope > ion-header.header-translucent:not(.ios26-disabled)')) {
       const enteringTransitionEffectEl = shadow(contentEl).querySelector('.transition-effect');
       if (enteringTransitionEffectEl) {
         const enteringTransitionCoverEl = enteringTransitionEffectEl.querySelector('.transition-cover');
@@ -575,10 +691,23 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       }
     }
 
+    if (topPage) {
+      animateFixedBackButton(
+        rootAnimation,
+        navEl,
+        topPage,
+        !backDirection,
+        opts.progressCallback !== undefined,
+        backDirection ? enteringEl : leavingEl,
+      );
+    }
+
     const enteringContentHasLargeTitle = enteringEl.querySelector('ion-header.header-collapse-condense');
 
-    const { forward, backward } = createLargeTitleTransition(rootAnimation, isRTL, backDirection, enteringEl, leavingEl);
     enteringToolBarEls.forEach((enteringToolBarEl) => {
+      if (enteringToolBarEl.closest('ion-header')?.matches('.header-translucent:not(.ios26-disabled)')) {
+        return;
+      }
       const enteringToolBar = createAnimation();
       enteringToolBar.addElement(enteringToolBarEl);
       rootAnimation.addAnimation(enteringToolBar);
@@ -647,11 +776,9 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
         }
 
         // forward direction, entering page has a back button
-        if (!forward) {
-          enteringBackButton.fromTo(OPACITY, 0.01, 1);
-        }
+        enteringBackButton.fromTo(OPACITY, 0.01, 1);
 
-        if (backButtonEl && !forward) {
+        if (backButtonEl) {
           const enteringBackBtnText = createAnimation();
           enteringBackBtnText
             .addElement(shadow(backButtonEl).querySelector('.button-text')!) // REVIEW
@@ -669,7 +796,9 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       const leavingToolBarEls = leavingEl.querySelectorAll(':scope > ion-header > ion-toolbar');
       const leavingHeaderEls = leavingEl.querySelectorAll(':scope > ion-header > *:not(ion-toolbar), :scope > ion-footer > *');
 
-      if (!leavingContentEl && leavingToolBarEls.length === 0 && leavingHeaderEls.length === 0) {
+      if (leavingEl.querySelector(':scope > ion-header.header-translucent:not(.ios26-disabled)')) {
+        leavingContent.addElement(leavingEl);
+      } else if (!leavingContentEl && leavingToolBarEls.length === 0 && leavingHeaderEls.length === 0) {
         leavingContent.addElement(leavingEl.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs')!); // REVIEW
       } else {
         leavingContent.addElement(leavingContentEl!); // REVIEW
@@ -695,7 +824,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
         leavingContent.fromTo('transform', `translateX(${CENTER})`, `translateX(${OFF_LEFT})`).fromTo(OPACITY, 1, OFF_OPACITY);
       }
 
-      if (leavingContentEl) {
+      if (leavingContentEl && !leavingEl.querySelector(':scope > ion-header.header-translucent:not(.ios26-disabled)')) {
         const leavingTransitionEffectEl = shadow(leavingContentEl).querySelector('.transition-effect');
 
         if (leavingTransitionEffectEl) {
@@ -727,6 +856,9 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       }
 
       leavingToolBarEls.forEach((leavingToolBarEl) => {
+        if (leavingToolBarEl.closest('ion-header')?.matches('.header-translucent:not(.ios26-disabled)')) {
+          return;
+        }
         const leavingToolBar = createAnimation();
         leavingToolBar.addElement(leavingToolBarEl);
 
@@ -789,7 +921,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
             leavingToolBarBg.fromTo('transform', 'translateX(0px)', isRTL ? 'translateX(-100%)' : 'translateX(100%)');
           }
 
-          if (backButtonEl && !backward) {
+          if (backButtonEl) {
             const leavingBackBtnText = createAnimation();
             leavingBackBtnText
               .addElement(shadow(backButtonEl).querySelector('.button-text')!) // REVIEW
