@@ -4,7 +4,7 @@ $scaleup-small-icon-only: api.$button-scaleup-small-icon-only;
 $scaleup-default-icon-only: api.$button-scaleup-default-icon-only;
 $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
 
-ion-fab.ios:not(.ios27-disabled) {
+ion-fab.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --transform-value: 2.5px;
   &:has(> ion-fab-button.fab-button-small) {
     --transform-value: 4px;

@@ -1,6 +1,6 @@
 @use '../utils/api';
 
-ion-segment.ios:not(.ios27-disabled) {
+ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled) {
   @include api.glass-background;
   min-height: 48px;
   border-radius: 25px;
@@ -114,7 +114,7 @@ ion-segment.ios:not(.ios27-disabled) {
   }
 }
 
-ion-segment-button.ios:not(.ios27-disabled) {
+ion-segment-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --border-width: 0;
   --indicator-box-shadow: none;
   --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);

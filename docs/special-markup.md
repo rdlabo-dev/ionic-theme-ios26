@@ -136,10 +136,12 @@ Add `.toolbar-searchbar` when an `ion-toolbar` combines a search bar with start 
 
 ## Opting out
 
-Add `.ios27-disabled` to an individual Ionic component when it must retain Ionic's standard iOS styling.
+Add `.ios-theme-disabled` to an individual Ionic component when it must retain Ionic's standard iOS styling.
+
+`.ios26-disabled` is deprecated but remains supported as an alias with the same behavior. Use `.ios-theme-disabled` for new code.
 
 ```html preview
-<ion-button>iOS 27 theme</ion-button> <ion-button class="ios27-disabled">Standard Ionic button</ion-button>
+<ion-button>iOS 27 theme</ion-button> <ion-button class="ios-theme-disabled">Standard Ionic button</ion-button>
 ```
 
 For the background model behind inset lists, see [Using `ion-item-group`](./using-ion-item-group.md).

@@ -1,6 +1,6 @@
 @use '../utils/api';
 
-ion-loading.ios:not(.ios27-disabled) {
+ion-loading.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --backdrop-opacity: 0.2;
   .loading-wrapper {
     @include api.glass-background;

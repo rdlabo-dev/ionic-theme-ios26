@@ -5,7 +5,7 @@
   -webkit-transform: scale(1.56, 1.47) translateX(calc(#{$translate-x} * -0.1)) translateZ(0);
 }
 
-ion-range.ios:not(.ios27-disabled) {
+ion-range.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --knob-size: 20px;
   --knob-width: 38px;
   --knob-border-radius: 24px;

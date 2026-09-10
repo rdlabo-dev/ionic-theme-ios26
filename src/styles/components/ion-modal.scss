@@ -1,6 +1,6 @@
 @use '../utils/api';
 
-ion-modal.ios:not(.ios27-disabled) {
+ion-modal.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --backdrop-opacity: 0.2;
 
   &::part(handle) {

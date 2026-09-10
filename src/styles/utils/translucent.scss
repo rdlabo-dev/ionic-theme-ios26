@@ -1,7 +1,7 @@
 @use 'api';
 
-ion-header.ios:not(.ios27-disabled).header-translucent,
-ion-footer.ios:not(.ios27-disabled).footer-translucent {
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-translucent,
+ion-footer.ios:not(.ios-theme-disabled, .ios26-disabled).footer-translucent {
   .header-background,
   .footer-background {
     backdrop-filter: none;
@@ -20,14 +20,14 @@ ion-footer.ios:not(.ios27-disabled).footer-translucent {
   }
 }
 
-ion-header.ios:not(.ios27-disabled).header-translucent:not(.header-collapse-condense) {
-  &:has(> ion-toolbar.ios:not(.ios27-disabled) > *)::before {
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-translucent:not(.header-collapse-condense) {
+  &:has(> ion-toolbar.ios:not(.ios-theme-disabled, .ios26-disabled) > *)::before {
     height: 100%;
     background: rgba(var(--ion-color-base-rgb, var(--ios27-content-box-shadow-rgb)), calc(0.2 * var(--opacity-scale, 1)));
     backdrop-filter: blur(8px);
   }
 
-  &:not(.ion-no-border) > ion-toolbar.ios:not(.ios27-disabled):has(> *):last-of-type {
+  &:not(.ion-no-border) > ion-toolbar.ios:not(.ios-theme-disabled, .ios26-disabled):has(> *):last-of-type {
     --border-width: 0 0 0.5px;
     --border-color: var(--ion-toolbar-border-color, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.08));
     &::part(background) {
@@ -37,7 +37,7 @@ ion-header.ios:not(.ios27-disabled).header-translucent:not(.header-collapse-cond
   }
 }
 
-ion-header.ios:not(.ios27-disabled).header-collapse-main ion-toolbar.in-toolbar ion-title {
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-collapse-main ion-toolbar.in-toolbar ion-title {
   transition:
     opacity 0.5s ease-in-out,
     color 0.5s ease-in-out,
@@ -45,15 +45,17 @@ ion-header.ios:not(.ios27-disabled).header-collapse-main ion-toolbar.in-toolbar 
     transform 0.5s ease-in-out;
 }
 
-ion-header.ios:not(.ios27-disabled).header-collapse-condense-inactive:not(.header-collapse-condense) ion-toolbar.in-toolbar ion-title {
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-collapse-condense-inactive:not(.header-collapse-condense)
+  ion-toolbar.in-toolbar
+  ion-title {
   color: transparent;
   text-shadow: 0 0 1px var(--ion-color-base, var(--ion-toolbar-color, var(--ion-text-color, #000)));
   transform: translateY(8px);
 }
 
-ion-header.ios:not(.ios27-disabled).header-translucent::before,
-ion-header.ios:not(.ios27-disabled).header-translucent::after,
-ion-content.ios:not(.ios27-disabled).content-fullscreen::part(background)::before {
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-translucent::before,
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-translucent::after,
+ion-content.ios:not(.ios-theme-disabled, .ios26-disabled).content-fullscreen::part(background)::before {
   content: '';
   position: absolute;
   width: 100%;
@@ -61,7 +63,7 @@ ion-content.ios:not(.ios27-disabled).content-fullscreen::part(background)::befor
   z-index: 1;
 }
 
-ion-header.ios:not(.ios27-disabled).header-translucent::before {
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-translucent::before {
   /**
    * With safe-area effect, this is need.
    */
@@ -70,7 +72,7 @@ ion-header.ios:not(.ios27-disabled).header-translucent::before {
   height: var(--ion-safe-area-top);
 }
 
-ion-header.ios:not(.ios27-disabled).header-translucent::after {
+ion-header.ios:not(.ios-theme-disabled, .ios26-disabled).header-translucent::after {
   z-index: 2;
   top: 0;
   height: 100%;

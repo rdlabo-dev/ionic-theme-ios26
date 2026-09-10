@@ -1,6 +1,6 @@
 @use '../utils/api';
 
-ion-tab-bar.ios:not(.ios27-disabled) {
+ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
   @include api.glass-background;
   z-index: 2;
 
@@ -66,7 +66,7 @@ ion-tab-bar.ios:not(.ios27-disabled) {
   }
 }
 
-ion-tab-button.ios:not(.ios27-disabled) {
+ion-tab-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
   ion-icon {
     font-size: 26px;
   }

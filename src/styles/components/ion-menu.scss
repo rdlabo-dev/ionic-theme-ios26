@@ -1,12 +1,12 @@
 @use '../utils/api';
 
-ion-split-pane.ios:not(.ios27-disabled) {
+ion-split-pane.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --side-max-width: var(--ios27-menu-width);
 }
 
-ion-split-pane.ios:not(.ios27-disabled).split-pane-visible:has(ion-menu.menu-pane-visible) {
+ion-split-pane.ios:not(.ios-theme-disabled, .ios26-disabled).split-pane-visible:has(ion-menu.menu-pane-visible) {
   .split-pane-main {
-    ion-tab-bar.ios:not(.ios27-disabled) {
+    ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
       width: calc(
         100% - calc(18px + var(--ion-safe-area-left, 0px)) - calc(18px + var(--ion-safe-area-left, 0px)) - 60px -
           12px - var(--ios27-menu-width)
@@ -42,7 +42,7 @@ ion-split-pane.ios:not(.ios27-disabled).split-pane-visible:has(ion-menu.menu-pan
       ion-footer ion-toolbar {
         --padding-start: var(--ios27-menu-width);
       }
-      ion-tab-bar.ios:not(.ios27-disabled) {
+      ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
         &[slot='bottom'] {
           left: calc(16px + var(--ion-safe-area-left, 0px) + var(--ios27-menu-width));
         }
@@ -50,7 +50,7 @@ ion-split-pane.ios:not(.ios27-disabled).split-pane-visible:has(ion-menu.menu-pan
     }
   }
 
-  &:has(ion-menu.ios:not(.ios27-disabled).menu-side-end) {
+  &:has(ion-menu.ios:not(.ios-theme-disabled, .ios26-disabled).menu-side-end) {
     .split-pane-main {
       ion-header ion-toolbar {
         /*
@@ -77,7 +77,7 @@ ion-split-pane.ios:not(.ios27-disabled).split-pane-visible:has(ion-menu.menu-pan
   }
 }
 
-ion-menu.ios:not(.ios27-disabled) {
+ion-menu.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --border: none;
   --background: transparent;
   --max-width: var(--ios27-menu-width);

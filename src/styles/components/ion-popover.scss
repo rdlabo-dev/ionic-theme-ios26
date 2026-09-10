@@ -1,6 +1,6 @@
 @use '../utils/api';
 
-ion-popover.ios:not(.ios27-disabled) {
+ion-popover.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --backdrop-opacity: 0.2;
   --background: rgba(var(--ios27-glass-background-rgb), 0.72);
   --box-shadow:

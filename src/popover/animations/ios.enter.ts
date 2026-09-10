@@ -27,7 +27,7 @@ export const iosEnterAnimation = (baseEl: HTMLElement, opts?: any): Animation =>
     if (!['ion-button', 'ion-buttons'].includes(referenceSizeEl.localName)) {
       return false;
     }
-    if (referenceSizeEl.classList.contains('ios27-disabled')) {
+    if (referenceSizeEl.matches('.ios-theme-disabled, .ios26-disabled')) {
       return false;
     }
     return true;

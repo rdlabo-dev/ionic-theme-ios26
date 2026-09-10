@@ -59,11 +59,11 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
     }
   }
 
-  &:has(ion-button:not(.ios27-disabled).button-clear.button-large) {
+  &:has(ion-button:not(.ios-theme-disabled, .ios26-disabled).button-clear.button-large) {
     border-radius: 30px;
   }
 
-  ion-button:not(.ios27-disabled).button-clear {
+  ion-button:not(.ios-theme-disabled, .ios26-disabled).button-clear {
     --background: transparent;
     --border-style: none;
     --border-width: 0;
@@ -121,11 +121,11 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
     }
   }
 
-  ion-button:not(.ios27-disabled) {
+  ion-button:not(.ios-theme-disabled, .ios26-disabled) {
     margin: 0;
   }
 
-  ion-menu-button:not(.ios27-disabled) {
+  ion-menu-button:not(.ios-theme-disabled, .ios26-disabled) {
     width: 44px;
     height: 44px;
     padding: 2px;
@@ -153,13 +153,13 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
   }
 
   // will-change is optimized to only apply when needed for performance
-  &:not(.ios27-disabled):hover,
-  &:not(.ios27-disabled):active,
-  &:not(.ios27-disabled).ion-activated {
+  &:not(.ios-theme-disabled, .ios26-disabled):hover,
+  &:not(.ios-theme-disabled, .ios26-disabled):active,
+  &:not(.ios-theme-disabled, .ios26-disabled).ion-activated {
     will-change: transform;
   }
 
-  &:not(.ios27-disabled):not(:hover):not(:active):not(.ion-activated) {
+  &:not(.ios-theme-disabled, .ios26-disabled):not(:hover):not(:active):not(.ion-activated) {
     will-change: auto;
   }
 
@@ -409,18 +409,22 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
   }
 }
 
-ion-buttons.ios:not(.ios27-disabled):not(:has(ion-back-button, ion-button:not(.button-clear), ion-menu-button.menu-button-hidden)) {
+ion-buttons.ios:not(.ios-theme-disabled, .ios26-disabled):not(
+    :has(ion-back-button, ion-button:not(.button-clear), ion-menu-button.menu-button-hidden)
+  ) {
   @include theme-buttons;
 }
 
 // Ionic's collapsing-header transition has a more specific contextual selector.
 .header-collapse-main
   :where(ion-toolbar.in-toolbar)
-  ion-buttons.ios:not(.ios27-disabled):not(:has(ion-back-button, ion-button:not(.button-clear), ion-menu-button.menu-button-hidden)) {
+  ion-buttons.ios:not(.ios-theme-disabled, .ios26-disabled):not(
+    :has(ion-back-button, ion-button:not(.button-clear), ion-menu-button.menu-button-hidden)
+  ) {
   transition: transform var(--ios27-activated-transition-duration) ease-out;
 }
 
-ion-buttons.ios:not(.ios27-disabled):not(:has(ion-back-button, ion-button.button-clear)) {
+ion-buttons.ios:not(.ios-theme-disabled, .ios26-disabled):not(:has(ion-back-button, ion-button.button-clear)) {
   ion-button {
     margin: 0 6px;
     &:first-child {
@@ -435,9 +439,9 @@ ion-buttons.ios:not(.ios27-disabled):not(:has(ion-back-button, ion-button.button
   }
 }
 
-ion-button.ios:not(.ios27-disabled) {
+ion-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
   @include theme-button;
 }
-ion-back-button.ios:not(.ios27-disabled) {
+ion-back-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
   @include theme-button($is-back-button: true);
 }

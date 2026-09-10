@@ -8,7 +8,9 @@ title: Migration
 
 Use `@rdlabo/ionic-theme-ios27` for the current theme. Update stylesheet imports to `ionic-theme-ios27.scss` or `ionic-theme-ios27.css`, including the `-dark-always`, `-dark-system`, and `-dark-class` variants.
 
-The theme now uses the `ios27-` prefix consistently. Update custom CSS variables, selectors, and markup to match, including `ios27-disabled` and `--ios27-*` variables. Legacy names are no longer recognized.
+Update theme CSS variables and selectors to the `ios27-` prefix, including `--ios27-*` variables. Old variable names are no longer recognized.
+
+For opting out of the theme, use the version-independent `ios-theme-disabled` class. The `ios26-disabled` class remains supported as a deprecated alias; migrate existing markup when convenient.
 
 See [Special markup and classes](./special-markup.md) and [Default variables](../src/styles/default-variables.scss) for the current names.
 

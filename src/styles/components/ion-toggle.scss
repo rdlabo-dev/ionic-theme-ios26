@@ -4,7 +4,7 @@
  * Adjustments have been made to prevent the right edge from being cut off within the ion-item.
  * When the native-inner part be added to the ion-item, it will be removed.
  */
-ion-item.ios:not(.ios27-disabled) ion-toggle.ios:not(.ios27-disabled) {
+ion-item.ios:not(.ios-theme-disabled, .ios26-disabled) ion-toggle.ios:not(.ios-theme-disabled, .ios26-disabled) {
   &.toggle-checked.toggle-activated::part(track) {
     transform-origin: left;
     transform: scaleX(0.894) translateZ(0);
@@ -16,7 +16,7 @@ ion-item.ios:not(.ios27-disabled) ion-toggle.ios:not(.ios27-disabled) {
   }
 }
 
-ion-toggle.ios:not(.ios27-disabled) {
+ion-toggle.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --handle-width: 38px;
   --handle-height: 24px;
   --handle-max-width: none;

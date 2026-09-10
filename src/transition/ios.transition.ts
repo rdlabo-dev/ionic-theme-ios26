@@ -24,14 +24,14 @@ const animateFixedBackButton = (
   otherPage?: HTMLElement,
 ) => {
   const button = page.querySelector<HTMLIonBackButtonElement>(
-    ':scope > ion-header.header-translucent:not(.ios27-disabled) ion-back-button:not(.ios27-disabled)',
+    ':scope > ion-header.header-translucent:not(.ios-theme-disabled, .ios26-disabled) ion-back-button:not(.ios-theme-disabled, .ios26-disabled)',
   );
   if (!button || button.offsetWidth === 0) {
     return;
   }
 
   const otherButton = otherPage?.querySelector<HTMLIonBackButtonElement>(
-    ':scope > ion-header.header-translucent:not(.ios27-disabled) ion-back-button:not(.ios27-disabled)',
+    ':scope > ion-header.header-translucent:not(.ios-theme-disabled, .ios26-disabled) ion-back-button:not(.ios-theme-disabled, .ios26-disabled)',
   );
   const persistent = !!otherButton && otherButton.offsetWidth > 0;
   const buttons = [button, ...(persistent ? [otherButton!] : [])].map((element) => ({
@@ -623,7 +623,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       .beforeRemoveClass('ion-page-invisible');
 
     const topPage = backDirection ? leavingEl : enteringEl;
-    if (topPage?.querySelector(':scope > ion-header.header-translucent:not(.ios27-disabled)')) {
+    if (topPage?.querySelector(':scope > ion-header.header-translucent:not(.ios-theme-disabled, .ios26-disabled)')) {
       const shadow = topPage.style.boxShadow;
       rootAnimation.beforeAddWrite(() => {
         topPage.style.boxShadow = `${isRTL ? 4 : -4}px 0 24px rgba(0, 0, 0, 0.04)`;
@@ -640,7 +640,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       rootAnimation.addAnimation(navDecorAnimation);
     }
 
-    if (enteringEl.querySelector(':scope > ion-header.header-translucent:not(.ios27-disabled)')) {
+    if (enteringEl.querySelector(':scope > ion-header.header-translucent:not(.ios-theme-disabled, .ios26-disabled)')) {
       enteringContentAnimation.addElement(enteringEl);
     } else if (!contentEl && enteringToolBarEls.length === 0 && headerEls.length === 0) {
       enteringContentAnimation.addElement(enteringEl.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs')!); // REVIEW
@@ -661,7 +661,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       enteringContentAnimation.beforeClearStyles([OPACITY]).fromTo('transform', `translateX(${OFF_RIGHT})`, `translateX(${CENTER})`);
     }
 
-    if (contentEl && !enteringEl.querySelector(':scope > ion-header.header-translucent:not(.ios27-disabled)')) {
+    if (contentEl && !enteringEl.querySelector(':scope > ion-header.header-translucent:not(.ios-theme-disabled, .ios26-disabled)')) {
       const enteringTransitionEffectEl = shadow(contentEl).querySelector('.transition-effect');
       if (enteringTransitionEffectEl) {
         const enteringTransitionCoverEl = enteringTransitionEffectEl.querySelector('.transition-cover');
@@ -705,7 +705,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
     const enteringContentHasLargeTitle = enteringEl.querySelector('ion-header.header-collapse-condense');
 
     enteringToolBarEls.forEach((enteringToolBarEl) => {
-      if (enteringToolBarEl.closest('ion-header')?.matches('.header-translucent:not(.ios27-disabled)')) {
+      if (enteringToolBarEl.closest('ion-header')?.matches('.header-translucent:not(.ios-theme-disabled, .ios26-disabled)')) {
         return;
       }
       const enteringToolBar = createAnimation();
@@ -796,7 +796,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       const leavingToolBarEls = leavingEl.querySelectorAll(':scope > ion-header > ion-toolbar');
       const leavingHeaderEls = leavingEl.querySelectorAll(':scope > ion-header > *:not(ion-toolbar), :scope > ion-footer > *');
 
-      if (leavingEl.querySelector(':scope > ion-header.header-translucent:not(.ios27-disabled)')) {
+      if (leavingEl.querySelector(':scope > ion-header.header-translucent:not(.ios-theme-disabled, .ios26-disabled)')) {
         leavingContent.addElement(leavingEl);
       } else if (!leavingContentEl && leavingToolBarEls.length === 0 && leavingHeaderEls.length === 0) {
         leavingContent.addElement(leavingEl.querySelector(':scope > .ion-page, :scope > ion-nav, :scope > ion-tabs')!); // REVIEW
@@ -824,7 +824,10 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
         leavingContent.fromTo('transform', `translateX(${CENTER})`, `translateX(${OFF_LEFT})`).fromTo(OPACITY, 1, OFF_OPACITY);
       }
 
-      if (leavingContentEl && !leavingEl.querySelector(':scope > ion-header.header-translucent:not(.ios27-disabled)')) {
+      if (
+        leavingContentEl &&
+        !leavingEl.querySelector(':scope > ion-header.header-translucent:not(.ios-theme-disabled, .ios26-disabled)')
+      ) {
         const leavingTransitionEffectEl = shadow(leavingContentEl).querySelector('.transition-effect');
 
         if (leavingTransitionEffectEl) {
@@ -856,7 +859,7 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
       }
 
       leavingToolBarEls.forEach((leavingToolBarEl) => {
-        if (leavingToolBarEl.closest('ion-header')?.matches('.header-translucent:not(.ios27-disabled)')) {
+        if (leavingToolBarEl.closest('ion-header')?.matches('.header-translucent:not(.ios-theme-disabled, .ios26-disabled)')) {
           return;
         }
         const leavingToolBar = createAnimation();
