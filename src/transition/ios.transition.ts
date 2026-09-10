@@ -15,14 +15,26 @@ export const shadow = <T extends Element>(el: T): ShadowRoot | T => {
   return el.shadowRoot || el;
 };
 
-const animateFixedBackButton = (root: Animation, navEl: HTMLElement, page: HTMLElement, entering: boolean, interactive: boolean) => {
+const animateFixedBackButton = (
+  root: Animation,
+  navEl: HTMLElement,
+  page: HTMLElement,
+  entering: boolean,
+  interactive: boolean,
+  otherPage?: HTMLElement,
+) => {
   const button = page.querySelector<HTMLIonBackButtonElement>(':scope > ion-header.header-translucent ion-back-button');
   if (!button || button.offsetWidth === 0) {
     return;
   }
 
+  const otherButton = otherPage?.querySelector<HTMLIonBackButtonElement>(':scope > ion-header.header-translucent ion-back-button');
+  const persistent = !!otherButton && otherButton.offsetWidth > 0;
+  const buttons = [button, ...(persistent ? [otherButton!] : [])].map((element) => ({
+    element,
+    visibility: element.style.visibility,
+  }));
   const rect = button.getBoundingClientRect();
-  const visibility = button.style.visibility;
   const width = button.offsetWidth;
   const height = button.offsetHeight;
   const clone = getClonedElement<HTMLIonBackButtonElement>('ion-back-button');
@@ -34,12 +46,13 @@ const animateFixedBackButton = (root: Animation, navEl: HTMLElement, page: HTMLE
   const cloneStyle = clone.getAttribute('style');
   clone.icon = button.icon;
   clone.text = button.text;
-  const sourceIcon = shadow(clone).querySelector('ion-icon');
-  const icon = sourceIcon;
+  const icon = shadow(clone).querySelector('ion-icon');
   const animation = createAnimation().addElement(clone);
   const fadeStart = interactive ? 0.8 : 0.4;
   const fadeEnd = interactive ? 1 : 0.95;
-  if (entering) {
+  if (persistent) {
+    animation.fromTo('transform', 'scale(1)', 'scale(1)').fromTo('opacity', 1, 1);
+  } else if (entering) {
     animation.keyframes([
       { offset: 0, transform: 'scale(1.2)', opacity: 0 },
       { offset: 0.4, transform: 'scale(1.2)', opacity: 0 },
@@ -56,24 +69,21 @@ const animateFixedBackButton = (root: Animation, navEl: HTMLElement, page: HTMLE
       { offset: 1, transform: 'scale(1.2)', opacity: 0 },
     ]);
   }
-  if (icon) {
-    const iconAnimation = createAnimation().addElement(icon);
-    if (entering) {
-      iconAnimation.keyframes([
-        { offset: 0, filter: 'blur(4px)' },
-        { offset: 0.4, filter: 'blur(4px)' },
-        { offset: 0.96, filter: 'blur(0px)' },
-        { offset: 1, filter: 'blur(0px)' },
-      ]);
-    } else {
-      iconAnimation.keyframes([
-        { offset: 0, filter: 'blur(0px)' },
-        { offset: fadeStart, filter: 'blur(0px)' },
-        { offset: fadeEnd, filter: 'blur(4px)' },
-        { offset: 1, filter: 'blur(4px)' },
-      ]);
-    }
-    animation.addAnimation(iconAnimation);
+  if (icon && !persistent) {
+    const start = entering ? 0.4 : fadeStart;
+    const end = entering ? 0.96 : fadeEnd;
+    const from = entering ? 'blur(4px)' : 'blur(0px)';
+    const to = entering ? 'blur(0px)' : 'blur(4px)';
+    animation.addAnimation(
+      createAnimation()
+        .addElement(icon)
+        .keyframes([
+          { offset: 0, filter: from },
+          { offset: start, filter: from },
+          { offset: end, filter: to },
+          { offset: 1, filter: to },
+        ]),
+    );
   }
   root.beforeAddWrite(() => {
     Object.assign(clone.style, {
@@ -89,10 +99,10 @@ const animateFixedBackButton = (root: Animation, navEl: HTMLElement, page: HTMLE
       zIndex: '1000',
     });
     navEl.appendChild(clone);
-    button.style.visibility = 'hidden';
+    buttons.forEach(({ element }) => (element.style.visibility = 'hidden'));
   });
   root.afterAddWrite(() => {
-    button.style.visibility = visibility;
+    buttons.forEach(({ element, visibility }) => (element.style.visibility = visibility));
     cloneParent.insertBefore(clone, cloneNextSibling);
     if (cloneStyle === null) {
       clone.removeAttribute('style');
@@ -677,7 +687,14 @@ export const iosTransitionAnimation = (navEl: HTMLElement, opts: TransitionOptio
     }
 
     if (topPage) {
-      animateFixedBackButton(rootAnimation, navEl, topPage, !backDirection, opts.progressCallback !== undefined);
+      animateFixedBackButton(
+        rootAnimation,
+        navEl,
+        topPage,
+        !backDirection,
+        opts.progressCallback !== undefined,
+        backDirection ? enteringEl : leavingEl,
+      );
     }
 
     const enteringContentHasLargeTitle = enteringEl.querySelector('ion-header.header-collapse-condense');
