@@ -17,6 +17,19 @@ Solid submit buttons use the Ionic color's contrast value for their foreground. 
 
 Use `.button-submit` when the button needs the same treatment but cannot use `type="submit"`.
 
+## Tab bar position
+
+Add one of `tab-bar-position-start`, `tab-bar-position-center`, or `tab-bar-position-end` to an iOS `ion-tab-bar` to position the whole bar within its safe area. These classes work with both `slot="top"` and `slot="bottom"` and preserve the bar's width and press animation. Start and end follow the text direction (reversed in RTL). Without a class, the existing placement is unchanged.
+
+```html
+<ion-tab-bar slot="bottom" class="tab-bar-position-center">
+  <ion-tab-button tab="home">Home</ion-tab-button>
+  <ion-tab-button tab="settings">Settings</ion-tab-button>
+</ion-tab-bar>
+```
+
+These classes do not reposition a separate `ion-fab`; leave room for it when choosing the bar's position.
+
 ## Two-line inset list items
 
 Place an unslotted `ion-label` immediately alongside an unslotted `ion-note` to render a two-line item. When using the iOS-style inset-list background, wrap the items in `ion-item-group`; keep `ion-list-header` outside the group.

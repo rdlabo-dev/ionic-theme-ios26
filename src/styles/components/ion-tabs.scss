@@ -19,6 +19,26 @@ ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
     left: calc(16px + var(--ion-safe-area-left, 0px));
   }
 
+  &.tab-bar-position-start,
+  &.tab-bar-position-end:dir(rtl) {
+    left: calc(16px + var(--ion-safe-area-left, 0px));
+    right: auto;
+    margin-inline: 0;
+  }
+
+  &.tab-bar-position-end,
+  &.tab-bar-position-start:dir(rtl) {
+    left: auto;
+    right: calc(16px + var(--ion-safe-area-right, 0px));
+    margin-inline: 0;
+  }
+
+  &.tab-bar-position-center {
+    left: calc(16px + var(--ion-safe-area-left, 0px));
+    right: calc(16px + var(--ion-safe-area-right, 0px));
+    margin-inline: auto;
+  }
+
   /**
    * 100% - margin-left - margin-right - right-fab - margin-left-fab
    */
