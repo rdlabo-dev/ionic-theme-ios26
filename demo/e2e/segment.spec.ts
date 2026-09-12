@@ -537,3 +537,36 @@ test('rapid reselection settles to the final Ionic value', async ({ page }) => {
   await expect(segment.locator('.ios27-segment-lens')).toBeHidden();
   expect(await segment.evaluate((el) => (el as HTMLIonSegmentElement).value)).toBe('segment');
 });
+
+test('stylesheet overrides apply to colored selection and destination lens', async ({ page }) => {
+  await page.addStyleTag({
+    content: `
+    ion-segment-button { --indicator-color: rgb(12, 34, 56); --color-checked: rgb(65, 43, 21); }
+    ion-segment-button:last-of-type { --indicator-color: rgb(210, 30, 40); --border-radius: 8px; }
+  `,
+  });
+  const segment = page.locator('app-segment ion-segment[color="primary"]');
+  const first = segment.locator('ion-segment-button').first();
+  await segment
+    .locator('ion-segment-button')
+    .last()
+    .evaluate((el) => el.style.setProperty('--border-radius', '8px'));
+  await expect(first.locator('[part="indicator-background"]')).toHaveCSS('background-color', 'rgb(12, 34, 56)');
+  await expect(first.locator('[part="native"]')).toHaveCSS('color', 'rgb(65, 43, 21)');
+  await segment.locator('ion-segment-button').last().tap();
+  const lens = segment.locator('.ios27-segment-lens');
+  await expect(lens).toBeVisible();
+  const appearance = await lens.evaluate((el) => {
+    const animation = el.getAnimations().find((a) => (a.effect as KeyframeEffect).getKeyframes().some((f) => f.width))!;
+    animation.pause();
+    animation.currentTime = 799;
+    const style = getComputedStyle(el);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = style.backgroundColor;
+    ctx.fillRect(0, 0, 1, 1);
+    return { color: Array.from(ctx.getImageData(0, 0, 1, 1).data), radius: style.borderRadius };
+  });
+  expect(appearance.radius).toBe('8px');
+  expect(appearance.color.slice(0, 3)).toEqual([210, 30, 40]);
+});

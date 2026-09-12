@@ -67,7 +67,6 @@ ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled) {
     }
 
     ion-segment-button {
-      --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
       min-height: 40px;
       margin: 4px 2px;
       font-size: 15px;
@@ -80,9 +79,6 @@ ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled) {
   }
 
   &.ion-color ion-segment-button.in-segment-color {
-    --indicator-color: var(--ion-color-base);
-    --color-checked: var(--ion-color-contrast);
-
     &.segment-button-checked::part(native) {
       color: var(--color-checked);
     }
@@ -181,4 +177,13 @@ ion-segment-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
       transition: none;
     }
   }
+}
+
+// Public customization properties remain overridable by ordinary app selectors.
+:where(ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled).in-toolbar:not(.segment-expand) ion-segment-button) {
+  --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
+}
+:where(ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled).ion-color ion-segment-button.in-segment-color) {
+  --indicator-color: var(--ion-color-base);
+  --color-checked: var(--ion-color-contrast);
 }

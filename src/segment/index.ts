@@ -316,6 +316,11 @@ export const registerSegmentEffect = (targetElement: HTMLElement): registeredEff
         return;
       }
       const changed = next !== state.button;
+      // Ionic has committed selection: use the destination's public appearance
+      // for the moving surface as well as the final indicator.
+      const nextStyle = win.getComputedStyle(next);
+      surfaceColor = nextStyle.getPropertyValue('--indicator-color') || 'transparent';
+      lens.style.borderRadius = nextStyle.getPropertyValue('--border-radius');
       if (!changed && !state.moved && animation) {
         // A short selected-item tap completes its press before returning, as UIKit does.
         const pressing = animation;
