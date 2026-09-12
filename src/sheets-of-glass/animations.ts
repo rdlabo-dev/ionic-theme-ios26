@@ -12,13 +12,14 @@ export const createPreMoveAnimation = (
   tabSelectedElement: Element,
   currentTouchedElement: Element,
   animationPosition: AnimationPosition,
+  durationFactor: number = 2.1,
 ): Animation => {
   const diff = Math.max(
     Math.abs(tabSelectedElement.getBoundingClientRect().left - currentTouchedElement.getBoundingClientRect().left),
     140,
   );
   return createAnimation()
-    .duration(diff * 2.1)
+    .duration(diff * durationFactor)
     .easing('ease-out')
     .addElement(effectElement)
     .beforeStyles({

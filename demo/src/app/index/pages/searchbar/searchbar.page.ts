@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { closeOutline } from 'ionicons/icons';
+import { supportSeachbarCancelButtonIcon, SearchbarCancelButtonIconSupport } from '../../../../../../src';
 
 import { FormsModule } from '@angular/forms';
 import {
@@ -41,8 +43,16 @@ import {
     IonButton,
   ],
 })
-export class SearchbarPage implements OnInit {
-  constructor() {}
+export class SearchbarPage implements AfterViewInit, OnDestroy {
+  @ViewChildren('nativeSearchbar', { read: ElementRef }) searchbars!: QueryList<ElementRef<HTMLIonSearchbarElement>>;
+  readonly cancelIcon = closeOutline;
+  #effects: SearchbarCancelButtonIconSupport[] = [];
 
-  ngOnInit() {}
+  ngAfterViewInit() {
+    this.#effects = this.searchbars.map(({ nativeElement }) => supportSeachbarCancelButtonIcon(nativeElement));
+  }
+
+  ngOnDestroy() {
+    this.#effects.forEach((effect) => effect.destroy());
+  }
 }

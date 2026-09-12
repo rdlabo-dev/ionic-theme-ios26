@@ -12,6 +12,7 @@ export const registerEffect = (
   effectTagName: string,
   selectedClassName: string,
   scales: EffectScales,
+  preMoveDurationFactor: number = 2.1,
 ): registeredEffect | undefined => {
   if (!targetElement.classList.contains('ios')) {
     return undefined;
@@ -20,12 +21,26 @@ export const registerEffect = (
   let gesture!: Gesture;
   let moveAnimation: Animation | undefined;
   let currentTouchedElement: HTMLElement | undefined;
+  let selectedElementBeforeGesture: HTMLElement | undefined;
   let clearActivatedTimer: ReturnType<typeof setTimeout> | undefined;
   let animationPosition: AnimationPosition | undefined = undefined;
   let scaleAnimationPromise: Promise<void> | undefined;
   let startAnimationPromise: Promise<void> | undefined;
   let maxVelocity = 0;
-  const effectElement = cloneElement(effectTagName);
+  const effectElement = cloneElement(effectTagName, false);
+  let onPointerUp: (() => void) | undefined;
+  let onPointerCancel: (() => void) | undefined;
+
+  const removePointerEndListeners = () => {
+    if (onPointerUp) {
+      document.removeEventListener('pointerup', onPointerUp);
+      onPointerUp = undefined;
+    }
+    if (onPointerCancel) {
+      document.removeEventListener('pointercancel', onPointerCancel);
+      onPointerCancel = undefined;
+    }
+  };
 
   /**
    * These event listeners fix a bug where gestures don't complete properly.
@@ -35,15 +50,31 @@ export const registerEffect = (
     clearActivated();
     gesture.destroy();
     createAnimationGesture();
-    const onPointerUp = async (e: PointerEvent) => {
+    removePointerEndListeners();
+    onPointerUp = () => {
       clearActivatedTimer = setTimeout(async () => {
         await onEndGesture();
         gesture.destroy();
         createAnimationGesture();
       });
-      document.removeEventListener('pointerup', onPointerUp);
+      removePointerEndListeners();
+    };
+    onPointerCancel = () => {
+      removePointerEndListeners();
+      currentTouchedElement?.classList.remove('ion-activated');
+      selectedElementBeforeGesture?.classList.add(selectedClassName);
+      currentTouchedElement = undefined;
+      selectedElementBeforeGesture = undefined;
+      moveAnimation?.destroy();
+      moveAnimation = undefined;
+      effectElement.style.display = 'none';
+      maxVelocity = 0;
+      targetElement.classList.remove(ANIMATED_NAME);
+      gesture.destroy();
+      createAnimationGesture();
     };
     document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointercancel', onPointerCancel);
   };
   targetElement.addEventListener('pointerdown', onPointerDown);
 
@@ -73,6 +104,7 @@ export const registerEffect = (
     }
     currentTouchedElement.classList.remove('ion-activated');
     currentTouchedElement = undefined;
+    selectedElementBeforeGesture = undefined;
     effectElement.style.display = 'none';
     maxVelocity = 0;
     targetElement.classList.remove(ANIMATED_NAME);
@@ -84,6 +116,7 @@ export const registerEffect = (
     if (currentTouchedElement === undefined || tabSelectedElement === null) {
       return false;
     }
+    selectedElementBeforeGesture = tabSelectedElement as HTMLElement;
     animationPosition = {
       minPositionX: targetElement.getBoundingClientRect().left,
       maxPositionX: targetElement.getBoundingClientRect().right - tabSelectedElement.clientWidth,
@@ -97,7 +130,13 @@ export const registerEffect = (
       if (tabSelectedElement === currentTouchedElement) {
         return new Promise<void>((resolve) => resolve());
       } else {
-        const preMoveAnimation = createPreMoveAnimation(effectElement, tabSelectedElement, currentTouchedElement, animationPosition!);
+        const preMoveAnimation = createPreMoveAnimation(
+          effectElement,
+          tabSelectedElement,
+          currentTouchedElement,
+          animationPosition!,
+          preMoveDurationFactor,
+        );
         return preMoveAnimation.play().finally(() => preMoveAnimation.destroy());
       }
     })();
@@ -193,6 +232,7 @@ export const registerEffect = (
     destroy: () => {
       // Remove event listeners
       targetElement.removeEventListener('pointerdown', onPointerDown);
+      removePointerEndListeners();
 
       // Clear any pending timer
       if (clearActivatedTimer !== undefined) {
@@ -209,6 +249,7 @@ export const registerEffect = (
       }
       // Remove gesture class
       targetElement.classList.remove(GESTURE_NAME);
+      effectElement.remove();
     },
   };
 };

@@ -15,3 +15,14 @@ For opting out of the theme, use the version-independent `ios-theme-disabled` cl
 See [Special markup and classes](https://docs.rdlabo.dev/projects/ionic-theme-ios27/docs/special-markup) and [Default variables](../src/styles/default-variables.scss) for the current names.
 
 Earlier migration notes are preserved in the [iOS 26 migration guide](https://docs.rdlabo.dev/projects/ionic-theme-ios26/docs/migration).
+
+## Submit button appearance
+
+Submit buttons now use each Ionic color's standard contrast value and an iOS 27 directional edge treatment. Remove the theme-specific brightness variables.
+
+```diff
+  :root {
+-   --ion-color-primary-brightness-rgb: 130, 255, 255;
+-   --ion-color-primary-brightness: #96feff;
+  }
+```

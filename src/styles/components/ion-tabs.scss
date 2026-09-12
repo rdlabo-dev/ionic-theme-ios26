@@ -19,14 +19,37 @@ ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
     left: calc(16px + var(--ion-safe-area-left, 0px));
   }
 
+  &.tab-bar-position-start,
+  &.tab-bar-position-end:dir(rtl) {
+    left: calc(16px + var(--ion-safe-area-left, 0px));
+    right: auto;
+    margin-inline: 0;
+  }
+
+  &.tab-bar-position-end,
+  &.tab-bar-position-start:dir(rtl) {
+    left: auto;
+    right: calc(16px + var(--ion-safe-area-right, 0px));
+    margin-inline: 0;
+  }
+
+  &.tab-bar-position-center {
+    left: calc(16px + var(--ion-safe-area-left, 0px));
+    right: calc(16px + var(--ion-safe-area-right, 0px));
+    margin-inline: auto;
+  }
+
   /**
    * 100% - margin-left - margin-right - right-fab - margin-left-fab
    */
-  width: calc(100% - calc(18px + var(--ion-safe-area-left, 0px)) - calc(18px + var(--ion-safe-area-left, 0px)) - 60px - 12px);
+  width: calc(100% - calc(18px + var(--ion-safe-area-left, 0px)) - calc(18px + var(--ion-safe-area-right, 0px)) - 60px - 12px);
   max-width: 474px;
   min-height: 56px;
+  &:has(> ion-tab-button:nth-child(2):last-child) {
+    width: 184px; // 190px including padding and border
+  }
   &:has(:nth-child(5)) {
-    width: calc(100% - calc(18px + var(--ion-safe-area-left, 0px)) - calc(18px + var(--ion-safe-area-left, 0px)));
+    width: calc(100% - calc(18px + var(--ion-safe-area-left, 0px)) - calc(18px + var(--ion-safe-area-right, 0px)));
     max-width: 546px;
   }
   padding: 2px 2px;
@@ -67,6 +90,8 @@ ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
 }
 
 ion-tab-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
+  transform-origin: center 65%;
+
   ion-icon {
     font-size: 26px;
   }
@@ -105,12 +130,12 @@ ion-tab-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
   &.ion-cloned-element {
     &::part(native) {
       @include api.glass-background($opacity: 0, $blur: 0, $saturate: 104%);
+      transform-origin: center 65%;
     }
     pointer-events: none;
     position: absolute;
     left: 0;
     top: 0;
-    transform-origin: center;
     & > * {
       visibility: hidden;
     }

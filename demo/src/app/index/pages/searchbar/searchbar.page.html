@@ -60,5 +60,30 @@
     <ion-searchbar [disabled]="true" placeholder="Disabled"></ion-searchbar>
     <ion-searchbar [value]="'Value'"></ion-searchbar>
     <ion-searchbar [animated]="true" placeholder="Animated"></ion-searchbar>
+    <!-- clearIcon is rendered by Ionic; no supportSeachbarCancelButtonIcon registration. -->
+    <ion-searchbar
+      [animated]="true"
+      [clearIcon]="cancelIcon"
+      show-clear-button="always"
+      show-cancel-button="never"
+      placeholder="Clear icon only"
+    ></ion-searchbar>
+    <ion-searchbar
+      #nativeSearchbar
+      [animated]="true"
+      show-cancel-button="focus"
+      [cancelButtonIcon]="cancelIcon"
+      [clearIcon]="cancelIcon"
+      placeholder="Cancel on focus"
+    ></ion-searchbar>
+    <ion-searchbar
+      #nativeSearchbar
+      [animated]="true"
+      show-cancel-button="always"
+      [cancelButtonIcon]="cancelIcon"
+      [clearIcon]="cancelIcon"
+      cancel-button-text="Close search"
+      placeholder="Cancel always visible"
+    ></ion-searchbar>
   </section>
 </ion-content>
