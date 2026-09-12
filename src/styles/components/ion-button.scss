@@ -216,12 +216,10 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
       --color: var(--ion-color-primary-contrast, #fff);
       --color-activated: var(--ion-color-primary-contrast, #fff);
 
-      @each $item in primary, secondary, tertiary, success, warning, danger, light, medium, dark {
-        &.ion-color-#{$item} {
-          --background-activated: var(--ion-color-#{$item});
-          --color: var(--ion-color-#{$item}-contrast, var(--ion-color-contrast, #fff));
-          --color-activated: var(--ion-color-#{$item}-contrast, var(--ion-color-contrast, #fff));
-        }
+      &.ion-color {
+        --background-activated: var(--ion-color-base);
+        --color: var(--ion-color-contrast, #fff);
+        --color-activated: var(--ion-color-contrast, #fff);
       }
     }
     --background-color: #fff;
