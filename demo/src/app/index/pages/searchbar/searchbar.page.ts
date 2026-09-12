@@ -46,13 +46,13 @@ import {
 export class SearchbarPage implements AfterViewInit, OnDestroy {
   @ViewChildren('nativeSearchbar', { read: ElementRef }) searchbars!: QueryList<ElementRef<HTMLIonSearchbarElement>>;
   readonly cancelIcon = closeOutline;
-  private effects: SearchbarCancelButtonIconSupport[] = [];
+  #effects: SearchbarCancelButtonIconSupport[] = [];
 
   ngAfterViewInit() {
-    this.effects = this.searchbars.map(({ nativeElement }) => supportSeachbarCancelButtonIcon(nativeElement));
+    this.#effects = this.searchbars.map(({ nativeElement }) => supportSeachbarCancelButtonIcon(nativeElement));
   }
 
   ngOnDestroy() {
-    this.effects.forEach((effect) => effect.destroy());
+    this.#effects.forEach((effect) => effect.destroy());
   }
 }
