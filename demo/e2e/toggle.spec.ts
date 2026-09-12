@@ -189,3 +189,49 @@ for (const duration of [50, 80, 100, 150, 600]) {
     }
   });
 }
+
+test('checked toggle uses its Ionic palette color', async ({ page }) => {
+  const toggle = page.locator('.section-example ion-toggle').first();
+  await toggle.evaluate((el) => {
+    el.setAttribute('color', 'danger');
+    (el as HTMLIonToggleElement).checked = true;
+  });
+  const expected = await toggle.evaluate((el) => {
+    const probe = document.createElement('span');
+    probe.style.color = getComputedStyle(el).getPropertyValue('--ion-color-base');
+    el.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  });
+  await expect(toggle.locator('[part="track"]')).toHaveCSS('background-color', expected);
+});
+
+test('native handle still moves when lens CSS is unavailable', async ({ page }) => {
+  const removed = await page.evaluate(() => {
+    let count = 0;
+    for (const sheet of Array.from(document.styleSheets)) {
+      for (let i = sheet.cssRules.length - 1; i >= 0; i--) {
+        const rule = sheet.cssRules[i];
+        if (rule instanceof CSSSupportsRule && rule.conditionText.includes('sin(') && rule.conditionText.includes('color-mix')) {
+          sheet.deleteRule(i);
+          count++;
+        }
+      }
+    }
+    return count;
+  });
+  expect(removed).toBeGreaterThan(0);
+  const toggle = page.locator('.section-example ion-toggle').first();
+  const track = toggle.locator('[part="track"]');
+  await track.scrollIntoViewIfNeeded();
+  const handle = toggle.locator('[part="handle"]');
+  const before = (await handle.boundingBox())!;
+  await track.tap();
+  await expect(toggle).toHaveAttribute('aria-checked', 'true');
+  await expect.poll(async () => (await handle.boundingBox())!.x).toBeGreaterThan(before.x + 10);
+  await expect(handle).toHaveCSS('height', '24px');
+  await track.tap();
+  await expect(toggle).toHaveAttribute('aria-checked', 'false');
+  await expect.poll(async () => (await handle.boundingBox())!.x).toBeCloseTo(before.x, 0);
+});
