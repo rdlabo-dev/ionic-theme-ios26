@@ -1,7 +1,15 @@
-@use '../utils/api';
+@mixin searchbar-glass {
+  --background:
+    linear-gradient(180deg, transparent 4%, rgba(0, 0, 0, 0.027) 22%, rgba(0, 0, 0, 0.008) 58%, rgba(0, 0, 0, 0.008) 80%, transparent 94%),
+    rgba(var(--ios-theme-glass-background-rgb, var(--ios26-glass-background-rgb)), 0.52);
+  --box-shadow:
+    inset 0 0.75px 0 color-mix(in srgb, rgb(var(--ios-theme-glass-border-color-rgb, var(--ios26-glass-border-color-rgb))), white 3%),
+    inset 0 -0.75px 0 color-mix(in srgb, rgb(var(--ios-theme-glass-border-color-rgb, var(--ios26-glass-border-color-rgb))), white 3%),
+    0 0 0 0.5px rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.25), 0 3px 8px rgba(0, 0, 0, 0.035);
+}
 
 ion-modal.ios {
-  ion-searchbar:not(.ios-theme-disabled, .ios26-disabled) {
+  ion-searchbar.ios:not(.ios-theme-disabled, .ios26-disabled):not(.searchbar-classic) {
     .searchbar-input-container {
       input.searchbar-input {
         // Modal表示でのアイコン非表示の不具合の対応
@@ -12,33 +20,232 @@ ion-modal.ios {
 }
 
 ion-searchbar.ios:not(.ios-theme-disabled, .ios26-disabled):not(.searchbar-classic) {
+  @include searchbar-glass;
+  --border-radius: 22px;
+  --icon-color: var(--ion-text-color, #000);
+  --cancel-button-color: var(--ion-text-color, #000);
+  --clear-button-color: var(--ion-text-color, #000);
+  --placeholder-opacity: 0.4;
   min-height: 60px;
-  padding: 0;
+  padding: 8px;
 
   ion-icon.searchbar-search-icon {
     inset-inline-start: 12px;
+    margin-inline-start: 0 !important;
+    width: 1.375rem;
     opacity: 1;
+    transition: none;
+  }
+
+  &:not(.searchbar-disabled) .searchbar-clear-button:active,
+  &:not(.searchbar-disabled) .searchbar-cancel-button:active {
+    // Keep the native spring, but fit its overshoot and border inside the 8px padding.
+    --_searchbar-press-duration: 433ms;
+    --_searchbar-press-easing: linear(
+      0,
+      0.2225 7.62%,
+      0.4131 11.55%,
+      0.6025 15.24%,
+      0.7663 19.17%,
+      0.8944 23.09%,
+      0.9856 26.79%,
+      1.0425 30.72%,
+      1.0806 38.34%,
+      1.0638 46.19%,
+      1.0331 53.81%,
+      1.0094 61.66%,
+      0.9969 69.28%,
+      0.9938 77.14%,
+      0.9963 88.45%,
+      1
+    );
+    &:has(ion-icon) {
+      transform: scale(1.3);
+    }
+    background: var(--background-activated, rgb(var(--ios-theme-glass-background-rgb, var(--ios26-glass-background-rgb))));
+
+    ion-icon {
+      // Native held glyph is approximately rgb(114, 114, 115) on white.
+      opacity: 0.55;
+    }
   }
 
   .searchbar-input-container {
-    margin: 0 8px 0 16px;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    margin: 0;
     align-self: center;
     justify-self: center;
     input.searchbar-input {
+      min-width: 0;
       min-height: 44px;
-      @include api.glass-background;
-      border-radius: 22px;
-      padding-inline-start: 2.4rem;
-    }
-    .searchbar-clear-button {
-      padding-inline-end: 2rem;
+      background: var(--background);
+      box-shadow: var(--box-shadow);
+      backdrop-filter: blur(2px) saturate(360%);
+      border: 0;
+      border-radius: var(--border-radius);
+      padding-inline-start: calc(1.375rem + 17.6667px) !important;
+      padding-inline-end: 8px;
+      transition: none;
     }
   }
 
-  // Ionic writes a physical inline padding while the placeholder is centered.
-  // Match before hydration as well, so Ionic's `transition: all` cannot animate through the inline value.
-  &:not(.searchbar-left-aligned) .searchbar-input-container input.searchbar-input {
-    padding-inline-start: 2.4rem !important;
+  .searchbar-clear-button,
+  .searchbar-cancel-button {
+    background: var(--background);
+    box-shadow: var(--box-shadow);
+    backdrop-filter: blur(2px) saturate(360%);
+    align-self: center;
+    min-width: 44px;
+    min-height: 44px;
+    height: auto;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 1.0625rem;
+    margin-inline-start: 0 !important;
+    transform-origin: center;
+    // Release is a different, more underdamped native spring.
+    --_searchbar-press-duration: 974ms;
+    --_searchbar-press-easing: linear(
+      0,
+      0.0881 4.21%,
+      0.3477 7.6%,
+      0.6675 10.99%,
+      0.9571 14.48%,
+      1.1623 17.86%,
+      1.2648 21.25%,
+      1.2801 23%,
+      1.2544 26.39%,
+      1.1806 29.88%,
+      1.0908 33.26%,
+      1.0101 36.65%,
+      0.9533 40.14%,
+      0.923 46.92%,
+      0.9384 50.41%,
+      0.9626 53.8%,
+      0.9871 57.19%,
+      1.0134 62.32%,
+      1.0221 67.45%,
+      1.0171 72.59%,
+      1.0068 77.72%,
+      1 81.21%,
+      0.9938 89.73%,
+      1
+    );
+    transition: transform var(--_searchbar-press-duration) var(--_searchbar-press-easing);
+
+    &:focus-visible {
+      outline: 2px solid var(--ion-color-primary, #0054e9);
+      outline-offset: -2px;
+    }
+  }
+
+  .searchbar-clear-button,
+  .searchbar-cancel-button:has(ion-icon) {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    > div {
+      font-size: 0;
+    }
+
+    .searchbar-clear-icon,
+    ion-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  .searchbar-clear-button {
+    position: relative;
+    inset: auto;
+    flex-shrink: 0;
+    display: block;
+    margin-inline-end: -44px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  &.searchbar-has-value.searchbar-should-show-clear .searchbar-clear-button {
+    margin-inline-start: 11px !important;
+    margin-inline-end: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .searchbar-cancel-button {
+    display: none;
+  }
+
+  &.searchbar-animated .searchbar-cancel-button {
+    display: block;
+    margin-inline-end: -44px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    &:has(ion-icon) {
+      // Ionic may have measured the text before the icon was attached.
+      margin-inline-end: -44px !important;
+    }
+  }
+
+  &.searchbar-should-show-cancel,
+  &:has(.searchbar-cancel-button:active):not(.searchbar-disabled) {
+    .searchbar-input-container {
+      margin-inline-end: 11px;
+    }
+
+    .searchbar-cancel-button {
+      display: block;
+      // Also override Ionic's inline hidden margin while a text button is held.
+      margin-inline-end: 0 !important;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+
+      &:has(ion-icon) {
+        margin-inline-end: 0 !important;
+      }
+    }
+  }
+
+  // UISearchBar keeps the leading edge fixed, reserving 44pt + an 11pt gap.
+  &.searchbar-animated:not(.searchbar-no-animate) {
+    .searchbar-input-container {
+      transition: margin-inline-end 383ms ease-in-out;
+    }
+
+    .searchbar-clear-button,
+    .searchbar-cancel-button {
+      transition:
+        transform var(--_searchbar-press-duration) var(--_searchbar-press-easing),
+        margin-inline-start 383ms ease-in-out,
+        margin-inline-end 383ms ease-in-out,
+        opacity 383ms ease-in-out,
+        visibility 383ms;
+    }
+  }
+
+  &.searchbar-disabled .searchbar-clear-button,
+  &.searchbar-disabled .searchbar-cancel-button {
+    pointer-events: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:not(.searchbar-disabled) .searchbar-clear-button:active:has(ion-icon),
+    &:not(.searchbar-disabled) .searchbar-cancel-button:active:has(ion-icon) {
+      transform: none;
+    }
+    &.searchbar-animated:not(.searchbar-no-animate) .searchbar-input-container,
+    &.searchbar-animated:not(.searchbar-no-animate) .searchbar-clear-button,
+    &.searchbar-animated:not(.searchbar-no-animate) .searchbar-cancel-button {
+      transition: none;
+    }
   }
 }
 
