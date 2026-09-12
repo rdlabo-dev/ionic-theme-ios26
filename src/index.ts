@@ -6,6 +6,7 @@ export { iosLeaveAnimation as popoverLeaveAnimation } from './popover/animations
 export * from './tab-bar-searchable';
 export * from './searchbar';
 export * from './transition/ios.transition';
+export { registerSegmentEffect } from './segment';
 
 export const registerTabBarEffect = (targetElement: HTMLElement): registeredEffect | undefined => {
   return registerEffect(
@@ -20,21 +21,4 @@ export const registerTabBarEffect = (targetElement: HTMLElement): registeredEffe
     },
     1.2,
   );
-};
-
-export const registerSegmentEffect = (targetElement: HTMLElement): registeredEffect | undefined => {
-  const scale = !targetElement.classList.contains('segment-expand')
-    ? {
-        small: 'scale(1.35)',
-        medium: 'scale(1.45)',
-        large: 'scale(1.55)',
-        xlarge: 'scale(1.55, 1.65)',
-      }
-    : {
-        small: 'scale(1.02, 1.35)',
-        medium: 'scale(1.03, 1.45)',
-        large: 'scale(1.04, 1.55)',
-        xlarge: 'scale(1.05, 1.65)',
-      };
-  return registerEffect(targetElement, 'ion-segment-button', 'segment-button-checked', scale);
 };

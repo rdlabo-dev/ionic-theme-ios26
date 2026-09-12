@@ -75,7 +75,11 @@ This is an introductory group. Place regular list items in a separate `ion-item-
 
 ## Full-width segments
 
+For colored segments, use Ionic's `color` property (for example, `color="primary"` or `color="secondary"`). The selected surface uses the palette's base color and the selected label uses its contrast color. The optional moving glass inherits the same surface color; custom Ionic palettes work without additional registration.
+
 Add `.segment-expand` when segment buttons should divide the available width evenly. The class also changes the Liquid Glass effect sizing when `registerSegmentEffect` is used.
+
+Segments use a 32px minimum height in content and a 48px minimum height inside `ion-toolbar`. `.segment-expand` keeps the compact 32px layout in a toolbar. Compact segments retain Ionic's flat background and indicator colors; only the regular toolbar variant has a glass container and scales its outer container while pressed. Content and expanded segments keep their outer bounds. The optional moving glass lens is independent of the container's background.
 
 ```html preview
 <ion-segment class="segment-expand" value="new">

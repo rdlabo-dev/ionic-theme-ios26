@@ -1,25 +1,87 @@
 @use '../utils/api';
 
 ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled) {
-  @include api.glass-background;
-  min-height: 48px;
-  border-radius: 25px;
-
-  transition: transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease-out;
-
-  // will-change is optimized to only apply when needed for performance
-  &.segment-activated,
-  &:has(ion-segment-button.ion-activated) {
-    will-change: transform;
+  --border-radius: 16px;
+  --ios27-segment-scale: 1.113;
+  min-height: 32px;
+  &:not(.segment-scrollable) {
+    overflow: visible;
+    &.ios27-enable-gesture {
+      contain: layout style;
+    }
   }
+  border-radius: var(--border-radius);
 
-  &:not(.segment-activated):not(:has(ion-segment-button.ion-activated)) {
-    will-change: auto;
+  // UIKit uses a larger control in navigation bars, but not in content.
+  &.in-toolbar:not(.segment-expand) {
+    @include api.glass-background($include-border: false);
+    --border-radius: 24px;
+    min-height: 48px;
+    // Draw the shared reflective rim without adding to the control's measured bounds.
+    &::before {
+      @include api.glass-background($include-background: false, $include-box-shadow: false, $blur: 0, $saturate: 100%);
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    // UIKit's container spring: grow on press, then briefly shrink below rest on release.
+    transition: transform 517ms
+      linear(
+        0,
+        0.1367 6.38%,
+        0.4112 12.96%,
+        0.6945 19.34%,
+        0.9159 25.73%,
+        1 29.01%,
+        1.0912 35.4%,
+        1.1213 41.97%,
+        1.1089 48.36%,
+        1.0584 58.03%,
+        1 70.99%,
+        0.9858 83.75%,
+        1
+      );
+
+    &:not(.segment-disabled):is(
+        .ios27-segment-pressed,
+        :not(.ios27-enable-gesture):is(.segment-activated, :has(ion-segment-button.ion-activated))
+      ) {
+      transform: scale(var(--ios27-segment-scale));
+      transition: transform 367ms
+        linear(
+          0,
+          0.1656 8.99%,
+          0.4905 18.26%,
+          0.7836 27.25%,
+          0.974 36.24%,
+          1.0625 45.5%,
+          1.0802 54.5%,
+          1.0634 63.49%,
+          1.0368 72.75%,
+          1.0147 81.74%,
+          1.0005 90.74%,
+          1
+        );
+    }
+
+    ion-segment-button {
+      min-height: 40px;
+      margin: 4px 2px;
+      font-size: 15px;
+    }
   }
 
   ion-segment-button:is(.in-toolbar-color, .in-segment-color)::part(indicator-background) {
     // Ionic sets a direct background for color contexts, bypassing --indicator-color.
     background: var(--indicator-color);
+  }
+
+  &.ion-color ion-segment-button.in-segment-color {
+    &.segment-button-checked::part(native) {
+      color: var(--color-checked);
+    }
   }
 
   &.in-toolbar-color:not(.in-segment-color) {
@@ -28,123 +90,100 @@ ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled) {
     }
   }
 
-  &:not(.ios27-enable-gesture).segment-activated {
-    transform: scale(1.1) translateZ(0);
-    -webkit-transform: scale(1.1) translateZ(0);
-    ion-segment-button {
-      --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
-      --indicator-transform: scale(1.1) translateZ(0);
-      transition: transform 100ms ease-out;
-      &.segment-button-checked::part(native) {
-        transform: scale(1.08) translateZ(0);
-        -webkit-transform: scale(1.08) translateZ(0);
-      }
-      &::part(indicator-background) {
-        position: relative;
-        z-index: 1;
-        transform-origin: center center;
-      }
+  // The indicator grows independently; the label has no additional scale.
+  &:not(.ios27-enable-gesture, .segment-disabled):is(.segment-activated, :has(ion-segment-button:is(:active, .ion-activated))) {
+    ion-segment-button.segment-button-checked:not(.segment-button-disabled)::part(indicator-background) {
+      scale: 1.35 1.4;
+      background: transparent;
+      @include api.glass-background($opacity: 1, $blur: 0, $saturate: 104%, $include-border: false);
     }
   }
 
-  &.ios27-enable-gesture {
-    &:has(ion-segment-button.ion-activated) {
-      transform: scale(1.1) translateZ(0);
-      -webkit-transform: scale(1.1) translateZ(0);
-      ion-segment-button {
-        --indicator-transform: scale(1.1) translateZ(0);
-        transition: transform 100ms ease-out;
-        &.segment-button-checked::part(native) {
-          transform: scale(1.08) translateZ(0);
-          -webkit-transform: scale(1.08) translateZ(0);
-        }
-        &::part(indicator-background) {
-          position: relative;
-          z-index: 1;
-          transform-origin: center center;
-        }
-      }
+  &.ios27-enable-gesture.ios27-animated ion-segment-button {
+    z-index: 2;
+    &::part(indicator) {
+      opacity: 0;
     }
-    &.ios27-animated {
-      ion-segment-button {
-        --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
-      }
-    }
+  }
+
+  .ios27-segment-lens {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .ios27-segment-edge {
+    @include api.glass-background($include-background: false, $include-box-shadow: false, $blur: 0, $saturate: 104%);
+    box-shadow:
+      inset 0 2px 3px rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.8),
+      0 0 0 0.5px rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06),
+      0 2px 5px rgba(0, 0, 0, 0.06);
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
   }
 
   &.segment-expand {
-    min-height: 24px;
-    width: calc(100% - var(--ion-safe-area-left, 0) - var(--ion-safe-area-left, 0) - 24px);
+    width: calc(100% - var(--ion-safe-area-left, 0px) - var(--ion-safe-area-right, 0px) - 24px);
+  }
 
-    &.segment-activated {
-      transform: scale(1);
-      ion-segment-button.segment-button-checked::part(native) {
-        transform: scale(1);
-      }
+  @media (prefers-reduced-motion: reduce) {
+    --ios27-segment-scale: 1;
+    transition: none;
+    &.in-toolbar:not(.segment-expand) {
+      transform: none;
+      transition: none;
     }
+  }
+}
 
-    ion-segment-button {
-      min-height: 24px;
-    }
-
-    &.ios27-enable-gesture {
-      &:has(ion-segment-button.ion-activated) {
-        transform: scale(1) translateZ(0);
-        -webkit-transform: scale(1) translateZ(0);
-        ion-segment-button {
-          --indicator-transform: scale(1) translateZ(0);
-          transition: none;
-          &.segment-button-checked::part(native) {
-            transform: scale(1) translateZ(0);
-            -webkit-transform: scale(1) translateZ(0);
-          }
-          &::part(indicator-background) {
-            position: relative;
-            z-index: 1;
-            transform-origin: center center;
-          }
-        }
-      }
-      &.ios27-animated {
-        ion-segment-button {
-          --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0);
-        }
-      }
-    }
+// Let the optional lens extend past the toolbar without changing its layout or hit area.
+ion-toolbar.ios:has(> ion-segment.ios27-enable-gesture:not(.segment-scrollable, .ios-theme-disabled, .ios26-disabled)) {
+  contain: layout style;
+  &::part(container) {
+    contain: layout style;
+    overflow: visible;
   }
 }
 
 ion-segment-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
   --border-width: 0;
+  --border-radius: 999px;
   --indicator-box-shadow: none;
-  --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
-  --ion-color-base: var(--ion-text-color, #000);
   --padding-start: 8px;
   --padding-end: 8px;
-  min-width: 60px;
-  margin: 3px 2px;
-  font-size: 14.5px;
+  min-width: 65px;
+  min-height: 28px;
+  margin: 2px 0;
+  font-size: 13px;
+  line-height: normal;
 
   &::part(indicator-background) {
-    border-radius: 25px;
-    transition: background 0.2s ease;
+    transition:
+      var(--indicator-transition),
+      scale 250ms ease-out,
+      background 200ms ease;
   }
 
-  &.ion-cloned-element {
-    &::part(native) {
-      border-radius: 25px;
-      @include api.glass-background($opacity: 1, $blur: 0, $saturate: 104%);
-      background: transparent;
-      height: 100%;
-    }
-    color: var(--color-selected, var(--ion-color-primary, #0054e9));
-    pointer-events: none;
-    position: absolute;
-    left: 0;
-    top: -3.25px;
-    transform-origin: center center;
-    & > * {
-      visibility: hidden;
+  @media (prefers-reduced-motion: reduce) {
+    &::part(indicator-background) {
+      scale: 1 !important;
+      transition: none;
     }
   }
+}
+
+// Public customization properties remain overridable by ordinary app selectors.
+:where(ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled).in-toolbar:not(.segment-expand) ion-segment-button) {
+  --indicator-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06);
+}
+:where(ion-segment.ios:not(.ios-theme-disabled, .ios26-disabled).ion-color ion-segment-button.in-segment-color) {
+  --indicator-color: var(--ion-color-base);
+  --color-checked: var(--ion-color-contrast);
 }
