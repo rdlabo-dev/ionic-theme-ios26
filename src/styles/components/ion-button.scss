@@ -197,7 +197,8 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
   }
 
   /*
-   * fill=solid && type=submit button has edge brightness.
+   * Prominent submit buttons use the directional edge treatment from iOS 27:
+   * a restrained specular highlight above and a darker edge below.
    */
   &.button-solid[type='submit'],
   &.button-solid.button-submit {
@@ -205,24 +206,21 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
      * If not set ion-color-**, button color set primary.
      * https://github.com/ionic-team/ionic-framework/blob/main/core/src/components/button/button.scss#L78-L81
      */
-    --background-activated: var(--ion-color-primary-shade, #004acd);
+    --background-activated: var(--ion-color-primary, #0289ff);
     --background-focused: var(--ion-color-primary-shade, #004acd);
     --background-hover: var(--ion-color-primary-tint, #1a65eb);
-    --border-width: 0.5px;
-    --border-style: solid;
+    --border-width: 0;
+    --border-style: none;
 
     &:not(.button-disabled):not([disabled]) {
-      --color: var(--ion-color-primary-brightness, var(--ion-color-contrast));
-      --color-activated: var(--ion-color-primary-brightness);
-      --border-color: var(--ion-color-primary-brightness, transparent);
+      --color: var(--ion-color-primary-contrast, #fff);
+      --color-activated: var(--ion-color-primary-contrast, #fff);
 
       @each $item in primary, secondary, tertiary, success, warning, danger, light, medium, dark {
         &.ion-color-#{$item} {
-          --color: var(--ion-color-#{$item}-brightness, var(--ion-color-#{$item}-contrast, var(--ion-color-contrast)));
-          --color-activated: var(--ion-color-#{$item}-brightness);
-          --border-color: var(--ion-color-#{$item}-brightness, transparent);
-          --border-width: 0.5px;
-          --border-style: solid;
+          --background-activated: var(--ion-color-#{$item});
+          --color: var(--ion-color-#{$item}-contrast, var(--ion-color-contrast, #fff));
+          --color-activated: var(--ion-color-#{$item}-contrast, var(--ion-color-contrast, #fff));
         }
       }
     }
@@ -234,34 +232,21 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
       }
     }
     &::part(native) {
-      position: relative;
-      z-index: 0;
+      box-shadow:
+        inset 0 0.5px 0 rgba(255, 255, 255, 0.22),
+        inset 0 -0.5px 0 rgba(255, 255, 255, 0.34),
+        0 0.5px 1px rgba(0, 0, 0, 0.18);
     }
     &.ion-color::part(native) {
       color: var(--color);
     }
     &.ion-activated {
-      --border-width: 0.78px;
-      @if $is-back-button {
-        &::part(native) {
-          @include api.glass-background-button-activated;
-        }
-      } @else {
-        --box-shadow:
-          inset 0 0 8px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.2),
-          0 0 8px -4px rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.92);
-      }
-      &::part(native)::before {
-        content: '';
-        z-index: 1;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        border-radius: inherit;
-        pointer-events: none;
-        backdrop-filter: brightness(144%);
+      &::part(native) {
+        filter: brightness(144%);
+        box-shadow:
+          inset 0 0.5px 0 rgba(255, 255, 255, 0.16),
+          inset 0 -0.5px 0 rgba(255, 255, 255, 0.48),
+          0 0.5px 1px rgba(0, 0, 0, 0.12);
       }
       &.ion-activated.button-has-icon-only,
       &.ion-activated.back-button-has-icon-only {
@@ -275,7 +260,7 @@ $scaleup-large-icon-only: api.$button-scaleup-large-icon-only;
       }
 
       &:not(.button-has-icon-only):not(.back-button-has-icon-only) {
-        transform: scale($scaleup-default);
+        transform: scale(1.2);
         &.button-small {
           transform: scale($scaleup-small);
         }

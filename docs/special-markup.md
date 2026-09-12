@@ -8,13 +8,7 @@ Most Ionic markup works without changes. The combinations below are explicit opt
 
 ## Primary submit buttons
 
-Solid primary submit buttons use `--ion-color-primary-brightness` for their foreground and border treatment. Define a value with sufficient contrast for your primary color.
-
-```css
-:root {
-  --ion-color-primary-brightness: #96feff;
-}
-```
+Solid submit buttons use the Ionic color's contrast value for their foreground. Their directional edge treatment follows the iOS 27 prominent-button appearance and does not require an additional brightness color.
 
 ```html preview
 <ion-button type="submit" color="primary">Submit</ion-button>
