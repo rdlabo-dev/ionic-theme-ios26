@@ -5,6 +5,7 @@ import { changeSelectedElement, cloneElement, getStep } from '../utils';
 import {
   createMoveAnimation,
   createPreMoveAnimation,
+  createTabBarDragAnimation,
   createTabBarPressAnimation,
   createTabBarReleaseAnimation,
   getMoveAnimationKeyframe,
@@ -36,7 +37,7 @@ export const registerEffect = (
   let releaseAnimation: Animation | undefined;
   let tabPressAnimation: Animation | undefined;
   let tabPressStartedAt = 0;
-  let tabDragOffset: number | undefined;
+  let tabDragging = false;
   const originalTabBarScale = targetElement.style.getPropertyValue('--ios27-tab-bar-scale');
   const effectElement = cloneElement(effectTagName, false);
   const stopTabPress = () => {
@@ -69,7 +70,7 @@ export const registerEffect = (
    */
   const onPointerDown = (event: PointerEvent) => {
     stopTabPress();
-    tabDragOffset = undefined;
+    tabDragging = false;
     releaseAnimation?.destroy();
     releaseAnimation = undefined;
     clearActivated();
@@ -116,7 +117,7 @@ export const registerEffect = (
       onMove: (event) => onMoveGesture(event),
       onEnd: (detail) => {
         // Ionic coalesces moves; consume the release coordinate before committing a drag.
-        if (effectTagName === 'ion-tab-button' && tabDragOffset !== undefined) onMoveGesture(detail);
+        if (effectTagName === 'ion-tab-button' && tabDragging) onMoveGesture(detail);
         onEndGesture().then();
       },
     });
@@ -205,17 +206,11 @@ export const registerEffect = (
       return false; // Skip Animation
     }
     if (effectTagName === 'ion-tab-button') {
-      if (Math.abs(detail.currentX - detail.startX) < 3 && tabDragOffset === undefined) return;
-      if (tabDragOffset === undefined) {
-        const box = effectElement.getBoundingClientRect();
-        tabDragOffset = box.left + box.width / 2 - detail.currentX;
-        stopTabPress();
-        const scale = 1 + 14.14 / targetElement.offsetWidth;
-        tabPressAnimation = getScaleAnimation(effectElement)
-          .duration(150)
-          .to('transform', `scale(${(1 + 16 / effectElement.clientWidth) * scale}, ${(1 + 16 / effectElement.clientHeight) * scale})`);
-        void tabPressAnimation.play();
-      }
+      if (Math.abs(detail.currentX - detail.startX) < 3 && !tabDragging) return;
+      tabDragging = true;
+      stopTabPress();
+      tabPressAnimation = createTabBarDragAnimation(effectElement, targetElement, detail.velocityX);
+      void tabPressAnimation.play();
     } else if (scaleAnimationPromise === undefined) {
       if (Math.abs(detail.velocityX) > maxVelocity) {
         maxVelocity = Math.abs(detail.velocityX);
@@ -246,7 +241,7 @@ export const registerEffect = (
       currentTouchedElement = latestTouchedElement;
       changeSelectedElement(targetElement, currentTouchedElement, effectTagName, selectedClassName);
     }
-    moveAnimation.progressStep(getStep(detail.currentX + (tabDragOffset ?? 0), animationPosition!));
+    moveAnimation.progressStep(getStep(detail.currentX, animationPosition!));
     return true;
   };
 
@@ -268,10 +263,10 @@ export const registerEffect = (
     }
 
     const tapElapsed =
-      tabPressAnimation && tabDragOffset === undefined && selectedElementBeforeGesture !== currentTouchedElement
+      tabPressAnimation && !tabDragging && selectedElementBeforeGesture !== currentTouchedElement
         ? performance.now() - tabPressStartedAt
         : undefined;
-    if (tabPressAnimation && tabDragOffset === undefined && tapElapsed === undefined) {
+    if (tabPressAnimation && !tabDragging && tapElapsed === undefined) {
       // A quick tap still completes the initial stretch before relaxing.
       const pressing = tabPressAnimation;
       const remaining = 200 - (performance.now() - tabPressStartedAt);

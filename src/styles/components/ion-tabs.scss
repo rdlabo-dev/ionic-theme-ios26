@@ -57,6 +57,8 @@ ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
   transition: transform var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease-out;
 
   &.ios27-enable-gesture {
+    // Reserve horizontal touch movement for the lens; keep vertical scrolling and zoom.
+    touch-action: pan-y pinch-zoom;
     // The release animation owns the selected background, including its final handoff.
     ion-tab-button.tab-selected::part(native) {
       transition: none;

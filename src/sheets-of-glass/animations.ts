@@ -87,6 +87,28 @@ export const createTabBarPressAnimation = (effect: HTMLElement, from: HTMLElemen
   return createAnimation().duration(900).easing('linear').addAnimation([move, stretch]);
 };
 
+// Drag samples: faster movement stretches sideways, then rebounds vertically at rest.
+export const createTabBarDragAnimation = (effect: HTMLElement, bar: HTMLElement, velocity: number): Animation => {
+  const native = effect.shadowRoot!.querySelector<HTMLElement>('[part="native"]')!;
+  const current = new DOMMatrixReadOnly(native.style.transform || getComputedStyle(native).transform);
+  const { width, height } = effect.getBoundingClientRect();
+  const scale = 1 + 14.14 / bar.offsetWidth;
+  const restX = ((width + 16) * scale) / width;
+  const restY = ((height + 16) * scale) / height;
+  // Approximate the 100/600pt/s UIKit samples; keep deformation bounded for fast swipes.
+  const stretch = Math.min(16, 32 * velocity * velocity) * scale;
+  const rebound = Math.max(stretch, (current.a - restX) * width) * 0.8;
+  return getScaleAnimation(effect)
+    .duration(500)
+    .easing('linear')
+    .keyframes([
+      { offset: 0, transform: `scale(${current.a}, ${current.d})` },
+      { offset: 0.2, transform: `scale(${restX + stretch / width}, ${restY - stretch / height})` },
+      { offset: 0.44, transform: `scale(${restX - rebound / width}, ${restY + rebound / height})` },
+      { offset: 1, transform: `scale(${restX}, ${restY})` },
+    ]);
+};
+
 // UITabBarController release samples: return to rest with a small undershoot.
 export const createTabBarReleaseAnimation = (
   effectElement: Element,

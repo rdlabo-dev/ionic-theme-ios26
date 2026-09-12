@@ -286,6 +286,111 @@ test('transfer stretches horizontally before vertically and stays centered verti
   await expect(lens).toBeHidden();
 });
 
+test('drag speed changes lens proportions and stopping rebounds to the held size', async ({ page }) => {
+  const peaks: number[] = [];
+  for (const delay of [60, 10]) {
+    await page.goto('/main/index');
+    const bar = page.locator('ion-tab-bar');
+    await expect(bar).toHaveClass(/ios27-enable-gesture/);
+    const button = (await bar.locator('ion-tab-button').first().boundingBox())!;
+    const x = button.x + button.width / 2;
+    const y = button.y + button.height / 2;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.waitForTimeout(950);
+    const native = page.locator('body > ion-tab-button.ion-cloned-element [part="native"]');
+    for (let step = 1; step <= 8; step++) {
+      await page.mouse.move(x + step * (delay === 10 ? 16 : 8), y);
+      await page.waitForTimeout(delay);
+      const startScale = await native.evaluate((el) => {
+        const animation = el.getAnimations().find((a) => a.effect?.getTiming().duration === 500);
+        if (!animation) return null;
+        const frame = (animation.effect as KeyframeEffect).getKeyframes()[0];
+        return new DOMMatrixReadOnly(frame.transform as string).a;
+      });
+      // Replacing an in-flight animation must retain its scale, not restart at 1.
+      if (startScale !== null) expect(startScale).toBeGreaterThan(1.1);
+    }
+    const samples = await native.evaluate((el) => {
+      const animation = el.getAnimations().find((a) => a.effect?.getTiming().duration === 500)!;
+      animation.pause();
+      return [100, 220, 500].map((time) => {
+        animation.currentTime = time;
+        const box = el.getBoundingClientRect();
+        return { width: box.width, height: box.height, center: box.x + box.width / 2 };
+      });
+    });
+    expect(samples[0].width).toBeGreaterThan(samples[2].width);
+    expect(samples[0].height).toBeLessThan(samples[2].height);
+    expect(samples[1].width).toBeLessThan(samples[2].width);
+    expect(samples[1].height).toBeGreaterThan(samples[2].height);
+    // WebKit rounds transformed bounds independently; allow subpixel edge rounding.
+    for (const sample of samples) expect(Math.abs(sample.center - samples[2].center)).toBeLessThan(0.1);
+    peaks.push(samples[0].width - samples[2].width);
+    await page.mouse.up();
+    await expect(page.locator('body > ion-tab-button.ion-cloned-element')).toBeHidden();
+  }
+  expect(peaks[1]).toBeGreaterThan(peaks[0] + 3);
+});
+
+test('horizontal touch dragging is not cancelled by browser panning', async ({ page, browserName }) => {
+  // CDP sends real touch input through browser gesture arbitration, unlike dispatchEvent.
+  test.skip(browserName !== 'chromium', 'Touch input injection requires CDP');
+  await page.goto('/main/index');
+  const bar = page.locator('ion-tab-bar');
+  await expect(bar).toHaveClass(/ios27-enable-gesture/);
+  await bar.evaluate((el) => {
+    el.setAttribute('data-pointer-cancels', '0');
+    el.addEventListener('pointercancel', () => el.setAttribute('data-pointer-cancels', '1'));
+  });
+  const box = (await bar.locator('ion-tab-button').first().boundingBox())!;
+  const x = Math.round(box.x + box.width / 2);
+  const y = Math.round(box.y + box.height / 2);
+  const cdp = await page.context().newCDPSession(page);
+  const lens = page.locator('body > ion-tab-button.ion-cloned-element');
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+  for (const delta of [20, 40, 80, 100, 60]) {
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x + delta, y }] });
+    await expect(lens).toBeVisible();
+    await expect
+      .poll(async () => {
+        const rect = (await lens.boundingBox())!;
+        return Math.abs(rect.x + rect.width / 2 - (x + delta));
+      })
+      .toBeLessThanOrEqual(1);
+  }
+  await expect(bar).toHaveAttribute('data-pointer-cancels', '0');
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await expect(lens).toBeHidden();
+  await expect(bar.locator('ion-tab-button').nth(1)).toHaveClass(/tab-selected/);
+});
+
+for (const start of [0, 1]) {
+  test(`dragged glass follows the pointer from tab ${start}`, async ({ page }) => {
+    await page.goto('/main/index');
+    const bar = page.locator('ion-tab-bar');
+    await expect(bar).toHaveClass(/ios27-enable-gesture/);
+    const button = (await bar.locator('ion-tab-button').nth(start).boundingBox())!;
+    const x = button.x + button.width / 2;
+    const y = button.y + button.height / 2;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.waitForTimeout(50);
+    const lens = page.locator('body > ion-tab-button.ion-cloned-element');
+    for (const delta of [20, 40, 60, 30]) {
+      await page.mouse.move(x + delta, y);
+      await expect
+        .poll(async () => {
+          const box = (await lens.boundingBox())!;
+          return Math.abs(box.x + box.width / 2 - (x + delta));
+        })
+        .toBeLessThanOrEqual(1);
+    }
+    await page.mouse.up();
+    await expect(lens).toBeHidden();
+  });
+}
+
 test('dragging interrupts transfer immediately and selects the tab under the pointer', async ({ page }) => {
   await page.goto('/main/index');
   const bar = page.locator('ion-tab-bar');
