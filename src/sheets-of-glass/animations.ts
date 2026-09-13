@@ -183,7 +183,7 @@ export const createTabBarReleaseAnimation = (
   // Blend the reflective lens into the selected surface during the final 200ms.
   const offset = 1 - 200 / duration;
   const selectedBackground =
-    'var(--ios27-tab-selected-background, rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0.095))';
+    'var(--ios27-tab-selected-background, rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb, var(--ios27-button-color-selected-default-rgb))), 0.095))';
   const glass = createAnimation()
     .addElement(effectElement)
     .easing('linear')

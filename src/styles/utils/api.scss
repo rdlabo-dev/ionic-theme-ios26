@@ -104,15 +104,24 @@ $_glass-surface: linear-gradient(
   $include-box-shadow: true
 ) {
   @if $include-background {
-    background: rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), $opacity);
+    background: rgba(
+      var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb, var(--ios27-button-color-selected-default-rgb))),
+      $opacity
+    );
   } @else {
-    background-color: rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), $opacity);
+    background-color: rgba(
+      var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb, var(--ios27-button-color-selected-default-rgb))),
+      $opacity
+    );
   }
   $shadow: null;
   @if $include-box-shadow {
     $shadow: inset 0 0 16px 0 rgba(var(--ios-theme-glass-box-shadow-color-rgb, var(--ios26-glass-box-shadow-color-rgb)), 0.55);
   }
-  $color: var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb));
+  $color: var(
+    --ios-theme-button-color-selected-rgb,
+    var(--ios26-button-color-selected-rgb, var(--ios27-button-color-selected-default-rgb))
+  );
   @include glass.pressed-surface(rgba($color, 0.8) rgba($color, 0.4) rgba($color, 0.8) rgba($color, 0.6), $shadow, $blur, $saturate);
 }
 

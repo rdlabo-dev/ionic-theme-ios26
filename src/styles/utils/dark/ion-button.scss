@@ -1,7 +1,10 @@
 @use '../glass';
 
 @mixin pressed-glass {
-  $color: var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb));
+  $color: var(
+    --ios-theme-button-color-selected-rgb,
+    var(--ios26-button-color-selected-rgb, var(--ios27-button-color-selected-default-rgb))
+  );
   background: rgba($color, 0.5);
   // UIKit's dark pressed surface is brightest at the center, with a shaded rim.
   @include glass.pressed-surface(
@@ -38,7 +41,10 @@
 
 @mixin theme-dark-button {
   &.ion-activated:not(.button-solid):not(.button-outline):not(.button-clear) {
-    --background: rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0.5);
+    --background: rgba(
+      var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb, var(--ios27-button-color-selected-default-rgb))),
+      0.5
+    );
     --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 1);
     &.ion-color {
       --color: rgba(var(--ion-color-base-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 1);

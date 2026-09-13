@@ -38,6 +38,7 @@ export const registerEffect = (
   let tabPressAnimation: Animation | undefined;
   let tabPressStartedAt = 0;
   let tabDragging = false;
+  let destroyed = false;
   const originalTabBarScale = targetElement.style.getPropertyValue('--ios27-tab-bar-scale');
   const effectElement = cloneElement(effectTagName, false);
   const stopTabPress = () => {
@@ -64,6 +65,29 @@ export const registerEffect = (
     }
   };
 
+  const cancelActiveGesture = () => {
+    stopTabPress();
+    releaseAnimation?.destroy();
+    releaseAnimation = undefined;
+    removePointerEndListeners();
+    if (clearActivatedTimer !== undefined) {
+      clearTimeout(clearActivatedTimer);
+      clearActivatedTimer = undefined;
+    }
+    currentTouchedElement?.classList.remove('ion-activated');
+    // Preserve a committed selection, or restore the original if the press was cancelled.
+    if (!currentTouchedElement?.classList.contains(selectedClassName)) {
+      selectedElementBeforeGesture?.classList.add(selectedClassName);
+    }
+    currentTouchedElement = undefined;
+    selectedElementBeforeGesture = undefined;
+    moveAnimation?.destroy();
+    moveAnimation = undefined;
+    effectElement.style.display = 'none';
+    maxVelocity = 0;
+    targetElement.classList.remove(ANIMATED_NAME);
+  };
+
   /**
    * These event listeners fix a bug where gestures don't complete properly.
    * They terminate the gesture using native events as a fallback.
@@ -80,25 +104,14 @@ export const registerEffect = (
     onPointerUp = () => {
       clearActivatedTimer = setTimeout(async () => {
         await onEndGesture();
+        if (destroyed) return;
         gesture.destroy();
         createAnimationGesture();
       });
       removePointerEndListeners();
     };
     onPointerCancel = () => {
-      stopTabPress();
-      releaseAnimation?.destroy();
-      releaseAnimation = undefined;
-      removePointerEndListeners();
-      currentTouchedElement?.classList.remove('ion-activated');
-      selectedElementBeforeGesture?.classList.add(selectedClassName);
-      currentTouchedElement = undefined;
-      selectedElementBeforeGesture = undefined;
-      moveAnimation?.destroy();
-      moveAnimation = undefined;
-      effectElement.style.display = 'none';
-      maxVelocity = 0;
-      targetElement.classList.remove(ANIMATED_NAME);
+      cancelActiveGesture();
       gesture.destroy();
       createAnimationGesture();
     };
@@ -320,21 +333,10 @@ export const registerEffect = (
 
   return {
     destroy: () => {
-      stopTabPress();
-      releaseAnimation?.destroy();
-      releaseAnimation = undefined;
+      destroyed = true;
+      cancelActiveGesture();
       // Remove event listeners
       targetElement.removeEventListener('pointerdown', onPointerDown);
-      removePointerEndListeners();
-
-      // Clear any pending timer
-      if (clearActivatedTimer !== undefined) {
-        clearTimeout(clearActivatedTimer);
-        clearActivatedTimer = undefined;
-      }
-
-      // Clear activated state
-      clearActivated();
 
       // Destroy gesture
       if (gesture) {

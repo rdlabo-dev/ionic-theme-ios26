@@ -81,6 +81,16 @@ ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
     will-change: auto;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &:has(ion-tab-button.ion-activated) {
+      transition: none;
+      transform: none;
+      -webkit-transform: none;
+      will-change: auto;
+    }
+  }
+
   &:has(ion-tab-button.ion-activated) {
     ion-tab-button.tab-selected:not(.ion-activated) {
       --color-selected: rgb(var(--ion-text-color-rgb, 0, 0, 0));
@@ -92,7 +102,10 @@ ion-tab-bar.ios:not(.ios-theme-disabled, .ios26-disabled) {
    */
   &.ios27-enable-gesture.ios27-animated {
     ion-tab-button.tab-selected::part(native) {
-      background: rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0);
+      background: rgba(
+        var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb, var(--ios27-button-color-selected-default-rgb))),
+        0
+      );
     }
     ion-tab-button.ion-activated {
       ion-label,
@@ -138,7 +151,13 @@ ion-tab-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
     &::part(native) {
       background: var(
         --ios27-tab-selected-background,
-        rgba(var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb)), 0.095)
+        rgba(
+          var(
+            --ios-theme-button-color-selected-rgb,
+            var(--ios26-button-color-selected-rgb, var(--ios27-button-color-selected-default-rgb))
+          ),
+          0.095
+        )
       );
       transition: background var(--ios-theme-activated-transition-duration, var(--ios26-activated-transition-duration)) ease;
     }
@@ -157,6 +176,19 @@ ion-tab-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
     top: 0;
     & > * {
       visibility: hidden;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &.ion-activated {
+      transform: none;
+      transition: none;
+    }
+    ion-label,
+    ion-icon,
+    &.tab-selected::part(native) {
+      transition: none;
     }
   }
 }

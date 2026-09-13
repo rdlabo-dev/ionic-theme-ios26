@@ -1,6 +1,9 @@
 @mixin ion-tabs {
   ion-tab-button.ios:not(.ios-theme-disabled, .ios26-disabled) {
-    --ios27-tab-selected-background: rgba(var(--ios-theme-button-color-selected-rgb, 0, 0, 0), 0.72);
+    --ios27-tab-selected-background: rgba(
+      var(--ios-theme-button-color-selected-rgb, var(--ios26-button-color-selected-rgb, 0, 0, 0)),
+      0.72
+    );
     &.ion-activated {
       ion-label,
       ion-icon {
